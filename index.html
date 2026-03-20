@@ -1,1460 +1,425 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚴 Fietstocht Avontuur</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<style>
-:root {
-  --be: #FFD700; --be-dark: #e6a800;
-  --fr: #E8445A; --fr-dark: #c0213a;
-  --en: #3B9EFF; --en-dark: #1a7de0;
-  --green: #2EC97A; --green-dark: #1ea85e;
-  --orange: #FF7A2F; --orange-dark: #e05e10;
-  --purple: #9B5CF6; --purple-dark: #7c3aed;
-  --bg: #FFF9F0;
-  --card: #FFFFFF;
-  --text: #1a1a2e;
-  --muted: #7a7a9a;
-  --radius: 20px;
-  --shadow: 0 4px 20px rgba(0,0,0,0.1);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  font-family: 'Nunito', sans-serif;
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 1rem 0.5rem 3rem;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(255,215,0,0.15) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(59,158,255,0.12) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(232,68,90,0.05) 0%, transparent 60%);
-}
-
-.wrap { width: 100%; max-width: 540px; }
-
-/* ========= DECORATIVE ROAD ========= */
-.road-top {
-  height: 14px;
-  background: repeating-linear-gradient(90deg, #ffd700 0px, #ffd700 30px, transparent 30px, transparent 60px);
-  border-radius: 8px 8px 0 0;
-  background-color: #2a2a3a;
-  margin-bottom: 0;
-}
-
-/* ========= CARDS ========= */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  border: 2px solid rgba(0,0,0,0.06);
-}
-
-/* ========= START SCREEN ========= */
-#start-scherm { padding: 0; }
-
-.start-hero {
-  background: linear-gradient(135deg, #fff5cc 0%, #ffe0e6 50%, #d4eeff 100%);
-  padding: 2.5rem 2rem 1.5rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.start-hero::before {
-  content: '🚗💨🏔️🌻🌊⛵';
-  position: absolute;
-  top: 0.5rem; left: 0;
-  font-size: 1.2rem;
-  letter-spacing: 8px;
-  opacity: 0.3;
-  white-space: nowrap;
-  animation: scroll-bg 12s linear infinite;
-}
-@keyframes scroll-bg {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.bike-anim {
-  font-size: 4.5rem;
-  display: block;
-  animation: bike-bounce 0.8s ease-in-out infinite alternate;
-  margin-bottom: 0.5rem;
-}
-@keyframes bike-bounce {
-  from { transform: translateY(0) rotate(-2deg); }
-  to { transform: translateY(-10px) rotate(2deg); }
-}
-
-.start-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2.6rem;
-  color: var(--text);
-  line-height: 1.1;
-  margin-bottom: 0.3rem;
-}
-
-.start-title span { color: var(--fr); }
-
-.start-tagline {
-  font-size: 0.95rem;
-  color: var(--muted);
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.route-strip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 800;
-  background: white;
-  border-radius: 50px;
-  padding: 0.5rem 1.2rem;
-  display: inline-flex;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  margin-bottom: 0;
-}
-
-.start-body { padding: 1.5rem; }
-
-.story-bubble {
-  background: linear-gradient(135deg, #f0f8ff, #fff);
-  border: 2px solid rgba(59,158,255,0.2);
-  border-radius: 16px;
-  padding: 1.2rem;
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: #444;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.story-bubble::before {
-  content: '📖';
-  position: absolute;
-  top: -14px; left: 16px;
-  font-size: 1.4rem;
-}
-
-.game-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  margin-bottom: 1.5rem;
-}
-
-.feature-pill {
-  background: #f8f8ff;
-  border: 2px solid rgba(0,0,0,0.07);
-  border-radius: 14px;
-  padding: 0.7rem 0.8rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.feature-pill .ico { font-size: 1.3rem; }
-
-.lives-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-.lives-preview .heart { font-size: 1.4rem; animation: heartbeat 1.5s ease-in-out infinite; }
-@keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-
-.big-btn {
-  display: block;
-  width: 100%;
-  padding: 1.1rem;
-  border: none;
-  border-radius: 16px;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  overflow: hidden;
-}
-
-.big-btn-start {
-  background: linear-gradient(135deg, var(--green), #1ea85e);
-  color: white;
-  box-shadow: 0 6px 0 var(--green-dark), 0 8px 16px rgba(46,201,122,0.35);
-}
-
-.big-btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--green-dark), 0 12px 24px rgba(46,201,122,0.4); }
-.big-btn-start:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--green-dark); }
-
-/* ========= GAME HEADER ========= */
-.game-header {
-  background: white;
-  border-bottom: 2px solid rgba(0,0,0,0.07);
-  padding: 0.8rem 1rem;
-}
-
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.6rem;
-}
-
-.lives-row { display: flex; gap: 0.2rem; font-size: 1.4rem; }
-
-.xp-badge {
-  background: linear-gradient(135deg, var(--purple), #7c3aed);
-  color: white;
-  border-radius: 50px;
-  padding: 0.3rem 0.75rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.streak-badge {
-  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-  color: white;
-  border-radius: 50px;
-  padding: 0.3rem 0.75rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: transform 0.2s;
-}
-
-.streak-badge.pop { animation: streakPop 0.4s ease; }
-@keyframes streakPop { 0%{transform:scale(1)} 50%{transform:scale(1.35)} 100%{transform:scale(1)} }
-
-.progress-bar-outer {
-  height: 12px;
-  background: #f0f0f8;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar-inner {
-  height: 100%;
-  background: linear-gradient(90deg, var(--be), var(--fr) 50%, var(--en));
-  border-radius: 6px;
-  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-}
-
-.progress-bar-inner::after {
-  content: '🚴';
-  position: absolute;
-  right: -10px;
-  top: -8px;
-  font-size: 1.2rem;
-  transition: right 0.6s;
-}
-
-/* ========= COUNTRY BANNER ========= */
-.country-banner {
-  padding: 0.6rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-}
-.country-banner.be { background: linear-gradient(90deg, #fff5c0, #fffde6); color: #8a6a00; border-bottom: 3px solid var(--be); }
-.country-banner.fr { background: linear-gradient(90deg, #ffe0e6, #fff5f5); color: #a01030; border-bottom: 3px solid var(--fr); }
-.country-banner.en { background: linear-gradient(90deg, #d4eeff, #f0f8ff); color: #0d4a8a; border-bottom: 3px solid var(--en); }
-
-/* ========= QUESTION AREA ========= */
-.question-area {
-  padding: 1.2rem 1rem;
-  background: white;
-}
-
-.question-type-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.3rem 0.8rem;
-  border-radius: 50px;
-  margin-bottom: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.type-mc   { background: #e8f4fd; color: #1a6eb5; border: 2px solid #b3d9f5; }
-.type-type { background: #e8fdf0; color: #1a7a45; border: 2px solid #a3e8c0; }
-.type-match{ background: #fdf0e8; color: #8a4400; border: 2px solid #f5d0a0; }
-.type-spot { background: #f0e8fd; color: #5a1a8a; border: 2px solid #d0a3f5; }
-
-.question-text {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.5;
-  color: var(--text);
-  margin-bottom: 1rem;
-}
-
-.image-box {
-  background: linear-gradient(135deg, #f8f8ff, #f0f5ff);
-  border: 2px solid rgba(0,0,0,0.07);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 160px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.image-box img {
-  max-height: 150px;
-  max-width: 100%;
-  object-fit: contain;
-  padding: 0.5rem;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-}
-
-/* ========= TYPE 1: MULTIPLE CHOICE ========= */
-.mc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-}
-
-.mc-opt {
-  background: #f8f8ff;
-  border: 3px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 0.8rem 0.6rem;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: center;
-  line-height: 1.4;
-  position: relative;
-  overflow: hidden;
-}
-
-.mc-opt::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0);
-  transition: background 0.15s;
-}
-
-.mc-opt:hover:not([disabled]) {
-  border-color: var(--en);
-  background: #edf5ff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59,158,255,0.2);
-}
-
-.mc-opt.selected { border-color: var(--en); background: #dceeff; color: #0055bb; }
-.mc-opt.correct  { border-color: var(--green); background: #d4f7e5; color: #0d6e3a; animation: correctBounce 0.4s ease; }
-.mc-opt.wrong    { border-color: var(--fr); background: #ffe0e4; color: #8a001a; animation: shake 0.4s ease; }
-.mc-opt[disabled] { cursor: default; transform: none !important; }
-
-@keyframes correctBounce { 0%{transform:scale(1)} 50%{transform:scale(1.06)} 100%{transform:scale(1)} }
-@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
-
-/* ========= TYPE 2: TYPE THE WORD ========= */
-.type-input-wrap {
-  position: relative;
-  margin-bottom: 0.5rem;
-}
-
-.type-input {
-  width: 100%;
-  padding: 1rem 1.2rem;
-  font-family: 'Nunito', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border: 3px solid rgba(0,0,0,0.1);
-  border-radius: 14px;
-  background: #f8f8ff;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.type-input:focus { border-color: var(--en); background: white; }
-.type-input.correct { border-color: var(--green); background: #d4f7e5; }
-.type-input.wrong   { border-color: var(--fr); background: #ffe0e4; animation: shake 0.4s ease; }
-
-.hint-letters {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.8rem;
-}
-
-.hint-letter-box {
-  width: 32px; height: 36px;
-  background: white;
-  border: 2px solid rgba(0,0,0,0.12);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--text);
-  transition: all 0.2s;
-}
-
-.hint-letter-box.revealed { background: #fffde6; border-color: var(--be); color: #7a5a00; }
-.hint-letter-box.space { background: transparent; border-color: transparent; width: 10px; }
-
-/* ========= TYPE 3: DRAG-MATCH (simplified as click-match) ========= */
-.match-container { }
-
-.match-image-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.8rem;
-}
-
-.match-word-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.match-word-btn {
-  background: #f8f8ff;
-  border: 3px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 0.75rem 1rem;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  transition: all 0.15s;
-}
-
-.match-word-btn .lang-flag {
-  font-size: 1.2rem;
-  min-width: 1.4rem;
-}
-
-.match-word-btn:hover:not([disabled]) { border-color: var(--purple); background: #f3eeff; transform: translateX(4px); }
-.match-word-btn.selected { border-color: var(--purple); background: #ede0ff; color: #4a0d9a; }
-.match-word-btn.correct  { border-color: var(--green); background: #d4f7e5; color: #0d6e3a; animation: correctBounce 0.4s ease; }
-.match-word-btn.wrong    { border-color: var(--fr); background: #ffe0e4; color: #8a001a; animation: shake 0.4s ease; }
-.match-word-btn[disabled]{ cursor: default; transform: none !important; }
-
-/* ========= TYPE 4: SPOT THE WORD (word in sentence) ========= */
-.sentence-box {
-  background: linear-gradient(135deg, #fffde6, #fff9f0);
-  border: 2px dashed var(--be-dark);
-  border-radius: 16px;
-  padding: 1.2rem;
-  font-size: 1rem;
-  line-height: 1.8;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.sentence-word {
-  display: inline-block;
-  background: rgba(255,255,255,0.8);
-  border: 2px solid rgba(0,0,0,0.1);
-  border-radius: 8px;
-  padding: 0.1rem 0.5rem;
-  margin: 0.1rem 0.15rem;
-  cursor: pointer;
-  font-weight: 800;
-  transition: all 0.15s;
-}
-
-.sentence-word:hover { background: #dceeff; border-color: var(--en); transform: translateY(-2px); }
-.sentence-word.selected { background: #dceeff; border-color: var(--en); color: #0055bb; }
-.sentence-word.correct  { background: #d4f7e5; border-color: var(--green); color: #0d6e3a; animation: correctBounce 0.4s ease; }
-.sentence-word.wrong    { background: #ffe0e4; border-color: var(--fr); color: #8a001a; animation: shake 0.3s ease; }
-
-/* ========= FEEDBACK BAR ========= */
-.feedback-bar {
-  padding: 1rem 1.2rem;
-  display: none;
-  font-size: 0.92rem;
-  font-weight: 700;
-  line-height: 1.5;
-  border-top: 2px solid rgba(0,0,0,0.06);
-}
-
-.feedback-bar.correct { background: linear-gradient(135deg, #d4f7e5, #eaffef); color: #0a5e30; }
-.feedback-bar.wrong   { background: linear-gradient(135deg, #ffe0e4, #fff5f6); color: #7a0015; }
-.feedback-bar .fb-top { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; margin-bottom: 0.3rem; }
-.feedback-bar .fb-answer { font-size: 0.85rem; opacity: 0.85; }
-
-/* ========= ACTION BUTTON ========= */
-.action-wrap { padding: 0.8rem 1rem 1rem; background: white; }
-
-.action-btn {
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 16px;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.25rem;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.action-btn.check {
-  background: linear-gradient(135deg, var(--en), var(--en-dark));
-  color: white;
-  box-shadow: 0 5px 0 #0055aa, 0 8px 16px rgba(59,158,255,0.3);
-}
-
-.action-btn.check:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #0055aa, 0 12px 20px rgba(59,158,255,0.35); }
-.action-btn.check:active { transform: translateY(4px); box-shadow: 0 1px 0 #0055aa; }
-
-.action-btn.next {
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: white;
-  box-shadow: 0 5px 0 #0d7a40, 0 8px 16px rgba(46,201,122,0.3);
-}
-
-.action-btn.next:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #0d7a40, 0 12px 20px rgba(46,201,122,0.35); }
-.action-btn.next:active { transform: translateY(4px); box-shadow: 0 1px 0 #0d7a40; }
-
-/* ========= LEVEL UP OVERLAY ========= */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  backdrop-filter: blur(4px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.overlay.show { opacity: 1; pointer-events: all; }
-
-.overlay-card {
-  background: white;
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  max-width: 320px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  transform: scale(0.8);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.overlay.show .overlay-card { transform: scale(1); }
-
-.overlay-icon { font-size: 5rem; margin-bottom: 0.5rem; animation: pop 0.6s ease; }
-@keyframes pop { 0%{transform:scale(0) rotate(-20deg)} 70%{transform:scale(1.2) rotate(5deg)} 100%{transform:scale(1) rotate(0)} }
-
-.overlay-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2rem;
-  color: var(--text);
-  margin-bottom: 0.5rem;
-}
-
-.overlay-sub { font-size: 0.95rem; color: var(--muted); font-weight: 600; margin-bottom: 1.5rem; }
-
-.overlay-btn {
-  display: inline-block;
-  padding: 0.9rem 2.5rem;
-  border: none;
-  border-radius: 14px;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-  color: white;
-  box-shadow: 0 4px 0 #b84400, 0 6px 16px rgba(255,122,47,0.3);
-  transition: all 0.15s;
-}
-.overlay-btn:hover { transform: translateY(-2px); }
-.overlay-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #b84400; }
-
-/* ========= END SCREEN ========= */
-#eind-scherm {
-  display: none;
-  padding: 0;
-}
-
-.end-hero {
-  background: linear-gradient(135deg, #fff5cc, #ffe0e6, #d4eeff);
-  padding: 2.5rem 2rem;
-  text-align: center;
-}
-
-.end-trophy { font-size: 5rem; animation: pop 0.8s ease; display: block; margin-bottom: 0.5rem; }
-
-.end-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2.4rem;
-  color: var(--text);
-  margin-bottom: 0.3rem;
-}
-
-.stars-row { font-size: 2.5rem; letter-spacing: 4px; margin-bottom: 0; }
-
-.end-body { padding: 1.5rem; }
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.stat-box {
-  background: #f8f8ff;
-  border: 2px solid rgba(0,0,0,0.07);
-  border-radius: 16px;
-  padding: 1rem;
-  text-align: center;
-}
-
-.stat-box .num {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2.2rem;
-  line-height: 1;
-  margin-bottom: 0.3rem;
-}
-
-.stat-box .lbl { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-
-.badges-row {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.badge-chip {
-  background: #f0f8ff;
-  border: 2px solid rgba(59,158,255,0.3);
-  border-radius: 50px;
-  padding: 0.4rem 0.9rem;
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: #1a5ea0;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.big-btn-restart {
-  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-  color: white;
-  box-shadow: 0 6px 0 #b84400, 0 8px 16px rgba(255,122,47,0.35);
-}
-
-.big-btn-restart:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #b84400, 0 12px 24px rgba(255,122,47,0.4); }
-.big-btn-restart:active { transform: translateY(3px); box-shadow: 0 3px 0 #b84400; }
-
-/* ========= GAME OVER ========= */
-#gameover-scherm { display: none; padding: 0; }
-
-.gameover-hero {
-  background: linear-gradient(135deg, #ffe0e4, #fff5f5);
-  padding: 2.5rem 2rem;
-  text-align: center;
-}
-
-.go-icon { font-size: 5rem; animation: pop 0.6s ease; display: block; margin-bottom: 0.5rem; }
-.go-title { font-family: 'Fredoka One', cursive; font-size: 2.4rem; color: var(--fr); margin-bottom: 0.5rem; }
-.go-sub { font-size: 1rem; color: var(--muted); font-weight: 600; }
-
-/* ========= FADE ANIM ========= */
-.fade-in { animation: fadeIn 0.35s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-/* ========= FLASHING XP ========= */
-.xp-popup {
-  position: fixed;
-  pointer-events: none;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.4rem;
-  color: var(--purple);
-  text-shadow: 0 2px 8px rgba(155,92,246,0.4);
-  z-index: 200;
-  animation: xpFloat 1.2s ease forwards;
-}
-@keyframes xpFloat {
-  0%   { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>De Grote Fiets & Taal Quiz - Avontuur Editie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body { margin: 0; padding: 2rem 0.5rem; background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    .btn-active { border-color: #2563eb; background-color: #eff6ff; color: #1e3a8a; font-weight: bold; transform: scale(0.98); }
+    
+    /* Vlag-achtergronden voor sfeer (heel zacht) */
+    .bg-be { background: linear-gradient(to right, rgba(0,0,0,0.02), rgba(253,216,53,0.05), rgba(229,57,53,0.05)); }
+    .bg-fr { background: linear-gradient(to right, rgba(30,136,229,0.05), rgba(255,255,255,0.05), rgba(229,57,53,0.05)); }
+    .bg-gb { background: linear-gradient(to right, rgba(30,136,229,0.05), rgba(229,57,53,0.05), rgba(255,255,255,0.05)); }
+    
+    .progress-bar-fill { transition: width 0.4s ease-out; }
+  </style>
 </head>
-<body>
-<div class="wrap">
+<body id="body-bg">
+  <div class="max-w-3xl mx-auto mt-4 mb-12 bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+    
+    <div id="start-scherm" class="p-8 text-center flex flex-col items-center justify-center min-h-[500px] bg-slate-50 relative overflow-hidden">
+      <div class="text-7xl mb-6 animate-bounce relative z-10">🚴‍♂️💨</div>
+      <h1 class="text-4xl font-extrabold text-slate-800 mb-4 relative z-10">De Pech-Onderweg Fietstocht</h1>
+      <div class="text-slate-600 font-medium mb-8 max-w-lg text-left bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500 relative z-10">
+        <p class="mb-4 text-lg">Ga mee op een epische fietstocht! We reizen door 3 landen:</p>
+        <div class="flex items-center space-x-3 mb-2"><span class="text-2xl">🇧🇪</span> <span class="font-bold">Etape 1: België</span> (Nederlands)</div>
+        <div class="flex items-center space-x-3 mb-2"><span class="text-2xl">🇫🇷</span> <span class="font-bold">Etape 2: Frankrijk</span> (Frans)</div>
+        <div class="flex items-center space-x-3 mb-4"><span class="text-2xl">🇬🇧</span> <span class="font-bold">Etape 3: Engeland</span> (Engels)</div>
+        <p class="text-sm bg-blue-50 p-2 rounded text-blue-800">💡 <strong>Tip:</strong> Soms moet je een woord kiezen, soms een foto, en soms bepalen of iets waar of niet waar is. Blijf scherp!</p>
+      </div>
+      <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black py-4 px-12 rounded-full shadow-lg uppercase tracking-wider text-xl w-full max-w-sm transition-all transform hover:scale-105 btn-hover relative z-10">
+        Start het Avontuur!
+      </button>
+    </div>
 
-<!-- ========= START SCREEN ========= -->
-<div class="card fade-in" id="start-scherm">
-  <div class="start-hero">
-    <span class="bike-anim">🚴‍♂️</span>
-    <div class="start-title">Pech <span>Onderweg!</span></div>
-    <div class="start-tagline">Fiets door 3 landen — ken de woorden!</div>
-    <div class="route-strip">🇧🇪 België &nbsp;→&nbsp; 🇫🇷 Frankrijk &nbsp;→&nbsp; 🇬🇧 Engeland</div>
-  </div>
-  <div class="start-body">
-    <div class="story-bubble">
-      Je maakt een epische fietstocht van <strong>België naar Engeland</strong> via de boot in Calais. Maar pech toch! Steeds gaat er iets kapot. Kan jij de juiste woorden vinden bij de fietsenmaker? <strong>Verdien XP, bewaar je levens en haal badges!</strong>
-    </div>
-    <div class="game-features">
-      <div class="feature-pill"><span class="ico">❓</span> 4 soorten vragen</div>
-      <div class="feature-pill"><span class="ico">⭐</span> XP & levels</div>
-      <div class="feature-pill"><span class="ico">🔥</span> Streak-bonus</div>
-      <div class="feature-pill"><span class="ico">🏅</span> Badges verdienen</div>
-    </div>
-    <div class="lives-preview">
-      <span>Jij begint met</span>
-      <span class="heart">❤️</span><span class="heart" style="animation-delay:0.3s">❤️</span><span class="heart" style="animation-delay:0.6s">❤️</span>
-      <span>levens</span>
-    </div>
-    <button class="big-btn big-btn-start" onclick="startSpel()">🚀 Start de tocht!</button>
-  </div>
-</div>
+    <div id="game-ui" class="hidden flex-col h-full">
+      
+      <div class="bg-slate-800 text-white p-4 shadow-md">
+        <div class="flex justify-between items-center mb-2">
+          <div class="flex items-center space-x-2">
+            <span id="land-icoon" class="text-3xl">🇧🇪</span>
+            <div class="font-bold text-lg hidden sm:block" id="land-naam">België</div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="text-center">
+              <div class="text-xs text-slate-400 uppercase tracking-widest font-bold">Tijd</div>
+              <div id="tijd-weergave" class="text-xl font-mono font-bold text-blue-300">00:00</div>
+            </div>
+            <div class="text-center">
+              <div class="text-xs text-slate-400 uppercase tracking-widest font-bold">Score</div>
+              <div id="score-weergave" class="text-xl font-bold text-green-400">0</div>
+            </div>
+          </div>
+          <button onclick="eindigSpel()" class="bg-slate-700 hover:bg-red-500 text-white px-3 py-2 rounded-lg font-bold transition-colors border border-slate-600 hover:border-red-500 text-sm">
+            Geef op
+          </button>
+        </div>
+        
+        <div class="w-full bg-slate-700 rounded-full h-3 mt-2 overflow-hidden border border-slate-600">
+          <div id="progress-bar" class="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full progress-bar-fill" style="width: 0%"></div>
+        </div>
+        <div class="text-right text-xs text-slate-400 mt-1 font-mono" id="voortgang-weergave">0 / 72</div>
+      </div>
 
-<!-- ========= GAME UI ========= -->
-<div id="game-ui" style="display:none;">
-  <div class="road-top"></div>
-  <div class="card">
-    <div class="game-header">
-      <div class="header-top">
-        <div class="lives-row" id="lives-row">❤️❤️❤️</div>
-        <div style="display:flex;gap:0.5rem;align-items:center;">
-          <div class="streak-badge" id="streak-badge">🔥 0</div>
-          <div class="xp-badge" id="xp-badge">⭐ 0 XP</div>
+      <div id="oefening-scherm" class="p-6 flex-grow flex flex-col justify-center">
+        
+        <div id="verhaal-tekst" class="text-center text-lg md:text-xl font-medium text-slate-700 mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          </div>
+
+        <div id="vraag-container" class="mb-6 w-full max-w-2xl mx-auto">
+          </div>
+
+        <div id="antwoord-container" class="w-full max-w-2xl mx-auto mb-6">
+          </div>
+
+        <div id="feedback-antwoord" class="hidden w-full max-w-2xl mx-auto p-4 rounded-xl mb-6 text-center font-medium text-lg border-2">
+        </div>
+
+        <div class="flex justify-center w-full max-w-2xl mx-auto">
+          <button id="action-btn" class="bg-slate-300 text-slate-500 cursor-not-allowed font-bold py-4 px-8 rounded-xl uppercase tracking-wider text-lg w-full transition-all" disabled>
+            Kies een antwoord
+          </button>
         </div>
       </div>
-      <div class="progress-bar-outer">
-        <div class="progress-bar-inner" id="progress-fill" style="width:1%"></div>
+    </div>
+
+    <div id="bericht-scherm" class="p-10 text-center hidden flex-col items-center justify-center min-h-[500px] bg-slate-50">
+      <div id="bericht-icon" class="text-7xl mb-4">🏆</div>
+      <h2 id="bericht-titel" class="text-4xl font-extrabold text-slate-800 mb-2">Einde van de tocht!</h2>
+      <p class="text-slate-600 text-lg mb-8">Je bent veilig aangekomen in Londen!</p>
+      
+      <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 w-full max-w-md mb-8 shadow-xl mx-auto relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
+        <p class="text-slate-500 font-bold uppercase tracking-wider mb-2 text-sm">Aantal Herstellingen Geslaagd</p>
+        <p class="text-7xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">72</span></p>
+        <div class="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
+          <p class="text-sm font-bold text-slate-600 flex justify-center items-center space-x-2" id="eind-tijd"></p>
+        </div>
       </div>
-    </div>
-    <div class="country-banner be" id="country-banner">🇧🇪 Etape 1 — Pech in België!</div>
-    <div class="question-area fade-in" id="question-area">
-      <span class="question-type-badge type-mc" id="type-badge">🎯 Kies het juiste antwoord</span>
-      <div class="image-box" id="image-box"></div>
-      <div class="question-text" id="question-text"></div>
-      <div id="answer-area"></div>
-    </div>
-    <div class="feedback-bar" id="feedback-bar"></div>
-    <div class="action-wrap">
-      <button class="action-btn check" id="action-btn" onclick="handleAction()">Kijk na ✓</button>
+      
+      <button onclick="herstartSpel()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 px-12 rounded-full shadow-lg uppercase tracking-wider text-lg w-full max-w-xs transition-all btn-hover">
+        Nog een keer fietsen
+      </button>
     </div>
   </div>
-</div>
 
-<!-- ========= END SCREEN ========= -->
-<div class="card fade-in" id="eind-scherm">
-  <div class="end-hero">
-    <span class="end-trophy" id="end-trophy">🏆</span>
-    <div class="end-title" id="end-title">Tocht voltooid!</div>
-    <div class="stars-row" id="end-stars">⭐⭐⭐</div>
-  </div>
-  <div class="end-body">
-    <div class="stats-grid">
-      <div class="stat-box"><div class="num" style="color:var(--purple)" id="end-xp">0</div><div class="lbl">XP verdiend</div></div>
-      <div class="stat-box"><div class="num" style="color:var(--green)" id="end-score">0</div><div class="lbl">Correct</div></div>
-      <div class="stat-box"><div class="num" style="color:var(--orange)" id="end-streak">0</div><div class="lbl">Max streak</div></div>
-      <div class="stat-box"><div class="num" style="color:var(--en)" id="end-total">0</div><div class="lbl">Vragen totaal</div></div>
-    </div>
-    <div class="badges-row" id="badges-row"></div>
-    <button class="big-btn big-btn-restart" onclick="herstartSpel()">🔄 Opnieuw proberen</button>
-  </div>
-</div>
+  <script>
+    // Data (vergeet niet dat de foto's lokaal in dezelfde map moeten staan of via URL bereikbaar)
+    const fietsOnderdelen = [
+      { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
+      { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
+      { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "cranck met pedaal.png" },
+      { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "standaard.png" },
+      { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
+      { nl: "de reflector met geïntegreerd achterlicht", fr: "le réflecteur avec feu arrière", en: "the reflector with taillight", foto: "reflector en geïntegreerd achterlicht.png" },
+      { nl: "de reflector met geïntegreerd voorlicht", fr: "le réflecteur avec phare", en: "the reflector with headlight", foto: "reflector met geïntegreerd koplamp.png" },
+      { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "fietsbel.png" },
+      { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", foto: "remgreep.png" },
+      { nl: "de stuurpen met balhoofd", fr: "la potence avec jeu de direction", en: "the stem with headset", foto: "stuurpen met balhoofd.png" },
+      { nl: "het multigripstuur", fr: "le guidon multipositions", en: "the multi-grip handlebar", foto: "multigripstuur.png" },
+      { nl: "het zadel met zadelpen", fr: "la selle avec tige de selle", en: "the saddle with seatpost", foto: "zadel en zadelpen.png" },
+      { nl: "het frame met voorvork", fr: "le cadre avec fourche avant", en: "the frame with front fork", foto: "frame en voorvork.png" },
+      { nl: "de voortandwielen", fr: "les plateaux", en: "the chainrings", foto: "voortandwielen en crank.png" },
+      { nl: "de voorderailleur", fr: "le dérailleur avant", en: "the front derailleur", foto: "voorderailleur.png" },
+      { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
+      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "derailleur.jpg" },
+      { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
+      { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
+      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.jpg" },
+      { nl: "de velg voor achterwiel", fr: "la jante pour roue arrière", en: "the rear wheel rim", foto: "velg voor achterwiel met freewheel.png" },
+      { nl: "de velg voor voorwiel", fr: "la jante pour roue avant", en: "the front wheel rim", foto: "velg voor voorwiel.jpg" },
+      { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
+      { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" }
+    ];
 
-<!-- ========= GAME OVER SCREEN ========= -->
-<div class="card fade-in" id="gameover-scherm">
-  <div class="gameover-hero">
-    <span class="go-icon">💔</span>
-    <div class="go-title">Fiets kapot...</div>
-    <div class="go-sub">Alle levens op! Probeer het nog eens.</div>
-  </div>
-  <div class="end-body">
-    <div class="stats-grid">
-      <div class="stat-box"><div class="num" style="color:var(--purple)" id="go-xp">0</div><div class="lbl">XP verdiend</div></div>
-      <div class="stat-box"><div class="num" style="color:var(--green)" id="go-score">0</div><div class="lbl">Correct</div></div>
-    </div>
-    <button class="big-btn big-btn-restart" onclick="herstartSpel()">🔄 Opnieuw!</button>
-  </div>
-</div>
+    const verhalen = {
+      nl: ["Oei, trillingen op de kasseien! Wat is dit in het <strong>Nederlands</strong>?", "Je kijkt je fiets na voor vertrek. Hoe heet dit?", "Tijdens een rustpauze leg je uit wat er mis is. Wat is de naam?"],
+      fr: ["Panne in Noord-Frankrijk! Vraag ernaar bij de fietsenmaker in het <strong>Frans</strong>.", "De Franse douane stelt een vraag over je fiets. Wat is dit onderdeel?", "Oh lala, iets is losgekomen. Wat is de <strong>Franse</strong> term?"],
+      en: ["We fietsen links, maar staan nu stil. Wat is de <strong>Engelse</strong> vertaling?", "Rain in England! Je schuilt bij een mechanicien. Wat heb je nodig?", "A lovely bike ride... until this broke. Hoe noem je dit in het <strong>Engels</strong>?"]
+    };
 
-<!-- ========= OVERLAYS ========= -->
-<div class="overlay" id="levelup-overlay">
-  <div class="overlay-card">
-    <div class="overlay-icon" id="lo-icon">🎉</div>
-    <div class="overlay-title" id="lo-title">Level Up!</div>
-    <div class="overlay-sub" id="lo-sub">Je gaat naar het volgende land!</div>
-    <button class="overlay-btn" onclick="closeOverlay('levelup-overlay')">Verder! 🚴</button>
-  </div>
-</div>
+    let state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedAnswer: null };
+    let speelLijst = []; 
+    let verstrekenTijd = 0; 
+    let timerInterval;
 
-<div class="overlay" id="badge-overlay">
-  <div class="overlay-card">
-    <div class="overlay-icon" id="bo-icon">🏅</div>
-    <div class="overlay-title" id="bo-title">Badge verdiend!</div>
-    <div class="overlay-sub" id="bo-sub">Geweldig!</div>
-    <button class="overlay-btn" onclick="closeOverlay('badge-overlay')">Super! 🌟</button>
-  </div>
-</div>
+    const UI = {
+      bodyBg: document.getElementById('body-bg'), startScherm: document.getElementById('start-scherm'), 
+      gameUI: document.getElementById('game-ui'), schermBericht: document.getElementById('bericht-scherm'), 
+      tijdWeergave: document.getElementById('tijd-weergave'), scoreWeergave: document.getElementById('score-weergave'), 
+      voortgangWeergave: document.getElementById('voortgang-weergave'), progressBar: document.getElementById('progress-bar'),
+      landIcoon: document.getElementById('land-icoon'), landNaam: document.getElementById('land-naam'),
+      verhaalTekst: document.getElementById('verhaal-tekst'), vraagContainer: document.getElementById('vraag-container'), 
+      antwoordContainer: document.getElementById('antwoord-container'), fbAntwoord: document.getElementById('feedback-antwoord'), 
+      btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), 
+      eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd')
+    };
 
-<script>
-/* ===========================
-   DATA
-=========================== */
-const PARTS = [
-  { nl:"de dynamo", fr:"la dynamo", en:"the dynamo", foto:"dynamo.png" },
-  { nl:"de trapas", fr:"le boîtier de pédalier", en:"the bottom bracket", foto:"trapas.png" },
-  { nl:"de crank", fr:"la manivelle", en:"the crank arm", foto:"cranck met pedaal.png" },
-  { nl:"de standaard", fr:"la béquille", en:"the kickstand", foto:"standaard.png" },
-  { nl:"het spatbord", fr:"le garde-boue", en:"the mudguard", foto:"spatbord.png" },
-  { nl:"de reflector met geïntegreerd achterlicht", fr:"le réflecteur avec feu arrière", en:"the reflector with taillight", foto:"reflector en geïntegreerd achterlicht.png" },
-  { nl:"de reflector met geïntegreerd voorlicht", fr:"le réflecteur avec phare", en:"the reflector with headlight", foto:"reflector met geïntegreerd koplamp.png" },
-  { nl:"de fietsbel", fr:"la sonnette", en:"the bicycle bell", foto:"fietsbel.png" },
-  { nl:"de remgreep", fr:"le levier de frein", en:"the brake lever", foto:"remgreep.png" },
-  { nl:"de stuurpen met balhoofd", fr:"la potence avec jeu de direction", en:"the stem with headset", foto:"stuurpen met balhoofd.png" },
-  { nl:"het multigripstuur", fr:"le guidon multipositions", en:"the multi-grip handlebar", foto:"multigripstuur.png" },
-  { nl:"het zadel met zadelpen", fr:"la selle avec tige de selle", en:"the saddle with seatpost", foto:"zadel en zadelpen.png" },
-  { nl:"het frame met voorvork", fr:"le cadre avec fourche avant", en:"the frame with front fork", foto:"frame en voorvork.png" },
-  { nl:"de voortandwielen", fr:"les plateaux", en:"the chainrings", foto:"voortandwielen en crank.png" },
-  { nl:"de voorderailleur", fr:"le dérailleur avant", en:"the front derailleur", foto:"voorderailleur.png" },
-  { nl:"de ketting", fr:"la chaîne", en:"the chain", foto:"ketting.png" },
-  { nl:"de derailleur", fr:"le dérailleur", en:"the derailleur", foto:"derailleur.jpg" },
-  { nl:"de spaken", fr:"les rayons", en:"the spokes", foto:"spaken.png" },
-  { nl:"de naaf", fr:"le moyeu", en:"the hub", foto:"naaf.png" },
-  { nl:"het freewheel", fr:"la roue libre", en:"the freewheel", foto:"freewheel.jpg" },
-  { nl:"de velg voor achterwiel", fr:"la jante pour roue arrière", en:"the rear wheel rim", foto:"velg voor achterwiel met freewheel.png" },
-  { nl:"de velg voor voorwiel", fr:"la jante pour roue avant", en:"the front wheel rim", foto:"velg voor voorwiel.jpg" },
-  { nl:"het ventiel", fr:"la valve", en:"the valve", foto:"ventiel.png" },
-  { nl:"de fietspomp", fr:"la pompe à vélo", en:"the bicycle pump", foto:"pomp.png" }
-];
-
-/* Countries and question contexts */
-const COUNTRIES = [
-  { id:'be', flag:'🇧🇪', name:'België', lang:'nl', langName:'Nederlands', cls:'be', banner:'🇧🇪 Etape 1 — Pech in België!', levelMsg:'Je verlaat België!', levelIcon:'🧇' },
-  { id:'fr', flag:'🇫🇷', name:'Frankrijk', lang:'fr', langName:'Frans', cls:'fr', banner:'🇫🇷 Etape 2 — Calais nadert! Pech in Frankrijk!', levelMsg:'Ahoy! De boot naar Engeland!', levelIcon:'⛴️' },
-  { id:'en', flag:'🇬🇧', name:'Engeland', lang:'en', langName:'Engels', cls:'en', banner:'🇬🇧 Etape 3 — Links rijden in Engeland!', levelMsg:'Londen bereikt! Tocht voltooid!', levelIcon:'🎡' }
-];
-
-/* Question type generators */
-// Types: 'mc' (4-choice), 'mc2' (2-choice for simpler parts), 'type' (type the word), 'spot' (spot in sentence)
-const Q_TYPES = ['mc', 'mc', 'type', 'spot']; // weighted
-
-function shuffle(arr) {
-  let a = [...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
-
-function getRandom(arr, n=1, exclude=[]) {
-  let pool = arr.filter(x => !exclude.includes(x));
-  let s = shuffle(pool);
-  return n===1 ? s[0] : s.slice(0,n);
-}
-
-function buildMCQuestion(part, country) {
-  const lang = country.lang;
-  const correct = part[lang];
-  // Get 3 wrong options from other parts
-  const others = getRandom(PARTS.filter(p=>p[lang]!==correct), 3);
-  const opts = shuffle([correct, ...others.map(o=>o[lang])]);
-  return {
-    type: 'mc',
-    typeName: '🎯 Kies het juiste antwoord',
-    typeCls: 'type-mc',
-    image: part.foto,
-    question: `Welk ${country.langName} woord hoort bij dit fietsonderdeel?`,
-    options: opts,
-    correct,
-    feedback: `<strong>${part.nl}</strong> = <strong style="color:#0a5e30">${correct}</strong>`
-  };
-}
-
-function buildTypeQuestion(part, country) {
-  const lang = country.lang;
-  const correct = part[lang];
-  // Show first letter as hint
-  return {
-    type: 'type',
-    typeName: '✏️ Typ het juiste woord',
-    typeCls: 'type-type',
-    image: part.foto,
-    question: `Typ de <strong>${country.langName}</strong> naam voor dit onderdeel. Tip: begint met "<strong>${correct[0].toUpperCase()}</strong>"`,
-    correct,
-    feedback: `<strong>${part.nl}</strong> = <strong style="color:#0a5e30">${correct}</strong>`
-  };
-}
-
-function buildSpotQuestion(part, country) {
-  const lang = country.lang;
-  const correct = part[lang];
-  // Build a fake sentence in the target language containing the word
-  const sentences = {
-    nl: [
-      `Mijn fiets is stuk! De {W} is kapot en ik kan niet verder rijden.`,
-      `Kun jij de {W} voor mij repareren? Ik heb er dringend nood aan!`,
-      `In de fietsenwinkel vroeg ik: "Heeft u een nieuwe {W}?"`,
-    ],
-    fr: [
-      `Mon vélo est cassé! {W} est abîmé et je dois le faire réparer.`,
-      `Est-ce que vous pouvez réparer {W} s'il vous plaît?`,
-      `Le mécanicien a dit: "{W} doit être remplacé immédiatement!"`,
-    ],
-    en: [
-      `My bike is broken! {W} is damaged and I need help!`,
-      `Excuse me, can you replace {W} on my bicycle?`,
-      `The mechanic said: "{W} needs to be fixed right away!"`,
-    ]
-  };
-  const template = getRandom(sentences[lang]);
-  const sentence = template.replace('{W}', correct);
-  return {
-    type: 'spot',
-    typeName: '🔍 Klik op het juiste woord',
-    typeCls: 'type-spot',
-    image: part.foto,
-    question: `Klik op het <strong>${country.langName}</strong> woord voor dit fietsonderdeel in de zin hieronder:`,
-    sentence,
-    correct,
-    feedback: `<strong>${part.nl}</strong> = <strong style="color:#0a5e30">${correct}</strong>`
-  };
-}
-
-/* ===========================
-   GAME STATE
-=========================== */
-let G = {};
-
-function initGame() {
-  G = {
-    lives: 3,
-    xp: 0,
-    streak: 0,
-    maxStreak: 0,
-    correct: 0,
-    total: 0,
-    countryIndex: 0,
-    partIndex: 0,
-    partOrder: shuffle([...Array(PARTS.length).keys()]),
-    q: null,
-    answered: false,
-    selectedEl: null,
-    selectedVal: null,
-    badges: [],
-    pendingOverlay: null,
-  };
-}
-
-const XP_BASE = 10;
-const XP_STREAK_BONUS = 5;
-const XP_COUNTRY_BONUS = 30;
-
-/* ===========================
-   BUILD NEXT QUESTION
-=========================== */
-function nextQuestion() {
-  if (G.partIndex >= PARTS.length) {
-    // Move to next country
-    G.countryIndex++;
-    G.partIndex = 0;
-    G.partOrder = shuffle([...Array(PARTS.length).keys()]);
-
-    if (G.countryIndex >= COUNTRIES.length) {
-      showEnd();
-      return;
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
     }
 
-    G.xp += XP_COUNTRY_BONUS;
-    const c = COUNTRIES[G.countryIndex - 1];
-    showOverlay('levelup-overlay', c.levelIcon, c.levelMsg, `Je hebt ${c.name} doorgereden! +${XP_COUNTRY_BONUS} XP`);
-    return;
-  }
+    function getRandomItem(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
 
-  const part = PARTS[G.partOrder[G.partIndex]];
-  const country = COUNTRIES[G.countryIndex];
-  G.partIndex++;
+    // Genereer de vragenlijst: 3 etappes, 24 vragen per land, willekeurige vraagtypes
+    function genereerSpeelLijst() {
+      let lijst = [];
+      const landen = [
+        { code: 'en', vlag: '🇬🇧', naam: 'Engeland', bg: 'bg-gb' },
+        { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', bg: 'bg-fr' },
+        { code: 'nl', vlag: '🇧🇪', naam: 'België', bg: 'bg-be' }
+      ];
 
-  // Pick question type — for short words allow 'type', for long words prefer mc/spot
-  const word = part[country.lang];
-  let typePool;
-  if (word.length > 20) typePool = ['mc','mc','spot','spot'];
-  else if (word.length > 10) typePool = ['mc','type','spot','mc'];
-  else typePool = ['mc','type','spot','mc'];
+      // Omdat we 'pop' gebruiken (achteraan de array afnemen), genereren we eerst Engeland, dan Frankrijk, dan België.
+      landen.forEach(land => {
+        let onderdelenGeschud = shuffle([...fietsOnderdelen]);
+        onderdelenGeschud.forEach(onderdeel => {
+          
+          // Kies willekeurig uit 3 speltypes voor afwisseling
+          let types = ['mc-text', 'tf', 'mc-image'];
+          let gekozenType = getRandomItem(types);
 
-  const qType = typePool[Math.floor(Math.random()*typePool.length)];
+          let vraagObj = {
+            land: land,
+            type: gekozenType,
+            correctOnderdeel: onderdeel,
+            vraagTekst: getRandomItem(verhalen[land.code]),
+            antwoord: onderdeel[land.code]
+          };
 
-  if (qType === 'mc') G.q = buildMCQuestion(part, country);
-  else if (qType === 'type') G.q = buildTypeQuestion(part, country);
-  else G.q = buildSpotQuestion(part, country);
+          // Specifieke data per type opbouwen
+          if(gekozenType === 'mc-text') {
+            let opties = new Set([onderdeel[land.code]]);
+            while(opties.size < 4) opties.add(getRandomItem(fietsOnderdelen)[land.code]);
+            vraagObj.opties = shuffle(Array.from(opties));
+          } 
+          else if (gekozenType === 'tf') {
+            vraagObj.isTrue = Math.random() > 0.5;
+            vraagObj.getoondeTerm = vraagObj.isTrue ? onderdeel[land.code] : getRandomItem(fietsOnderdelen)[land.code];
+            vraagObj.antwoord = vraagObj.isTrue ? 'waar' : 'niet-waar';
+          }
+          else if (gekozenType === 'mc-image') {
+            let opties = new Set([onderdeel]);
+            while(opties.size < 3) opties.add(getRandomItem(fietsOnderdelen));
+            vraagObj.opties = shuffle(Array.from(opties));
+          }
 
-  G.answered = false;
-  G.selectedEl = null;
-  G.selectedVal = null;
+          lijst.push(vraagObj);
+        });
+      });
+      return lijst;
+    }
 
-  renderQuestion();
-}
+    window.startSpel = function() {
+      state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedAnswer: null };
+      verstrekenTijd = 0;
+      speelLijst = genereerSpeelLijst();
 
-/* ===========================
-   RENDER
-=========================== */
-function renderQuestion() {
-  const q = G.q;
-  const country = COUNTRIES[G.countryIndex];
+      UI.startScherm.classList.add('hidden');
+      UI.gameUI.classList.remove('hidden');
+      UI.gameUI.classList.add('flex');
+      
+      updateTijdUI();
+      timerInterval = setInterval(() => {
+        verstrekenTijd++;
+        updateTijdUI();
+      }, 1000);
+      
+      startNieuweVraag();
+    };
 
-  // Header
-  updateHeader();
+    window.herstartSpel = function() {
+      UI.schermBericht.classList.add('hidden');
+      UI.schermBericht.classList.remove('flex');
+      UI.startScherm.classList.remove('hidden');
+    };
 
-  // Country banner
-  const banner = document.getElementById('country-banner');
-  banner.textContent = country.banner;
-  banner.className = `country-banner ${country.cls}`;
-
-  // Type badge
-  const tb = document.getElementById('type-badge');
-  tb.textContent = q.typeName;
-  tb.className = `question-type-badge ${q.typeCls}`;
-
-  // Image
-  document.getElementById('image-box').innerHTML = `<img src="${q.image}" alt="fietsonderdeel">`;
-
-  // Question
-  document.getElementById('question-text').innerHTML = q.question;
-
-  // Feedback
-  const fb = document.getElementById('feedback-bar');
-  fb.style.display = 'none';
-  fb.className = 'feedback-bar';
-
-  // Action button
-  const btn = document.getElementById('action-btn');
-  btn.textContent = 'Kijk na ✓';
-  btn.className = 'action-btn check';
-
-  // Animate question area
-  const qa = document.getElementById('question-area');
-  qa.classList.remove('fade-in');
-  void qa.offsetWidth;
-  qa.classList.add('fade-in');
-
-  // Answer area
-  const aa = document.getElementById('answer-area');
-  aa.innerHTML = '';
-
-  if (q.type === 'mc') {
-    const grid = document.createElement('div');
-    grid.className = 'mc-grid';
-    q.options.forEach(opt => {
-      const b = document.createElement('button');
-      b.className = 'mc-opt';
-      b.textContent = opt;
-      b.onclick = () => selectMC(b, opt);
-      grid.appendChild(b);
-    });
-    aa.appendChild(grid);
-  }
-
-  else if (q.type === 'type') {
-    // Hint letter boxes
-    const hint = document.createElement('div');
-    hint.className = 'hint-letters';
-    const wordToShow = q.correct;
-    wordToShow.split('').forEach((ch, i) => {
-      const box = document.createElement('div');
-      if (ch === ' ') {
-        box.className = 'hint-letter-box space';
-      } else {
-        box.className = 'hint-letter-box' + (i === 0 ? ' revealed' : '');
-        box.textContent = i === 0 ? ch.toUpperCase() : '';
-        box.id = `lb-${i}`;
+    window.eindigSpel = function() {
+      clearInterval(timerInterval);
+      UI.gameUI.classList.add('hidden');
+      UI.gameUI.classList.remove('flex');
+      UI.schermBericht.classList.remove('hidden');
+      UI.schermBericht.classList.add('flex');
+      
+      UI.eindScore.textContent = state.score;
+      UI.eindTotaal.textContent = state.vraagNummer; 
+      
+      let m = Math.floor(verstrekenTijd / 60);
+      let s = verstrekenTijd % 60;
+      UI.eindTijd.innerHTML = `⏱️ Fietstijd: ${m} min ${s} sec`;
+      
+      if (state.score > (state.vraagNummer * 0.7) && typeof confetti === 'function') {
+        var d = 4 * 1000; var end = Date.now() + d;
+        var int = setInterval(function() {
+          var timeLeft = end - Date.now(); if (timeLeft <= 0) return clearInterval(int);
+          confetti({ particleCount: 50 * (timeLeft / d), origin: { x: Math.random(), y: Math.random() - 0.2 }, zIndex: 100 });
+        }, 250);
       }
-      hint.appendChild(box);
-    });
-    aa.appendChild(hint);
+    };
 
-    const wrap = document.createElement('div');
-    wrap.className = 'type-input-wrap';
-    const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.className = 'type-input';
-    inp.id = 'type-inp';
-    inp.placeholder = `Typ hier in het ${COUNTRIES[G.countryIndex].langName}...`;
-    inp.autocomplete = 'off';
-    inp.spellcheck = false;
-    inp.addEventListener('input', () => {
-      // Reveal letters as they type (bonus inclusief)
-      const val = inp.value;
-      const target = q.correct;
-      for(let i=1;i<target.length;i++){
-        const box = document.getElementById(`lb-${i}`);
-        if(!box) continue;
-        if(val.length > i) {
-          box.textContent = target[i];
-          box.classList.toggle('revealed', val[i]?.toLowerCase() === target[i]?.toLowerCase());
+    function updateTijdUI() {
+      let m = Math.floor(verstrekenTijd / 60);
+      let s = verstrekenTijd % 60;
+      UI.tijdWeergave.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updateVoortgang() {
+      UI.scoreWeergave.textContent = state.score;
+      UI.voortgangWeergave.textContent = `${state.vraagNummer} / 72`;
+      let percentage = (state.vraagNummer / 72) * 100;
+      UI.progressBar.style.width = `${percentage}%`;
+    }
+
+    function enableActionButton() {
+      UI.btnActie.disabled = false;
+      UI.btnActie.className = 'bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-8 rounded-xl shadow-lg uppercase tracking-wider text-lg w-full max-w-2xl mx-auto transition-transform transform hover:scale-[1.02] active:scale-95';
+      UI.btnActie.textContent = 'Kijk na';
+    }
+
+    function startNieuweVraag() {
+      if (speelLijst.length === 0) return eindigSpel();
+      
+      state.vraagNummer++;
+      state.isAnswered = false;
+      state.selectedAnswer = null;
+      updateVoortgang();
+      
+      let q = speelLijst.pop();
+      state.currentProblem = q;
+
+      // Pas achtergrond en header aan per land
+      UI.bodyBg.className = q.land.bg;
+      UI.landIcoon.textContent = q.land.vlag;
+      UI.landNaam.textContent = q.land.naam;
+
+      UI.verhaalTekst.innerHTML = q.vraagTekst;
+      UI.vraagContainer.innerHTML = '';
+      UI.antwoordContainer.innerHTML = '';
+      UI.fbAntwoord.classList.add('hidden');
+      
+      UI.btnActie.disabled = true;
+      UI.btnActie.className = 'bg-slate-200 text-slate-400 font-bold py-4 px-8 rounded-xl uppercase tracking-wider text-lg w-full max-w-2xl mx-auto transition-all cursor-not-allowed';
+      UI.btnActie.textContent = 'Kies een antwoord...';
+
+      // RENDER VRAAG OP BASIS VAN TYPE
+      if (q.type === 'mc-text') {
+        // Type 1: Foto tonen, woord kiezen
+        UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" alt="Raad het onderdeel" class="h-48 md:h-64 object-contain mx-auto rounded-xl shadow-sm border border-slate-200 bg-white p-2">`;
+        
+        let grid = document.createElement('div');
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3";
+        q.opties.forEach(opt => {
+          let btn = document.createElement('button');
+          btn.className = "antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-4 rounded-xl hover:bg-blue-50 hover:border-blue-300 transition-all text-left shadow-sm";
+          btn.textContent = opt;
+          btn.onclick = () => selectAnswer(opt, btn);
+          grid.appendChild(btn);
+        });
+        UI.antwoordContainer.appendChild(grid);
+      } 
+      
+      else if (q.type === 'tf') {
+        // Type 2: Waar of Niet Waar
+        UI.vraagContainer.innerHTML = `
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+            <img src="${q.correctOnderdeel.foto}" alt="Onderdeel" class="h-40 object-contain mb-4">
+            <div class="text-xl font-bold text-slate-800">Is dit: <span class="text-blue-600">"${q.getoondeTerm}"</span>?</div>
+          </div>
+        `;
+        let grid = document.createElement('div');
+        grid.className = "grid grid-cols-2 gap-4";
+        
+        let btnWaar = document.createElement('button');
+        btnWaar.className = "antwoord-btn bg-white border-2 border-slate-200 text-green-600 font-black p-5 rounded-xl transition-all text-xl shadow-sm";
+        btnWaar.innerHTML = "✅ WAAR";
+        btnWaar.onclick = () => selectAnswer('waar', btnWaar);
+        
+        let btnNietWaar = document.createElement('button');
+        btnNietWaar.className = "antwoord-btn bg-white border-2 border-slate-200 text-red-500 font-black p-5 rounded-xl transition-all text-xl shadow-sm";
+        btnNietWaar.innerHTML = "❌ NIET WAAR";
+        btnNietWaar.onclick = () => selectAnswer('niet-waar', btnNietWaar);
+
+        grid.appendChild(btnWaar);
+        grid.appendChild(btnNietWaar);
+        UI.antwoordContainer.appendChild(grid);
+      }
+      
+      else if (q.type === 'mc-image') {
+        // Type 3: Woord tonen, foto kiezen
+        UI.vraagContainer.innerHTML = `<div class="text-center bg-blue-100 border border-blue-200 text-blue-900 font-black text-2xl p-6 rounded-xl shadow-inner mb-2">"${q.correctOnderdeel[q.land.code]}"</div><p class="text-sm text-slate-500 text-center font-bold uppercase tracking-wider mb-2">Kies de juiste foto</p>`;
+        
+        let grid = document.createElement('div');
+        grid.className = "grid grid-cols-3 gap-3";
+        q.opties.forEach(opt => {
+          let btn = document.createElement('button');
+          btn.className = "antwoord-btn bg-white border-2 border-slate-200 p-2 rounded-xl hover:border-blue-400 transition-all shadow-sm h-32 flex items-center justify-center";
+          btn.innerHTML = `<img src="${opt.foto}" class="max-h-full max-w-full object-contain pointer-events-none">`;
+          btn.onclick = () => selectAnswer(opt[q.land.code], btn);
+          grid.appendChild(btn);
+        });
+        UI.antwoordContainer.appendChild(grid);
+      }
+    }
+
+    function selectAnswer(answerValue, btnElement) {
+      if (state.isAnswered) return;
+      state.selectedAnswer = answerValue;
+      
+      document.querySelectorAll('.antwoord-btn').forEach(b => {
+        b.classList.remove('border-blue-500', 'bg-blue-50', 'ring-4', 'ring-blue-200', 'transform', 'scale-95');
+        b.classList.add('border-slate-200');
+      });
+      
+      btnElement.classList.remove('border-slate-200');
+      btnElement.classList.add('border-blue-500', 'bg-blue-50', 'ring-4', 'ring-blue-200', 'transform', 'scale-95');
+      
+      enableActionButton();
+    }
+
+    UI.btnActie.addEventListener('click', () => { 
+      if (!state.selectedAnswer) return;
+
+      if (state.isAnswered) {
+        startNieuweVraag(); 
+      } else {
+        state.isAnswered = true; 
+        
+        let isCorrect = false;
+        if (state.currentProblem.type === 'tf') {
+          isCorrect = (state.selectedAnswer === state.currentProblem.antwoord);
         } else {
-          box.textContent = '';
-          box.classList.remove('revealed');
+          isCorrect = (state.selectedAnswer === state.currentProblem.correctOnderdeel[state.currentProblem.land.code]);
         }
+
+        UI.fbAntwoord.classList.remove('hidden', 'bg-green-100', 'border-green-400', 'text-green-800', 'bg-red-100', 'border-red-400', 'text-red-800');
+        
+        let deOplossing = state.currentProblem.type === 'tf' ? state.currentProblem.correctOnderdeel[state.currentProblem.land.code] : state.currentProblem.correctOnderdeel[state.currentProblem.land.code];
+
+        if (isCorrect) {
+          state.score++;
+          UI.fbAntwoord.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
+          UI.fbAntwoord.innerHTML = `<span class="text-2xl block mb-1">🎉 Knalerop!</span>Helemaal juist.`;
+        } else {
+          UI.fbAntwoord.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+          if (state.currentProblem.type === 'tf') {
+             UI.fbAntwoord.innerHTML = `<span class="text-2xl block mb-1">🔧 Oeps, lekke band!</span>Dat klopte niet. Het juiste woord is: <strong>${deOplossing}</strong>.`;
+          } else {
+             UI.fbAntwoord.innerHTML = `<span class="text-2xl block mb-1">🔧 Oeps, lekke band!</span>We zochten: <strong>${deOplossing}</strong>.`;
+          }
+        }
+        
+        updateVoortgang();
+        UI.btnActie.textContent = 'Trap Verder ➡️';
+        UI.btnActie.className = 'bg-slate-800 hover:bg-slate-900 text-white font-black py-4 px-8 rounded-xl shadow-lg uppercase tracking-wider text-lg w-full max-w-2xl mx-auto transition-transform transform hover:scale-[1.02] active:scale-95';
       }
     });
-    inp.addEventListener('keydown', e => { if(e.key==='Enter' && !G.answered) handleAction(); });
-    wrap.appendChild(inp);
-    aa.appendChild(wrap);
-    setTimeout(() => inp.focus(), 100);
-  }
-
-  else if (q.type === 'spot') {
-    // Tokenize the sentence
-    const container = document.createElement('div');
-    container.className = 'sentence-box';
-    // Split into words / punctuation
-    const tokens = q.sentence.split(/(\s+)/);
-    tokens.forEach(tok => {
-      if(/^\s+$/.test(tok)) {
-        container.appendChild(document.createTextNode(' '));
-      } else {
-        // Strip punctuation for comparison
-        const clean = tok.replace(/[!?.,:;]/g,'');
-        const span = document.createElement('span');
-        span.className = 'sentence-word';
-        span.textContent = tok;
-        span.dataset.val = clean;
-        span.onclick = () => selectSpot(span, clean);
-        container.appendChild(span);
-      }
-    });
-    aa.appendChild(container);
-  }
-}
-
-/* ===========================
-   SELECTION HANDLERS
-=========================== */
-function selectMC(el, val) {
-  if (G.answered) return;
-  document.querySelectorAll('.mc-opt').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  G.selectedEl = el;
-  G.selectedVal = val;
-}
-
-function selectSpot(el, val) {
-  if (G.answered) return;
-  document.querySelectorAll('.sentence-word').forEach(s => s.classList.remove('selected'));
-  el.classList.add('selected');
-  G.selectedEl = el;
-  G.selectedVal = val;
-}
-
-/* ===========================
-   ACTION HANDLER
-=========================== */
-function handleAction() {
-  if (G.answered) {
-    nextQuestion();
-    return;
-  }
-
-  const q = G.q;
-
-  // Get answer
-  let answer = null;
-  if (q.type === 'mc') {
-    if (!G.selectedVal) { shakeBtn(); return; }
-    answer = G.selectedVal;
-  } else if (q.type === 'type') {
-    const inp = document.getElementById('type-inp');
-    if (!inp || !inp.value.trim()) { shakeBtn(); return; }
-    answer = inp.value.trim();
-  } else if (q.type === 'spot') {
-    if (!G.selectedVal) { shakeBtn(); return; }
-    answer = G.selectedVal;
-  }
-
-  G.answered = true;
-  G.total++;
-
-  const isCorrect = answer.toLowerCase().trim() === q.correct.toLowerCase().trim();
-
-  if (isCorrect) {
-    G.correct++;
-    G.streak++;
-    if (G.streak > G.maxStreak) G.maxStreak = G.streak;
-    const xpEarned = XP_BASE + (G.streak > 2 ? XP_STREAK_BONUS * Math.min(G.streak-2, 5) : 0);
-    G.xp += xpEarned;
-    showXpPopup(xpEarned);
-    checkBadges();
-    showFeedback(true, q.feedback);
-    markAnswerCorrect(q, answer);
-  } else {
-    G.streak = 0;
-    G.lives--;
-    showFeedback(false, q.feedback);
-    markAnswerWrong(q, answer);
-    if (G.lives <= 0) {
-      setTimeout(showGameOver, 1400);
-      return;
-    }
-  }
-
-  updateHeader();
-  const btn = document.getElementById('action-btn');
-  btn.textContent = 'Volgende ➡️';
-  btn.className = 'action-btn next';
-}
-
-function shakeBtn() {
-  const btn = document.getElementById('action-btn');
-  btn.style.animation = 'none';
-  void btn.offsetWidth;
-  btn.style.animation = 'shake 0.4s ease';
-  btn.addEventListener('animationend', () => btn.style.animation='', {once:true});
-}
-
-function markAnswerCorrect(q, answer) {
-  if (q.type === 'mc') {
-    document.querySelectorAll('.mc-opt').forEach(b => {
-      b.disabled = true;
-      if (b.textContent === q.correct) b.classList.add('correct');
-    });
-  } else if (q.type === 'type') {
-    const inp = document.getElementById('type-inp');
-    if(inp){ inp.classList.add('correct'); inp.disabled = true; }
-    // Reveal all letters
-    q.correct.split('').forEach((ch,i) => {
-      const box = document.getElementById(`lb-${i}`);
-      if(box){ box.textContent = ch; box.classList.add('revealed'); }
-    });
-  } else if (q.type === 'spot') {
-    document.querySelectorAll('.sentence-word').forEach(s => {
-      s.onclick = null;
-      if(s.dataset.val?.toLowerCase() === q.correct.toLowerCase()) s.classList.add('correct');
-    });
-  }
-}
-
-function markAnswerWrong(q, answer) {
-  if (q.type === 'mc') {
-    document.querySelectorAll('.mc-opt').forEach(b => {
-      b.disabled = true;
-      if (b.textContent === answer && answer !== q.correct) b.classList.add('wrong');
-      if (b.textContent === q.correct) b.classList.add('correct');
-    });
-  } else if (q.type === 'type') {
-    const inp = document.getElementById('type-inp');
-    if(inp){ inp.classList.add('wrong'); inp.disabled = true; }
-  } else if (q.type === 'spot') {
-    document.querySelectorAll('.sentence-word').forEach(s => {
-      s.onclick = null;
-      if(s.dataset.val?.toLowerCase() === answer.toLowerCase() && answer.toLowerCase() !== q.correct.toLowerCase()) s.classList.add('wrong');
-      if(s.dataset.val?.toLowerCase() === q.correct.toLowerCase()) s.classList.add('correct');
-    });
-  }
-}
-
-/* ===========================
-   FEEDBACK
-=========================== */
-function showFeedback(correct, msg) {
-  const fb = document.getElementById('feedback-bar');
-  fb.style.display = 'block';
-  fb.className = `feedback-bar ${correct ? 'correct' : 'wrong'}`;
-  fb.innerHTML = `
-    <div class="fb-top">${correct ? '✅ Super goed!' : '❌ Fout!'} ${correct && G.streak > 2 ? `<span style="color:var(--orange)">🔥 ${G.streak}x streak!</span>` : ''}</div>
-    <div class="fb-answer">${msg}</div>
-  `;
-}
-
-/* ===========================
-   HEADER
-=========================== */
-function updateHeader() {
-  // Lives
-  const livesRow = document.getElementById('lives-row');
-  let hearts = '';
-  for(let i=0;i<3;i++) hearts += i < G.lives ? '❤️' : '🖤';
-  livesRow.textContent = hearts;
-
-  // XP
-  document.getElementById('xp-badge').innerHTML = `⭐ ${G.xp} XP`;
-
-  // Streak
-  const sb = document.getElementById('streak-badge');
-  sb.innerHTML = `🔥 ${G.streak}`;
-  if(G.streak > 0 && G.streak % 3 === 0) { sb.classList.add('pop'); setTimeout(()=>sb.classList.remove('pop'),500); }
-
-  // Progress (across all 72 questions)
-  const done = G.countryIndex * PARTS.length + G.partIndex;
-  const pct = Math.max(1, Math.round((done / (PARTS.length * COUNTRIES.length)) * 100));
-  document.getElementById('progress-fill').style.width = pct + '%';
-}
-
-/* ===========================
-   XP POPUP
-=========================== */
-function showXpPopup(amount) {
-  const el = document.createElement('div');
-  el.className = 'xp-popup';
-  el.textContent = `+${amount} XP`;
-  el.style.left = (Math.random() * 60 + 20) + '%';
-  el.style.top = '40%';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1200);
-}
-
-/* ===========================
-   BADGES
-=========================== */
-const BADGE_DEFS = [
-  { id:'streak5', icon:'🔥', name:'On Fire!', desc:'5 keer op rij goed', check: g => g.streak >= 5 },
-  { id:'streak10', icon:'💥', name:'Onstoppable!', desc:'10 keer op rij goed', check: g => g.streak >= 10 },
-  { id:'xp100', icon:'⭐', name:'XP Ster', desc:'100 XP verdiend', check: g => g.xp >= 100 },
-  { id:'xp300', icon:'🌟', name:'XP Superster', desc:'300 XP verdiend', check: g => g.xp >= 300 },
-  { id:'belgium', icon:'🧇', name:'Wafelijzer', desc:'België voltooid!', check: g => g.countryIndex >= 1 },
-  { id:'france', icon:'⛴️', name:'Bootkapitein', desc:'Frankrijk voltooid!', check: g => g.countryIndex >= 2 },
-  { id:'england', icon:'👑', name:'London Calling', desc:'Engeland voltooid!', check: g => g.countryIndex >= 3 },
-];
-
-function checkBadges() {
-  BADGE_DEFS.forEach(bd => {
-    if (!G.badges.includes(bd.id) && bd.check(G)) {
-      G.badges.push(bd.id);
-      G.pendingOverlay = bd;
-    }
-  });
-  if (G.pendingOverlay) {
-    const bd = G.pendingOverlay;
-    G.pendingOverlay = null;
-    setTimeout(() => {
-      showOverlay('badge-overlay', bd.icon, `Badge: ${bd.name}`, bd.desc);
-    }, 600);
-  }
-}
-
-/* ===========================
-   OVERLAYS
-=========================== */
-function showOverlay(id, icon, title, sub) {
-  document.getElementById('lo-icon') && (document.getElementById('lo-icon').textContent = icon);
-  document.getElementById('lo-title') && (document.getElementById('lo-title').textContent = title);
-  document.getElementById('lo-sub') && (document.getElementById('lo-sub').textContent = sub);
-  if(id === 'badge-overlay') {
-    document.getElementById('bo-icon').textContent = icon;
-    document.getElementById('bo-title').textContent = title;
-    document.getElementById('bo-sub').textContent = sub;
-  }
-  document.getElementById(id).classList.add('show');
-}
-
-window.closeOverlay = function(id) {
-  document.getElementById(id).classList.remove('show');
-  if(id === 'levelup-overlay') nextQuestion();
-}
-
-/* ===========================
-   END / GAME OVER
-=========================== */
-function showEnd() {
-  document.getElementById('game-ui').style.display = 'none';
-  document.getElementById('eind-scherm').style.display = 'block';
-
-  const pct = G.total > 0 ? G.correct / G.total : 0;
-  let trophy = '🏆', title = 'Tocht voltooid!', stars = '⭐⭐⭐';
-  if (pct < 0.5) { trophy = '😅'; title = 'Toch gefinisht!'; stars = '⭐'; }
-  else if (pct < 0.75) { stars = '⭐⭐'; }
-
-  document.getElementById('end-trophy').textContent = trophy;
-  document.getElementById('end-title').textContent = title;
-  document.getElementById('end-stars').textContent = stars;
-  document.getElementById('end-xp').textContent = G.xp;
-  document.getElementById('end-score').textContent = G.correct;
-  document.getElementById('end-streak').textContent = G.maxStreak;
-  document.getElementById('end-total').textContent = G.total;
-
-  // Badges
-  const br = document.getElementById('badges-row');
-  br.innerHTML = G.badges.length
-    ? G.badges.map(id => {
-        const bd = BADGE_DEFS.find(b=>b.id===id);
-        return `<div class="badge-chip">${bd.icon} ${bd.name}</div>`;
-      }).join('')
-    : '<div class="badge-chip">📦 Geen badges — probeer opnieuw!</div>';
-
-  if(pct > 0.6 && typeof confetti === 'function') {
-    confetti({ particleCount: 120, spread: 90, colors: ['#FFD700','#3B9EFF','#E8445A','#2EC97A'], origin:{y:0.5} });
-  }
-}
-
-function showGameOver() {
-  document.getElementById('game-ui').style.display = 'none';
-  document.getElementById('gameover-scherm').style.display = 'block';
-  document.getElementById('go-xp').textContent = G.xp;
-  document.getElementById('go-score').textContent = G.correct;
-}
-
-/* ===========================
-   START / RESTART
-=========================== */
-window.startSpel = function() {
-  initGame();
-  document.getElementById('start-scherm').style.display = 'none';
-  document.getElementById('game-ui').style.display = 'block';
-  updateHeader();
-  nextQuestion();
-};
-
-window.herstartSpel = function() {
-  document.getElementById('eind-scherm').style.display = 'none';
-  document.getElementById('gameover-scherm').style.display = 'none';
-  document.getElementById('start-scherm').style.display = 'block';
-  document.getElementById('start-scherm').classList.remove('fade-in');
-  void document.getElementById('start-scherm').offsetWidth;
-  document.getElementById('start-scherm').classList.add('fade-in');
-};
-</script>
+  </script>
 </body>
 </html>
