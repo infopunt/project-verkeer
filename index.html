@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>De Grote Fiets & Taal Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0.25rem; background-color: transparent; font-family: sans-serif; }
+    .mc-btn.active { border-color: #2563eb; background-color: #eff6ff; color: #1e3a8a; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+    
+    <div id="start-scherm" class="p-8 text-center flex flex-col items-center justify-center min-h-[400px] bg-slate-50">
+      <div class="text-6xl mb-4 animate-bounce">📸🚲🌍</div>
+      <h1 class="text-3xl font-bold text-blue-700 mb-2">De Grote Fiets & Taal Quiz</h1>
+      <p class="text-slate-600 font-medium mb-6 max-w-sm">72 vragen! Kijk goed naar de foto's van de fietsonderdelen en zoek de juiste vertaling in het Nederlands, Frans of Engels. Succes!</p>
+      <button onclick="startSpel()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg uppercase text-lg w-full max-w-xs transition-transform transform hover:scale-105">
+        Start de Tocht!
+      </button>
+    </div>
+
+    <div id="game-ui" class="hidden">
+      <div class="bg-blue-600 text-white p-3 flex justify-between items-center relative shadow-md">
+        <div class="flex items-center space-x-3">
+          <div id="tijd-weergave" class="text-xl sm:text-2xl font-mono font-bold bg-blue-800 px-3 py-1 rounded-lg border border-blue-400">00:00</div>
+          <button onclick="eindigSpel()" class="bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm px-3 py-2 rounded-lg font-bold shadow-sm transition-colors">
+            🛑 Stop
+          </button>
+        </div>
+        <div class="flex items-center space-x-3 text-right">
+          <div class="text-sm sm:text-base font-bold bg-orange-500 text-white px-3 py-1 rounded-lg shadow-sm">
+            Vraag: <span id="voortgang-weergave" class="text-lg">1/72</span>
+          </div>
+          <div class="text-sm sm:text-base font-bold bg-green-500 text-white px-3 py-1 rounded-lg shadow-sm">
+            Score: <span id="score-weergave" class="text-lg">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="oefening-scherm" class="p-4 bg-slate-50">
+        <div id="formule-hint" class="bg-yellow-100 border border-yellow-300 text-yellow-900 text-sm font-bold p-2.5 rounded mb-3 text-center shadow-sm"></div>
+        <div class="flex justify-center items-center p-2 bg-white rounded-xl mb-4 shadow-sm border-2 border-slate-200 min-h-[180px] relative overflow-hidden" id="visual-container"></div>
+        <div class="flex justify-center mb-4 w-full">
+          <div id="box-antwoord" class="p-4 bg-white rounded-xl border-2 border-slate-200 shadow-sm w-full max-w-sm">
+            <label id="vraag-tekst" class="block text-slate-700 font-bold mb-3 text-sm text-center leading-relaxed"></label>
+            <div id="mc-container" class="grid grid-cols-1 gap-2"></div>
+            <div id="feedback-antwoord" class="mt-4 text-sm font-bold hidden leading-relaxed text-center"></div>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <button id="action-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md uppercase text-sm w-full max-w-sm transition-colors">Kijk na</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="bericht-scherm" class="p-6 text-center hidden flex-col items-center justify-center min-h-[400px] bg-white">
+      <div id="bericht-icon" class="text-6xl mb-4">🏆</div>
+      <h2 id="bericht-titel" class="text-3xl font-bold text-blue-700 mb-2">Einde van de tocht!</h2>
+      <div class="bg-blue-50 p-4 rounded-xl border-2 border-blue-100 w-full max-w-sm mb-6 shadow-inner mx-auto">
+        <p class="text-slate-600 font-medium mb-1">Jouw eindscore:</p>
+        <p class="text-5xl font-black text-blue-600 mb-2" id="eind-score">0</p>
+        <p class="text-sm text-slate-500 mb-1">op <span id="eind-totaal"></span> vragen</p>
+        <p class="text-sm font-bold text-slate-700 mt-2" id="eind-tijd"></p>
+      </div>
+      <button onclick="herstartSpel()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-10 rounded-lg shadow-lg uppercase text-base w-full max-w-xs">Opnieuw proberen</button>
+    </div>
+  </div>
+
+  <script>
+    // --- JOUW NIEUWE WOORDENBOEK VAN 24 FIETSONDERDELEN ---
+    // Vervang de link bij 'foto:' door de link naar jouw eigen afbeeldingen!
+    const fietsOnderdelen = [
+      { nl: "Dynamo", fr: "Dynamo", en: "Dynamo", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Dynamo" },
+      { nl: "Trapas", fr: "Boîtier de pédalier", en: "Bottom bracket", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Trapas" },
+      { nl: "Crank", fr: "Manivelle", en: "Crank arm", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Crank" },
+      { nl: "Standaard", fr: "Béquille", en: "Kickstand", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Standaard" },
+      { nl: "Spatbord", fr: "Garde-boue", en: "Mudguard", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Spatbord" },
+      { nl: "Reflector met geïntegreerd achterlicht", fr: "Réflecteur avec feu arrière", en: "Reflector with taillight", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Reflector+Achterlicht" },
+      { nl: "Reflector met geïntegreerd voorlicht", fr: "Réflecteur avec phare", en: "Reflector with headlight", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Reflector+Voorlicht" },
+      { nl: "Fietsbel", fr: "Sonnette", en: "Bicycle bell", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Fietsbel" },
+      { nl: "Rem-greep", fr: "Levier de frein", en: "Brake lever", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Rem-greep" },
+      { nl: "Stuurpen met balhoofd", fr: "Potence avec jeu de direction", en: "Stem with headset", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Stuurpen+en+Balhoofd" },
+      { nl: "Multigripstuur", fr: "Guidon multipositions", en: "Multi-grip handlebar", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Multigripstuur" },
+      { nl: "Zadel met zadelpen", fr: "Selle avec tige de selle", en: "Saddle with seatpost", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Zadel+en+Zadelpen" },
+      { nl: "Frame met voorvork", fr: "Cadre avec fourche avant", en: "Frame with front fork", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Frame+en+Voorvork" },
+      { nl: "Voortandwielen", fr: "Plateaux", en: "Chainrings", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Voortandwielen" },
+      { nl: "Voorderailleur", fr: "Dérailleur avant", en: "Front derailleur", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Voorderailleur" },
+      { nl: "Ketting", fr: "Chaîne", en: "Chain", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Ketting" },
+      { nl: "Derailleur", fr: "Dérailleur", en: "Derailleur", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Derailleur" },
+      { nl: "Spaken", fr: "Rayons", en: "Spokes", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Spaken" },
+      { nl: "Naaf", fr: "Moyeu", en: "Hub", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Naaf" },
+      { nl: "Freewheel", fr: "Roue libre", en: "Freewheel", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Freewheel" },
+      { nl: "Velg voor achterwiel", fr: "Jante pour roue arrière", en: "Rear wheel rim", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Velg+Achterwiel" },
+      { nl: "Velg voor voorwiel", fr: "Jante pour roue avant", en: "Front wheel rim", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Velg+Voorwiel" },
+      { nl: "Ventiel", fr: "Valve", en: "Valve", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Ventiel" },
+      { nl: "Fietspomp", fr: "Pompe à vélo", en: "Bicycle pump", foto: "https://placehold.co/400x250/e2e8f0/1e293b?text=Foto+van+Fietspomp" }
+    ];
+
+    // GENERATOR VOOR DE 72 VRAGEN
+    let vragenBank = [];
+
+    function haalOpties(taal, correctAntwoord) {
+      let opties = new Set();
+      opties.add(correctAntwoord);
+      while(opties.size < 3) {
+        let randomDeel = fietsOnderdelen[Math.floor(Math.random() * fietsOnderdelen.length)];
+        opties.add(randomDeel[taal]);
+      }
+      return Array.from(opties).sort(() => Math.random() - 0.5); 
+    }
+
+    fietsOnderdelen.forEach(deel => {
+      let visueleHTML = `<img src="${deel.foto}" alt="Fiets onderdeel" class="max-h-40 w-full object-contain mx-auto rounded-lg">`;
+
+      // 1. Vraag in het Nederlands
+      vragenBank.push({
+        visueel: visueleHTML,
+        hint: `🇧🇪 Basiskennis fietsonderdelen`,
+        vraag: `Kijk goed naar de foto. Welk onderdeel is dit in het <strong>Nederlands</strong>?`,
+        antwoord: deel.nl,
+        opties: haalOpties('nl', deel.nl),
+        feedback: `Dit is de ${deel.nl}. In het Frans: ${deel.fr} | In het Engels: ${deel.en}`
+      });
+
+      // 2. Vraag in het Frans
+      vragenBank.push({
+        visueel: visueleHTML,
+        hint: `🇫🇷 Pech in Frankrijk!`,
+        vraag: `Je hebt dit onderdeel (de <strong>${deel.nl}</strong>) nodig in Frankrijk. Wat is de juiste Franse vertaling?`,
+        antwoord: deel.fr,
+        opties: haalOpties('fr', deel.fr),
+        feedback: `De Franse vertaling voor ${deel.nl} is: <strong>${deel.fr}</strong>.`
+      });
+
+      // 3. Vraag in het Engels
+      vragenBank.push({
+        visueel: visueleHTML,
+        hint: `🇬🇧 Pech in Engeland!`,
+        vraag: `Je hebt dit onderdeel (de <strong>${deel.nl}</strong>) nodig in Engeland. Wat is de juiste Engelse vertaling?`,
+        antwoord: deel.en,
+        opties: haalOpties('en', deel.en),
+        feedback: `De Engelse vertaling voor ${deel.nl} is: <strong>${deel.en}</strong>.`
+      });
+    });
+
+    let state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedMC: null };
+    let speelLijst = []; 
+    let verstrekenTijd = 0; 
+    let maximaleTijd = 1800; 
+    let timerInterval;
+
+    const UI = {
+      startScherm: document.getElementById('start-scherm'), gameUI: document.getElementById('game-ui'),
+      schermBericht: document.getElementById('bericht-scherm'), tijdWeergave: document.getElementById('tijd-weergave'),
+      scoreWeergave: document.getElementById('score-weergave'), voortgangWeergave: document.getElementById('voortgang-weergave'),
+      visual: document.getElementById('visual-container'), formuleHint: document.getElementById('formule-hint'), 
+      vraagTekst: document.getElementById('vraag-tekst'), boxAntwoord: document.getElementById('box-antwoord'), 
+      mcContainer: document.getElementById('mc-container'), fbAntwoord: document.getElementById('feedback-antwoord'), 
+      btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), 
+      eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd')
+    };
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    window.startSpel = function() {
+      state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedMC: null };
+      verstrekenTijd = 0;
+      
+      speelLijst = vragenBank.map((_, i) => i); 
+      speelLijst = shuffleArray(speelLijst);
+
+      UI.startScherm.classList.add('hidden');
+      UI.gameUI.classList.remove('hidden');
+      updateScoreUI();
+      updateTijdUI();
+      timerInterval = setInterval(() => {
+        verstrekenTijd++;
+        updateTijdUI();
+        if (verstrekenTijd >= maximaleTijd) eindigSpel();
+      }, 1000);
+      startNieuweVraag();
+    };
+
+    window.herstartSpel = function() {
+      UI.schermBericht.classList.add('hidden');
+      UI.startScherm.classList.remove('hidden');
+    };
+
+    window.eindigSpel = function() {
+      clearInterval(timerInterval);
+      UI.gameUI.classList.add('hidden');
+      UI.schermBericht.classList.remove('hidden');
+      UI.eindScore.textContent = state.score;
+      UI.eindTotaal.textContent = state.vraagNummer; 
+      
+      let m = Math.floor(verstrekenTijd / 60);
+      let s = verstrekenTijd % 60;
+      UI.eindTijd.innerHTML = `Tijd gepresteerd: ⏱️ ${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      
+      if (state.score > (state.vraagNummer / 2) && typeof confetti === 'function') {
+        var d = 3 * 1000; var end = Date.now() + d;
+        var int = setInterval(function() {
+          var timeLeft = end - Date.now(); if (timeLeft <= 0) return clearInterval(int);
+          confetti({ particleCount: 50 * (timeLeft / d), origin: { x: Math.random(), y: Math.random() - 0.2 }, zIndex: 100 });
+        }, 250);
+      }
+    };
+
+    function updateTijdUI() {
+      let m = Math.floor(verstrekenTijd / 60);
+      let s = verstrekenTijd % 60;
+      UI.tijdWeergave.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updateScoreUI() {
+      UI.scoreWeergave.textContent = state.score;
+      UI.voortgangWeergave.textContent = `${state.vraagNummer}/${vragenBank.length}`;
+    }
+
+    function startNieuweVraag() {
+      if (speelLijst.length === 0) {
+        eindigSpel(); 
+        return;
+      }
+      
+      state.vraagNummer++;
+      state.isAnswered = false;
+      state.selectedMC = null;
+      updateScoreUI();
+      
+      let vraagIndex = speelLijst.pop();
+      let q = vragenBank[vraagIndex];
+      state.currentProblem = q;
+
+      UI.formuleHint.innerHTML = q.hint;
+      UI.vraagTekst.innerHTML = q.vraag;
+      UI.mcContainer.innerHTML = '';
+      
+      state.currentProblem.opties.forEach(opt => {
+        let btn = document.createElement('button');
+        btn.className = "mc-btn border-2 border-slate-300 text-slate-700 text-sm sm:text-base font-bold p-3 rounded-lg hover:bg-blue-50 transition-colors text-left";
+        btn.textContent = opt;
+        btn.onclick = function() {
+          if (state.isAnswered) return;
+          state.selectedMC = opt;
+          document.querySelectorAll('.mc-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+        };
+        UI.mcContainer.appendChild(btn);
+      });
+      
+      UI.boxAntwoord.className = 'p-4 bg-white rounded-xl border-2 border-slate-200 shadow-sm w-full max-w-sm';
+      UI.fbAntwoord.classList.add('hidden');
+      UI.btnActie.textContent = 'Kijk na';
+      UI.btnActie.className = 'bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md uppercase text-sm w-full max-w-sm transition-colors';
+      UI.visual.innerHTML = q.visueel;
+    }
+
+    UI.btnActie.addEventListener('click', () => { 
+      if (state.isAnswered) startNieuweVraag(); 
+      else {
+        if (!state.selectedMC) return alert("Duid eerst een antwoord aan!");
+        let isOk = (state.selectedMC === state.currentProblem.antwoord);
+        state.isAnswered = true; 
+        UI.fbAntwoord.classList.remove('hidden');
+
+        if (isOk) {
+          state.score++;
+          UI.boxAntwoord.classList.replace('border-slate-200', 'border-green-500');
+          UI.boxAntwoord.classList.add('bg-green-50');
+          UI.fbAntwoord.innerHTML = `<span class="text-green-700 text-base">✔️ Correct!</span><br><span class="text-xs text-slate-600 mt-1 block">${state.currentProblem.feedback}</span>`;
+        } else {
+          UI.boxAntwoord.classList.replace('border-slate-200', 'border-red-500');
+          UI.boxAntwoord.classList.add('bg-red-50');
+          UI.fbAntwoord.innerHTML = `<span class="text-red-600 text-base mb-1 block">❌ Fout!</span><span class="font-mono bg-white px-2 py-1.5 rounded text-slate-800 border border-red-200 inline-block text-xs sm:text-sm"><strong>Oplossing:</strong> ${state.currentProblem.antwoord}</span><br><span class="text-xs text-slate-600 mt-2 block">${state.currentProblem.feedback}</span>`;
+        }
+        updateScoreUI();
+        UI.btnActie.textContent = 'Volgende ➡️';
+        UI.btnActie.className = 'bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md uppercase text-sm w-full max-w-sm transition-colors';
+      }
+    });
+  </script>
+</body>
+</html>
