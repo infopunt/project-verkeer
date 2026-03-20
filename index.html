@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Grote Fiets & Taal Quiz - Avontuur Editie</title>
+  <title>De Grote Fiets & Taal Quiz - Ultimate Editie</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     /* Volledige hoogte gebruiken, zonder globale scrollbalk */
-    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
-    
-    /* Vlag-achtergronden voor sfeer */
-    .bg-be { background: linear-gradient(to right, rgba(0,0,0,0.02), rgba(253,216,53,0.08), rgba(229,57,53,0.08)); }
-    .bg-fr { background: linear-gradient(to right, rgba(30,136,229,0.08), rgba(255,255,255,0.08), rgba(229,57,53,0.08)); }
-    .bg-gb { background: linear-gradient(to right, rgba(30,136,229,0.08), rgba(229,57,53,0.08), rgba(255,255,255,0.08)); }
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
     .progress-bar-fill { transition: width 0.4s ease-out; }
     .btn-active-state { transform: scale(0.97); }
@@ -21,35 +16,65 @@
     /* Soepele scroll binnen de content-area */
     #scroll-container { scrollbar-width: thin; }
     
-    /* Extra speelse elementen */
-    .answ-btn-hover:hover { transform: translateY(-1px); border-color: #3b82f6; }
+    /* Hover effecten op knoppen */
+    .answ-btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); }
+    
+    /* --- NIEUWE ANIMATIES --- */
+    .animate-fade-in-up {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .animate-pulse-fast {
+      animation: pulseFast 1s infinite;
+    }
+    @keyframes pulseFast {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; transform: scale(0.98); }
+    }
+    
+    /* Zachte overgang voor de achtergrondkleur */
+    #body-bg { transition: background 0.8s ease-in-out; }
   </style>
 </head>
-<body id="body-bg" class="flex justify-center items-center sm:p-4 bg-be">
+<body id="body-bg" class="flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100">
 
-  <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative">
+  <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-white/95 backdrop-blur-md">
     
-    <div id="start-scherm" class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 text-center bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100 overflow-y-auto">
+    <div id="start-scherm" class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 text-center overflow-y-auto">
       <div class="text-7xl mb-4 animate-bounce">🚴‍♂️💨</div>
       <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">De Pech-Onderweg Tocht</h1>
-      <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base">
+      <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base">
         <p class="mb-3">Ga mee op een epische fietstocht door 3 landen:</p>
         <div class="flex items-center space-x-3 mb-2"><span>🇧🇪</span> <strong>België</strong> (NL)</div>
         <div class="flex items-center space-x-3 mb-2"><span>🇫🇷</span> <strong>Frankrijk</strong> (FR)</div>
         <div class="flex items-center space-x-3 mb-3"><span>🇬🇧</span> <strong>Engeland</strong> (EN)</div>
-        <p class="text-xs sm:text-sm bg-blue-100 p-2 rounded text-blue-800 font-bold">💡 Tip: Soms kies je een woord, soms een foto, soms Waar/Niet Waar.</p>
+        <p class="text-xs sm:text-sm bg-blue-50 p-2 rounded text-blue-800 font-bold">💡 Tip: Soms kies je een woord, soms een foto, soms Waar/Niet Waar.</p>
       </div>
       <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">
         Start het Avontuur!
       </button>
     </div>
 
-    <div id="game-ui" class="hidden flex-col h-full w-full bg-white">
+    <div id="game-ui" class="hidden flex-col h-full w-full bg-transparent">
       
-      <div id="game-header" class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors">
+      <div id="game-header" class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors duration-500">
         <div class="flex justify-between items-center mb-1 px-1">
           <div class="flex items-center space-x-2">
-            <span id="land-icoon" class="text-3xl">🇧🇪</span>
+            <span id="land-icoon" class="text-3xl animate-pulse">🇧🇪</span>
             <span class="font-bold text-sm hidden sm:block" id="land-naam">België</span>
           </div>
           <div class="flex items-center space-x-4">
@@ -73,20 +98,22 @@
 
       <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-24 relative">
         
-        <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative">
-          </div>
+        <div id="animatie-wrapper" class="w-full flex flex-col items-center">
+          <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white/90 p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative">
+            </div>
 
-        <div id="vraag-container" class="mb-3 w-full max-w-2xl relative">
-          </div>
+          <div id="vraag-container" class="mb-3 w-full max-w-2xl relative">
+            </div>
 
-        <div id="antwoord-container" class="w-full max-w-2xl mb-2 relative">
-          </div>
+          <div id="antwoord-container" class="w-full max-w-2xl mb-2 relative">
+            </div>
+        </div>
 
-        <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-medium text-sm sm:text-base border-2 mt-2">
+        <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base border-2 mt-2 transition-all">
           </div>
       </div>
 
-      <div class="shrink-0 p-3 sm:p-4 bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full">
+      <div class="shrink-0 p-3 sm:p-4 bg-white/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full rounded-b-2xl">
         <div class="max-w-2xl mx-auto flex justify-between items-center space-x-4">
            <div class="text-xs text-slate-400 font-mono font-bold hidden sm:block tracking-widest" id="voortgang-weergave">0/72</div>
            <button id="action-btn" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>
@@ -97,7 +124,7 @@
 
     </div>
 
-    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-blue-50 to-indigo-100 overflow-y-auto w-full h-full">
+    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-center p-6 text-center w-full h-full">
       <div class="text-6xl mb-2">🏆</div>
       <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Einde van de tocht!</h2>
       <p class="text-slate-600 text-sm sm:text-base mb-6">Je bent veilig aangekomen in Londen!</p>
@@ -111,14 +138,14 @@
         </div>
       </div>
       <button onclick="herstartSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-bold py-3 px-10 rounded-full shadow-lg uppercase tracking-wider text-sm w-full max-w-xs transition-transform hover:scale-105">
-        Opnieuw fietsen
+        Nog een keer!
       </button>
     </div>
 
   </div>
 
   <script>
-    // EXACTE BESTANDSNAMEN - inclusief de correcte .jpg voor de probleemgevallen
+    // Exacte bestandsnamen
     const fietsOnderdelen = [
       { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
       { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
@@ -152,6 +179,23 @@
       en: ["We staan stil in Engeland. Wat is de <strong>Engelse</strong> vertaling?", "Regen! Wat is de naam in het <strong>Engels</strong>?", "A lovely ride... until this broke. Wat is dit?"]
     };
 
+    // Lijst met aanmoedigingen voor afwisseling
+    const aanmoedigingen = [
+      "Super bezig! 🚀", "Geweldig! 🌟", "Jij bent een fiets-expert! 🚴", 
+      "Knalerop! 🎉", "Fantastisch! ✨", "Niet te stoppen! 🔥", "Bingo! 🎯"
+    ];
+
+    // Lijst met vrolijke pastel/gradient achtergronden
+    const leukeAchtergronden = [
+      'bg-gradient-to-br from-pink-100 to-rose-200',
+      'bg-gradient-to-br from-purple-100 to-fuchsia-200',
+      'bg-gradient-to-br from-cyan-100 to-blue-200',
+      'bg-gradient-to-br from-emerald-100 to-teal-200',
+      'bg-gradient-to-br from-amber-100 to-yellow-200',
+      'bg-gradient-to-br from-indigo-100 to-violet-200',
+      'bg-gradient-to-br from-lime-100 to-green-200'
+    ];
+
     let state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedAnswer: null };
     let speelLijst = []; 
     let verstrekenTijd = 0; 
@@ -167,7 +211,8 @@
       antwoordContainer: document.getElementById('antwoord-container'), fbAntwoord: document.getElementById('feedback-antwoord'), 
       btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), 
       eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd'),
-      scrollContainer: document.getElementById('scroll-container'), gameHeader: document.getElementById('game-header')
+      scrollContainer: document.getElementById('scroll-container'), gameHeader: document.getElementById('game-header'),
+      animatieWrapper: document.getElementById('animatie-wrapper')
     };
 
     function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
@@ -176,9 +221,9 @@
     function genereerSpeelLijst() {
       let lijst = [];
       const landen = [
-        { code: 'en', vlag: '🇬🇧', naam: 'Engeland', bg: 'bg-gb', header: 'bg-gradient-to-r from-red-600 to-blue-700' },
-        { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', bg: 'bg-fr', header: 'bg-gradient-to-r from-blue-600 to-red-600' },
-        { code: 'nl', vlag: '🇧🇪', naam: 'België', bg: 'bg-be', header: 'bg-gradient-to-r from-slate-900 via-yellow-500 to-red-600' }
+        { code: 'en', vlag: '🇬🇧', naam: 'Engeland', header: 'bg-gradient-to-r from-red-600 to-blue-800' },
+        { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', header: 'bg-gradient-to-r from-blue-700 to-red-600' },
+        { code: 'nl', vlag: '🇧🇪', naam: 'België', header: 'bg-gradient-to-r from-slate-900 via-yellow-500 to-red-600' }
       ];
 
       landen.forEach(land => {
@@ -205,7 +250,6 @@
             while(opties.size < 3) opties.add(getRandomItem(fietsOnderdelen));
             vraagObj.opties = shuffle(Array.from(opties));
           }
-          // HIER WAS DE FOUT! vraObj is aangepast naar vraagObj
           lijst.push(vraagObj);
         });
       });
@@ -228,12 +272,14 @@
     window.herstartSpel = function() {
       UI.schermBericht.classList.add('hidden'); UI.schermBericht.classList.remove('flex');
       UI.startScherm.classList.remove('hidden');
+      UI.bodyBg.className = "flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100";
     };
 
     window.eindigSpel = function() {
       clearInterval(timerInterval);
       UI.gameUI.classList.add('hidden'); UI.gameUI.classList.remove('flex');
       UI.schermBericht.classList.remove('hidden'); UI.schermBericht.classList.add('flex');
+      UI.bodyBg.className = "flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-50 to-indigo-100";
       
       UI.eindScore.textContent = state.score; UI.eindTotaal.textContent = state.vraagNummer; 
       let m = Math.floor(verstrekenTijd / 60); let s = verstrekenTijd % 60;
@@ -262,8 +308,15 @@
 
     function enableActionButton() {
       UI.btnActie.disabled = false;
-      UI.btnActie.className = 'flex-grow bg-blue-600 hover:bg-blue-700 text-white font-black py-3 px-6 rounded-xl shadow-lg uppercase tracking-wider text-sm sm:text-base transition-transform active:scale-95';
-      UI.btnActie.textContent = 'Kijk na';
+      UI.btnActie.className = 'flex-grow bg-blue-600 hover:bg-blue-700 text-white font-black py-3 px-6 rounded-xl shadow-lg uppercase tracking-wider text-sm sm:text-base transition-transform active:scale-95 animate-pulse-fast';
+      UI.btnActie.textContent = 'Kijk na 👀';
+    }
+
+    function triggerVraagAnimatie() {
+      // Reset animatie class
+      UI.animatieWrapper.classList.remove('animate-fade-in-up');
+      void UI.animatieWrapper.offsetWidth; // trigger reflow
+      UI.animatieWrapper.classList.add('animate-fade-in-up');
     }
 
     function startNieuweVraag() {
@@ -272,12 +325,16 @@
       
       let q = speelLijst.pop(); state.currentProblem = q;
 
-      UI.bodyBg.className = `flex justify-center items-center sm:p-4 ${q.land.bg}`;
+      // Verander achtergrondkleur willekeurig
+      let randomBg = getRandomItem(leukeAchtergronden);
+      UI.bodyBg.className = `flex justify-center items-center sm:p-4 ${randomBg}`;
+      
       UI.gameHeader.className = `p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors ${q.land.header} text-white`;
       UI.landIcoon.textContent = q.land.vlag; UI.landNaam.textContent = q.land.naam;
 
       UI.verhaalTekst.innerHTML = q.vraagTekst;
       UI.vraagContainer.innerHTML = ''; UI.antwoordContainer.innerHTML = ''; UI.fbAntwoord.classList.add('hidden');
+      UI.fbAntwoord.classList.remove('animate-shake');
       UI.scrollContainer.scrollTop = 0; 
       
       UI.btnActie.disabled = true;
@@ -289,7 +346,7 @@
         let grid = document.createElement('div'); grid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2";
         q.opties.forEach(opt => {
           let btn = document.createElement('button');
-          btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-2 sm:p-3 rounded-xl hover:bg-blue-50 text-left text-sm shadow-sm transition-all";
+          btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-2 sm:p-3 rounded-xl hover:bg-blue-50 hover:text-blue-700 text-left text-sm shadow-sm transition-all";
           btn.textContent = opt; btn.onclick = () => selectAnswer(opt, btn); grid.appendChild(btn);
         });
         UI.antwoordContainer.appendChild(grid);
@@ -303,11 +360,11 @@
         let grid = document.createElement('div'); grid.className = "grid grid-cols-2 gap-2 mt-2";
         
         let btnWaar = document.createElement('button');
-        btnWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-green-600 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
+        btnWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-green-200 text-green-600 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
         btnWaar.innerHTML = "✅ WAAR"; btnWaar.onclick = () => selectAnswer('waar', btnWaar);
         
         let btnNietWaar = document.createElement('button');
-        btnNietWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-red-500 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
+        btnNietWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-red-200 text-red-500 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
         btnNietWaar.innerHTML = "❌ NIET WAAR"; btnNietWaar.onclick = () => selectAnswer('niet-waar', btnNietWaar);
 
         grid.appendChild(btnWaar); grid.appendChild(btnNietWaar); UI.antwoordContainer.appendChild(grid);
@@ -323,17 +380,19 @@
         });
         UI.antwoordContainer.appendChild(grid);
       }
+
+      triggerVraagAnimatie();
     }
 
     function selectAnswer(answerValue, btnElement) {
       if (state.isAnswered) return;
       state.selectedAnswer = answerValue;
       document.querySelectorAll('.antwoord-btn').forEach(b => {
-        b.classList.remove('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-200', 'btn-active-state');
+        b.classList.remove('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-300', 'btn-active-state', 'shadow-md');
         b.classList.add('border-slate-200');
       });
       btnElement.classList.remove('border-slate-200');
-      btnElement.classList.add('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-200', 'btn-active-state');
+      btnElement.classList.add('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-300', 'btn-active-state', 'shadow-md');
       enableActionButton();
     }
 
@@ -346,16 +405,26 @@
         state.isAnswered = true; 
         let isCorrect = (state.currentProblem.type === 'tf') ? (state.selectedAnswer === state.currentProblem.antwoord) : (state.selectedAnswer === state.currentProblem.correctOnderdeel[state.currentProblem.land.code]);
 
-        UI.fbAntwoord.classList.remove('hidden', 'bg-green-50', 'border-green-400', 'text-green-800', 'bg-red-50', 'border-red-400', 'text-red-800');
+        UI.fbAntwoord.classList.remove('hidden', 'bg-green-100', 'border-green-500', 'text-green-900', 'bg-red-100', 'border-red-500', 'text-red-900', 'animate-shake');
         let deOplossing = state.currentProblem.correctOnderdeel[state.currentProblem.land.code];
 
         if (isCorrect) {
           state.score++;
-          UI.fbAntwoord.classList.add('bg-green-50', 'border-green-400', 'text-green-800');
-          UI.fbAntwoord.innerHTML = `🎉 <strong>Knalerop!</strong> Helemaal juist.`;
+          let randomAanmoediging = getRandomItem(aanmoedigingen);
+          UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900');
+          UI.fbAntwoord.innerHTML = `<strong>${randomAanmoediging}</strong> Helemaal juist!`;
+          
+          // Mini confetti effectje op het scherm!
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
+          }
         } else {
-          UI.fbAntwoord.classList.add('bg-red-50', 'border-red-400', 'text-red-800');
-          UI.fbAntwoord.innerHTML = `🔧 <strong>Lekke band!</strong> Het juiste antwoord is: <strong>${deOplossing}</strong>`;
+          UI.fbAntwoord.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+          UI.fbAntwoord.innerHTML = `🔧 <strong>Lekke band!</strong> Het juiste antwoord is: <br><span class="text-lg font-black mt-1 inline-block">${deOplossing}</span>`;
+          
+          // Shake animatie bij een fout antwoord
+          void UI.fbAntwoord.offsetWidth; // trigger reflow
+          UI.fbAntwoord.classList.add('animate-shake');
         }
         
         updateVoortgang();
