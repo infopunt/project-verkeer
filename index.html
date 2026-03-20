@@ -11,7 +11,7 @@
     
     .progress-bar-fill { transition: width 0.4s ease-out; }
     
-    #scroll-container { scrollbar-width: thin; }
+    #scroll-container, .scroll-list { scrollbar-width: thin; }
     
     .answ-btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); }
     
@@ -86,14 +86,14 @@
               <div id="score-weergave" class="text-base sm:text-lg font-bold text-yellow-300 leading-none">0</div>
             </div>
           </div>
-          <button onclick="eindigSpel()" class="bg-slate-700/50 hover:bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors border border-white/20">Stop</button>
+          <button onclick="eindigSpel(true)" class="bg-slate-700/50 hover:bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors border border-white/20">Stop</button>
         </div>
         <div class="w-full bg-slate-700 rounded-full h-2 mt-1 overflow-hidden">
           <div id="progress-bar" class="bg-white h-full progress-bar-fill" style="width: 0%"></div>
         </div>
       </div>
 
-      <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-24 relative">
+      <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-4 relative">
         <div id="animatie-wrapper" class="w-full flex flex-col items-center relative z-0">
           <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white/90 p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative"></div>
           <div id="vraag-container" class="mb-3 w-full max-w-2xl relative flex flex-col items-center"></div>
@@ -102,7 +102,7 @@
         <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base border-2 mt-2 transition-all relative z-10"></div>
       </div>
 
-      <div class="shrink-0 p-3 sm:p-4 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full rounded-b-2xl z-20">
+      <div class="shrink-0 p-3 sm:p-4 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20">
         <div class="max-w-2xl mx-auto flex justify-between items-center space-x-4">
            <div class="text-xs text-slate-400 font-mono font-bold hidden sm:block tracking-widest" id="voortgang-weergave">0/72</div>
            <button id="action-btn" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>
@@ -112,12 +112,12 @@
       </div>
     </div>
 
-    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-start sm:justify-center p-6 text-center w-full h-full relative overflow-y-auto pb-10">
-      <div class="text-6xl mb-2 mt-4 sm:mt-0">🏆</div>
-      <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Einde van de tocht!</h2>
-      <p class="text-slate-600 text-sm sm:text-base mb-4">Je bent veilig aangekomen in Londen!</p>
+    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-start p-6 text-center w-full h-full relative overflow-y-auto pb-10 scroll-list">
+      <div class="text-6xl mb-2 mt-4 shrink-0">🏆</div>
+      <h2 class="text-3xl font-extrabold text-slate-800 mb-2 shrink-0">Einde van de tocht!</h2>
+      <p class="text-slate-600 text-sm sm:text-base mb-4 shrink-0" id="eind-ondertitel">Je bent veilig aangekomen!</p>
       
-      <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-sm mb-6 shadow-xl relative overflow-hidden shrink-0">
+      <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-sm mb-6 shadow-xl relative overflow-hidden shrink-0 mx-auto">
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
         <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score</p>
         <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">72</span></p>
@@ -126,9 +126,27 @@
         </div>
       </div>
 
-      <button onclick="herstartSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 px-10 rounded-full shadow-lg uppercase tracking-wider text-sm w-full max-w-xs transition-transform hover:scale-105 shrink-0">
-        Nog een keer!
-      </button>
+      <div id="remediering-container" class="w-full max-w-md hidden mb-4 mx-auto text-left flex-grow flex flex-col min-h-0">
+        </div>
+
+      <div id="classroom-opdracht" class="w-full max-w-md mx-auto mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0">
+        <div class="text-3xl animate-bounce">📸</div>
+        <div>
+          <h4 class="font-black text-yellow-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
+          <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">
+            Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto shrink-0 justify-center">
+        <button id="btn-herstart" onclick="herstartSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105">
+          Nieuw Spel
+        </button>
+        <button id="btn-oefen-fouten" onclick="startRemedieringSpel()" class="hidden bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105 ring-2 ring-green-300 ring-offset-2">
+          Oefen Fouten!
+        </button>
+      </div>
     </div>
 
   </div>
@@ -175,7 +193,11 @@
       { code: 'en', vlag: '🇬🇧', naam: 'Engeland', header: 'bg-gradient-to-r from-red-600 to-blue-800' }
     ];
 
-    let state = { score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, isAnswered: false, currentProblem: null, selectedAnswer: null };
+    let state = { 
+      score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, 
+      isAnswered: false, currentProblem: null, selectedAnswer: null, 
+      fouteAntwoorden: [], totaalVragen: 72, isRemedieringMode: false 
+    };
     let etappesLijst = []; 
     let verstrekenTijd = 0; 
     let timerInterval;
@@ -193,7 +215,9 @@
       btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), 
       eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd'),
       scrollContainer: document.getElementById('scroll-container'), gameHeader: document.getElementById('game-header'),
-      animatieWrapper: document.getElementById('animatie-wrapper')
+      animatieWrapper: document.getElementById('animatie-wrapper'), remedieringContainer: document.getElementById('remediering-container'),
+      btnOefenFouten: document.getElementById('btn-oefen-fouten'), eindOndertitel: document.getElementById('eind-ondertitel'),
+      classroomOpdracht: document.getElementById('classroom-opdracht')
     };
 
     function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
@@ -231,7 +255,7 @@
       let enVragen = shuffle([...fietsOnderdelen]);
       enVragen.forEach(onderdeel => {
         let q = { land: landenData[2], type: 'mc-engels', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.en), antwoord: onderdeel.en };
-        let opt = new Set([onderdeel.en]); while(opt.size < 3) opt.add(getRandomItem(fietsOnderdelen).en); 
+        let opt = new Set([onderdeel.en]); while(opt.size < 4) opt.add(getRandomItem(fietsOnderdelen).en); 
         q.opties = shuffle(Array.from(opt));
         etappes[2].push(q);
       });
@@ -240,7 +264,11 @@
     }
 
     window.startSpel = function() {
-      state = { score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, isAnswered: false, currentProblem: null, selectedAnswer: null };
+      state = { 
+        score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, 
+        isAnswered: false, currentProblem: null, selectedAnswer: null, 
+        fouteAntwoorden: [], totaalVragen: 72, isRemedieringMode: false 
+      };
       verstrekenTijd = 0; 
       etappesLijst = genereerEtappes();
 
@@ -249,6 +277,28 @@
       UI.gameUI.classList.add('flex');
       
       updateTijdUI();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => { verstrekenTijd++; updateTijdUI(); }, 1000);
+      startNieuweVraag();
+    };
+
+    window.startRemedieringSpel = function() {
+      let missedQs = state.fouteAntwoorden.map(fout => fout.vraagObject);
+      
+      state = { 
+        score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, 
+        isAnswered: false, currentProblem: null, selectedAnswer: null, 
+        fouteAntwoorden: [], totaalVragen: missedQs.length, isRemedieringMode: true 
+      };
+      
+      verstrekenTijd = 0; 
+      etappesLijst = [ shuffle([...missedQs]) ]; 
+
+      UI.schermBericht.classList.add('hidden'); UI.schermBericht.classList.remove('flex');
+      UI.gameUI.classList.remove('hidden'); UI.gameUI.classList.add('flex');
+      
+      updateTijdUI();
+      clearInterval(timerInterval);
       timerInterval = setInterval(() => { verstrekenTijd++; updateTijdUI(); }, 1000);
       startNieuweVraag();
     };
@@ -280,7 +330,9 @@
     function startNieuweVraag() {
       if (etappesLijst[state.huidigeEtappeIndex].length === 0) {
         state.huidigeEtappeIndex++;
-        if (state.huidigeEtappeIndex >= 3) return eindigSpel(); 
+        if (state.isRemedieringMode || state.huidigeEtappeIndex >= 3) {
+            return eindigSpel(); 
+        }
         return toonTussenScherm(); 
       }
 
@@ -294,6 +346,7 @@
       UI.landIcoon.textContent = q.land.vlag; UI.landNaam.textContent = q.land.naam;
 
       UI.verhaalTekst.innerHTML = q.vraagTekst;
+      
       UI.vraagContainer.innerHTML = ''; UI.antwoordContainer.innerHTML = ''; UI.fbAntwoord.classList.add('hidden');
       UI.fbAntwoord.classList.remove('animate-shake');
       UI.scrollContainer.scrollTop = 0; 
@@ -315,7 +368,6 @@
       UI.animatieWrapper.classList.add('animate-fade-in-up');
     }
 
-    // ----- VERWERK ANTWOORD (DIRECTE FEEDBACK) -----
     window.kiesAntwoord = function(gekozen, element) {
       if (state.isAnswered) return;
       state.isAnswered = true;
@@ -324,7 +376,6 @@
       let q = state.currentProblem;
       let isCorrect = (gekozen === q.antwoord);
 
-      // Knop visueel updaten
       if (element && q.type !== 'drag-drop') {
          element.classList.remove('border-slate-200', 'hover:bg-blue-50');
          if (isCorrect) {
@@ -334,7 +385,6 @@
          }
       }
 
-      // Dropzone logica speciaal voor Frankrijk
       if (q.type === 'drag-drop') {
          let dz = document.getElementById('dropzone');
          dz.innerHTML = ''; 
@@ -359,6 +409,16 @@
         UI.fbAntwoord.innerHTML = `<strong>${getRandomItem(aanmoedigingen)}</strong> Helemaal juist!`;
         if (typeof confetti === 'function') confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
       } else {
+        state.fouteAntwoorden.push({
+          vraagObject: q, 
+          land: q.land.naam,
+          vlag: q.land.vlag,
+          foto: q.correctOnderdeel.foto,
+          onderdeelNl: q.correctOnderdeel.nl,
+          jouwAntwoord: gekozen,
+          juisteAntwoord: q.antwoord
+        });
+
         UI.fbAntwoord.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
         UI.fbAntwoord.innerHTML = `🔧 <strong>Lekke band!</strong> Het juiste antwoord is: <br><span class="text-lg font-black mt-1 inline-block">${q.antwoord}</span>`;
         void UI.fbAntwoord.offsetWidth; 
@@ -367,20 +427,14 @@
       
       updateVoortgang();
       
-      // Update de "Volgende" knop direct
       UI.btnActie.disabled = false;
       UI.btnActie.textContent = 'Trap Verder ➡️';
       UI.btnActie.className = 'flex-grow bg-slate-800 hover:bg-slate-900 text-white font-black py-3 px-6 rounded-xl shadow-lg uppercase tracking-wider text-sm sm:text-base transition-transform active:scale-95 animate-bounce';
       
-      setTimeout(() => UI.scrollContainer.scrollTop = UI.scrollContainer.scrollHeight, 100);
+      setTimeout(() => { UI.scrollContainer.scrollTo({ top: UI.scrollContainer.scrollHeight, behavior: 'smooth' }); }, 100);
     };
 
-    // Knop gaat nu alleen nog maar naar de VOLGENDE vraag
-    UI.btnActie.addEventListener('click', () => { 
-      if (state.isAnswered) {
-        startNieuweVraag(); 
-      }
-    });
+    UI.btnActie.addEventListener('click', () => { if (state.isAnswered) startNieuweVraag(); });
 
     // ----- RENDER FUNCTIES -----
     function renderBelgie(q) {
@@ -402,13 +456,10 @@
             <div class="text-base sm:text-lg font-bold text-center">Is dit: <span class="text-blue-600">"${q.getoondeTerm}"</span>?</div>
           </div>`;
         let grid = document.createElement('div'); grid.className = "grid grid-cols-2 gap-2 mt-2";
-        
         let btnWaar = document.createElement('button'); btnWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-green-200 text-green-600 font-black p-3 rounded-xl shadow-sm transition-all";
         btnWaar.innerHTML = "✅ WAAR"; btnWaar.onclick = function() { kiesAntwoord('waar', this); };
-        
         let btnNietWaar = document.createElement('button'); btnNietWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-red-200 text-red-500 font-black p-3 rounded-xl shadow-sm transition-all";
         btnNietWaar.innerHTML = "❌ NIET WAAR"; btnNietWaar.onclick = function() { kiesAntwoord('niet-waar', this); };
-
         grid.appendChild(btnWaar); grid.appendChild(btnNietWaar); UI.antwoordContainer.appendChild(grid);
       }
       else if (q.type === 'mc-image') {
@@ -432,34 +483,24 @@
           Plaats woord hier
         </div>
       `;
-      let wordBank = document.createElement('div');
-      wordBank.className = "flex flex-wrap justify-center gap-2";
-
+      let wordBank = document.createElement('div'); wordBank.className = "flex flex-wrap justify-center gap-2";
       q.opties.forEach(opt => {
         let span = document.createElement('div');
         span.className = "cursor-pointer bg-white border-2 border-slate-300 text-slate-700 font-bold px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50 hover:scale-105 active:scale-95 transition-all text-sm";
-        span.textContent = opt;
-        span.onclick = function() { kiesAntwoord(opt, this); };
-        wordBank.appendChild(span);
+        span.textContent = opt; span.onclick = function() { kiesAntwoord(opt, this); }; wordBank.appendChild(span);
       });
       UI.antwoordContainer.appendChild(wordBank);
     }
 
     function renderEngelandMakkelijk(q) {
-      UI.vraagContainer.innerHTML = `
-        <img src="${q.correctOnderdeel.foto}" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-4">
-      `;
-      
-      let flexContainer = document.createElement('div');
-      flexContainer.className = "flex flex-col space-y-2 w-full max-w-sm mx-auto";
+      UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-4">`;
+      let grid = document.createElement('div'); grid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md mx-auto";
       q.opties.forEach(opt => {
         let btn = document.createElement('button');
-        btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-3 sm:p-4 rounded-xl hover:bg-blue-50 text-base sm:text-lg shadow-sm transition-all w-full text-center";
-        btn.textContent = opt;
-        btn.onclick = function() { kiesAntwoord(opt, this); };
-        flexContainer.appendChild(btn);
+        btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-3 sm:p-4 rounded-xl hover:bg-blue-50 text-base shadow-sm transition-all w-full text-center";
+        btn.textContent = opt; btn.onclick = function() { kiesAntwoord(opt, this); }; grid.appendChild(btn);
       });
-      UI.antwoordContainer.appendChild(flexContainer);
+      UI.antwoordContainer.appendChild(grid);
     }
 
     // ----- HELPERS -----
@@ -470,21 +511,71 @@
 
     function updateVoortgang() {
       UI.scoreWeergave.textContent = state.score;
-      UI.voortgangWeergave.textContent = `${state.algemeenVraagNummer}/72`;
-      let percentage = (state.algemeenVraagNummer / 72) * 100;
+      UI.voortgangWeergave.textContent = `${state.algemeenVraagNummer}/${state.totaalVragen}`;
+      let percentage = (state.algemeenVraagNummer / state.totaalVragen) * 100;
       UI.progressBar.style.width = `${percentage}%`;
     }
 
-    window.eindigSpel = function() {
+    window.eindigSpel = function(forceedStop = false) {
       clearInterval(timerInterval);
       UI.gameUI.classList.add('hidden'); UI.gameUI.classList.remove('flex');
       UI.etappeScherm.classList.add('hidden'); UI.etappeScherm.classList.remove('flex');
       UI.schermBericht.classList.remove('hidden'); UI.schermBericht.classList.add('flex');
       UI.bodyBg.className = "flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100";
       
-      UI.eindScore.textContent = state.score; UI.eindTotaal.textContent = state.algemeenVraagNummer; 
+      UI.eindOndertitel.textContent = state.isRemedieringMode ? "Herstelronde voltooid!" : (forceedStop ? "Je hebt de tocht gestopt." : "Je bent veilig aangekomen in Londen!");
+      
+      UI.eindScore.textContent = state.score; 
+      UI.eindTotaal.textContent = forceedStop ? state.algemeenVraagNummer : state.totaalVragen; 
+      
       let m = Math.floor(verstrekenTijd / 60); let s = verstrekenTijd % 60;
       UI.eindTijd.innerHTML = `⏱️ Fietstijd: ${m} min ${s} sec`;
+
+      // Tekst van de classroom opdracht aanpassen op basis van status
+      if (state.isRemedieringMode) {
+          UI.classroomOpdracht.querySelector('h4').textContent = "Extra Bewijs";
+          UI.classroomOpdracht.querySelector('p').innerHTML = "Je mag ook van deze nieuwe, betere score een printscreen toevoegen als bewijs van je harde werk!";
+      } else {
+          UI.classroomOpdracht.querySelector('h4').textContent = "Verplichte Opdracht";
+          UI.classroomOpdracht.querySelector('p').innerHTML = "Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!";
+      }
+
+      // --- REMEDIËRING LIJST & KNOP OPBOUWEN ---
+      if (state.fouteAntwoorden.length > 0) {
+        UI.remedieringContainer.classList.remove('hidden');
+        UI.btnOefenFouten.classList.remove('hidden'); 
+        
+        let html = `
+          <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col min-h-0 flex-grow">
+            <h3 class="text-xl font-bold mb-3 text-slate-800 border-b pb-2 shrink-0">Hier kan je nog uit leren:</h3>
+            <div class="space-y-3 overflow-y-auto pr-2 scroll-list pb-2 flex-grow">
+        `;
+        
+        state.fouteAntwoorden.forEach(fout => {
+          html += `
+            <div class="bg-red-50/80 border-l-4 border-red-400 p-3 rounded-lg shadow-sm text-sm">
+              <div class="flex items-center space-x-3 mb-2">
+                <img src="${fout.foto}" class="h-10 w-10 object-contain bg-white rounded border border-slate-200 p-1 shrink-0">
+                <div class="flex-grow">
+                  <span class="font-bold text-slate-700 bg-white px-2 py-0.5 rounded shadow-sm text-xs inline-flex items-center space-x-1">
+                    <span>${fout.vlag}</span> <span>${fout.land}</span>
+                  </span>
+                  <div class="text-slate-600 font-semibold mt-1 capitalize">${fout.onderdeelNl}</div>
+                </div>
+              </div>
+              <p class="text-red-500 line-through">Jouw antwoord: ${fout.jouwAntwoord}</p>
+              <p class="text-green-600 font-bold">Juist antwoord: ${fout.juisteAntwoord}</p>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        UI.remedieringContainer.innerHTML = html;
+      } else {
+        UI.remedieringContainer.classList.add('hidden');
+        UI.remedieringContainer.innerHTML = '';
+        UI.btnOefenFouten.classList.add('hidden'); 
+      }
     };
   </script>
 </body>
