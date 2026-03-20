@@ -235,7 +235,14 @@
           let opt = new Set([onderdeel.nl]); while(opt.size < 4) opt.add(getRandomItem(fietsOnderdelen).nl);
           q.opties = shuffle(Array.from(opt));
         } else if (type === 'tf') {
-          q.isTrue = Math.random() > 0.5; q.getoondeTerm = q.isTrue ? onderdeel.nl : getRandomItem(fietsOnderdelen).nl;
+          q.isTrue = Math.random() > 0.5;
+          // FIX DANGER: Explicitly ensure a DISTINCT wrong term if isTrue is false.
+          if (q.isTrue) {
+              q.getoondeTerm = onderdeel.nl;
+          } else {
+              let possibleWrongTerms = fietsOnderdelen.filter(item => item.nl !== onderdeel.nl).map(item => item.nl);
+              q.getoondeTerm = possibleWrongTerms[Math.floor(Math.random() * possibleWrongTerms.length)];
+          }
           q.antwoord = q.isTrue ? 'waar' : 'niet-waar';
         } else if (type === 'mc-image') {
           let opt = new Set([onderdeel]); while(opt.size < 3) opt.add(getRandomItem(fietsOnderdelen));
