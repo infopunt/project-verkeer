@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Grote Fiets & Taal Quiz - Ultimate Editie</title>
+  <title>De Dynamic Pech-Onderweg Tocht</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -11,7 +11,7 @@
     
     .progress-bar-fill { transition: width 0.4s ease-out; }
     
-    #scroll-container, .scroll-list { scrollbar-width: thin; }
+    #scroll-container, .scroll-list, #bericht-scroll-content { scrollbar-width: thin; }
     
     .answ-btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); }
     
@@ -42,18 +42,26 @@
 
   <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-slate-50/95 backdrop-blur-md">
     
-    <div id="start-scherm" class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 text-center overflow-y-auto">
-      <div class="text-7xl mb-4 animate-bounce">🚴‍♂️💨</div>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">De Pech-Onderweg Tocht</h1>
-      <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base">
-        <p class="mb-3">Drie landen, drie uitdagingen:</p>
-        <div class="flex items-center space-x-3 mb-2"><span>🇧🇪</span> <strong>Etappe 1: België</strong> (Kies het juiste antwoord)</div>
-        <div class="flex items-center space-x-3 mb-2"><span>🇫🇷</span> <strong>Etappe 2: Frankrijk</strong> (Klik het juiste Franse woord in het vak)</div>
-        <div class="flex items-center space-x-3 mb-3"><span>🇬🇧</span> <strong>Etappe 3: Engeland</strong> (Kies de Engelse term)</div>
+    <div id="start-scherm" class="flex-grow flex flex-col h-full bg-slate-50/90 overflow-hidden relative">
+      <div id="start-story-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative">
+        
+        <img id="intro-illustration" src="image_1.png" alt="Dynamic Intro Story: Van België naar Dover" class="w-full max-w-2xl h-auto object-cover rounded-2xl shadow-lg border border-slate-200 mb-6 mx-auto animate-fade-in-up">
+        
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text shrink-0">De Dynamic Pech-Onderweg Tocht</h1>
+        
+        <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base mx-auto shrink-0 relative">
+          <p class="mb-3">Drie landen, drie dynamic uitdagingen:</p>
+          <div class="flex items-center space-x-3 mb-2"><span>🇧🇪</span> <strong>Etappe 1: België</strong> (MC, Waar/Niet-Waar, Foto-MC)</div>
+          <div class="flex items-center space-x-3 mb-2"><span>🇫🇷</span> <strong>Etappe 2: Frankrijk</strong> (Dropzone Woorden)</div>
+          <div class="flex items-center space-x-3 mb-3"><span>🇬🇧</span> <strong>Etappe 3: Engeland</strong> (Engelse Term MC)</div>
+        </div>
       </div>
-      <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">
-        Start het Avontuur!
-      </button>
+      
+      <div class="absolute bottom-0 left-0 w-full p-4 sm:p-6 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 z-10 flex justify-center">
+        <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">
+          Start het Avontuur!
+        </button>
+      </div>
     </div>
 
     <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-slate-900/95 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto">
@@ -112,40 +120,44 @@
       </div>
     </div>
 
-    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-start p-6 text-center w-full h-full relative overflow-y-auto pb-10 scroll-list">
-      <div class="text-6xl mb-2 mt-4 shrink-0">🏆</div>
-      <h2 class="text-3xl font-extrabold text-slate-800 mb-2 shrink-0">Einde van de tocht!</h2>
-      <p class="text-slate-600 text-sm sm:text-base mb-4 shrink-0" id="eind-ondertitel">Je bent veilig aangekomen!</p>
-      
-      <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-sm mb-6 shadow-xl relative overflow-hidden shrink-0 mx-auto">
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
-        <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score</p>
-        <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">72</span></p>
-        <div class="mt-2 p-2 bg-slate-50 rounded-lg border border-slate-100 inline-block">
-          <p class="text-xs font-bold text-slate-600" id="eind-tijd"></p>
+    <div id="bericht-scherm" class="hidden flex-grow flex-col h-full w-full bg-transparent overflow-hidden relative">
+      <div id="bericht-scroll-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative">
+        <div class="text-6xl mb-2 mt-4 shrink-0 mx-auto">🏆</div>
+        <h2 class="text-3xl font-extrabold text-slate-800 mb-2 shrink-0">Einde van de tocht!</h2>
+        <p class="text-slate-600 text-sm sm:text-base mb-4 shrink-0" id="eind-ondertitel">Je bent veilig aangekomen!</p>
+        
+        <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-sm mb-6 shadow-xl relative overflow-hidden shrink-0 mx-auto">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
+          <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score</p>
+          <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">72</span></p>
+          <div class="mt-2 p-2 bg-slate-50 rounded-lg border border-slate-100 inline-block">
+            <p class="text-xs font-bold text-slate-600" id="eind-tijd"></p>
+          </div>
+        </div>
+
+        <div id="remediering-container" class="w-full max-w-md hidden mb-6 mx-auto text-left relative z-0 flex flex-col shrink-0 min-h-0">
+          </div>
+
+        <div id="classroom-opdracht" class="w-full max-w-md mx-auto mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0 relative z-0">
+          <div class="text-3xl animate-bounce">📸</div>
+          <div>
+            <h4 class="font-black text-yellow-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
+            <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">
+              Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!
+            </p>
+          </div>
         </div>
       </div>
 
-      <div id="remediering-container" class="w-full max-w-md hidden mb-4 mx-auto text-left flex-grow flex flex-col min-h-0">
+      <div class="absolute bottom-0 left-0 w-full p-3 sm:p-4 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20 flex justify-center">
+        <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto justify-center">
+          <button id="btn-herstart" onclick="herstartSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105">
+            Nieuw Spel
+          </button>
+          <button id="btn-oefen-fouten" onclick="startRemedieringSpel()" class="hidden bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105 ring-2 ring-green-300 ring-offset-2">
+            Oefen Fouten!
+          </button>
         </div>
-
-      <div id="classroom-opdracht" class="w-full max-w-md mx-auto mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0">
-        <div class="text-3xl animate-bounce">📸</div>
-        <div>
-          <h4 class="font-black text-yellow-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
-          <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">
-            Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!
-          </p>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto shrink-0 justify-center">
-        <button id="btn-herstart" onclick="herstartSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105">
-          Nieuw Spel
-        </button>
-        <button id="btn-oefen-fouten" onclick="startRemedieringSpel()" class="hidden bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105 ring-2 ring-green-300 ring-offset-2">
-          Oefen Fouten!
-        </button>
       </div>
     </div>
 
@@ -225,7 +237,6 @@
 
     function genereerEtappes() {
       let etappes = [[], [], []]; 
-      
       let beVragen = shuffle([...fietsOnderdelen]);
       beVragen.forEach(onderdeel => {
         let types = ['mc-text', 'tf', 'mc-image'];
@@ -236,7 +247,6 @@
           q.opties = shuffle(Array.from(opt));
         } else if (type === 'tf') {
           q.isTrue = Math.random() > 0.5;
-          // FIX DANGER: Explicitly ensure a DISTINCT wrong term if isTrue is false.
           if (q.isTrue) {
               q.getoondeTerm = onderdeel.nl;
           } else {
@@ -250,7 +260,6 @@
         }
         etappes[0].push(q);
       });
-
       let frVragen = shuffle([...fietsOnderdelen]);
       frVragen.forEach(onderdeel => {
         let q = { land: landenData[1], type: 'drag-drop', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.fr), antwoord: onderdeel.fr };
@@ -258,7 +267,6 @@
         q.opties = shuffle(Array.from(opt));
         etappes[1].push(q);
       });
-
       let enVragen = shuffle([...fietsOnderdelen]);
       enVragen.forEach(onderdeel => {
         let q = { land: landenData[2], type: 'mc-engels', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.en), antwoord: onderdeel.en };
@@ -266,7 +274,6 @@
         q.opties = shuffle(Array.from(opt));
         etappes[2].push(q);
       });
-
       return etappes;
     }
 
@@ -278,11 +285,9 @@
       };
       verstrekenTijd = 0; 
       etappesLijst = genereerEtappes();
-
       UI.startScherm.classList.add('hidden');
       UI.gameUI.classList.remove('hidden');
       UI.gameUI.classList.add('flex');
-      
       updateTijdUI();
       clearInterval(timerInterval);
       timerInterval = setInterval(() => { verstrekenTijd++; updateTijdUI(); }, 1000);
@@ -291,19 +296,15 @@
 
     window.startRemedieringSpel = function() {
       let missedQs = state.fouteAntwoorden.map(fout => fout.vraagObject);
-      
       state = { 
         score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, 
         isAnswered: false, currentProblem: null, selectedAnswer: null, 
         fouteAntwoorden: [], totaalVragen: missedQs.length, isRemedieringMode: true 
       };
-      
       verstrekenTijd = 0; 
       etappesLijst = [ shuffle([...missedQs]) ]; 
-
       UI.schermBericht.classList.add('hidden'); UI.schermBericht.classList.remove('flex');
       UI.gameUI.classList.remove('hidden'); UI.gameUI.classList.add('flex');
-      
       updateTijdUI();
       clearInterval(timerInterval);
       timerInterval = setInterval(() => { verstrekenTijd++; updateTijdUI(); }, 1000);
@@ -319,9 +320,7 @@
     function toonTussenScherm() {
       UI.gameUI.classList.add('hidden'); UI.gameUI.classList.remove('flex');
       UI.etappeScherm.classList.remove('hidden'); UI.etappeScherm.classList.add('flex');
-      
       if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, zIndex: 1000 });
-
       UI.etappeTitel.textContent = `Etappe ${state.huidigeEtappeIndex} Voltooid!`;
       let volgendLand = landenData[state.huidigeEtappeIndex];
       UI.volgendeLandNaam.textContent = volgendLand.naam;
@@ -342,26 +341,19 @@
         }
         return toonTussenScherm(); 
       }
-
       state.algemeenVraagNummer++; state.isAnswered = false; state.selectedAnswer = null; updateVoortgang();
-      
       let q = etappesLijst[state.huidigeEtappeIndex].pop(); 
       state.currentProblem = q;
-
       UI.bodyBg.className = `flex justify-center items-center sm:p-4 bg-gradient-to-br from-slate-100 to-slate-200`;
       UI.gameHeader.className = `p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors ${q.land.header} text-white`;
       UI.landIcoon.textContent = q.land.vlag; UI.landNaam.textContent = q.land.naam;
-
       UI.verhaalTekst.innerHTML = q.vraagTekst;
-      
       UI.vraagContainer.innerHTML = ''; UI.antwoordContainer.innerHTML = ''; UI.fbAntwoord.classList.add('hidden');
       UI.fbAntwoord.classList.remove('animate-shake');
       UI.scrollContainer.scrollTop = 0; 
-      
       UI.btnActie.disabled = true;
       UI.btnActie.className = 'flex-grow bg-slate-200 text-slate-400 font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base cursor-not-allowed';
       UI.btnActie.textContent = 'Kies een antwoord...';
-
       if (q.type === 'mc-text' || q.type === 'tf' || q.type === 'mc-image') {
         renderBelgie(q);
       } else if (q.type === 'drag-drop') {
@@ -369,7 +361,6 @@
       } else if (q.type === 'mc-engels') {
         renderEngelandMakkelijk(q);
       }
-
       UI.animatieWrapper.classList.remove('animate-fade-in-up');
       void UI.animatieWrapper.offsetWidth; 
       UI.animatieWrapper.classList.add('animate-fade-in-up');
@@ -379,10 +370,8 @@
       if (state.isAnswered) return;
       state.isAnswered = true;
       state.selectedAnswer = gekozen;
-
       let q = state.currentProblem;
       let isCorrect = (gekozen === q.antwoord);
-
       if (element && q.type !== 'drag-drop') {
          element.classList.remove('border-slate-200', 'hover:bg-blue-50');
          if (isCorrect) {
@@ -391,7 +380,6 @@
              element.classList.add('border-red-500', 'bg-red-100', 'text-red-900', 'ring-2', 'ring-red-300');
          }
       }
-
       if (q.type === 'drag-drop') {
          let dz = document.getElementById('dropzone');
          dz.innerHTML = ''; 
@@ -399,7 +387,6 @@
          clone.className = "font-bold text-lg cursor-default px-4 py-2"; 
          dz.appendChild(clone);
          dz.classList.remove('border-dashed', 'border-blue-300', 'bg-blue-50', 'text-blue-400');
-         
          if(isCorrect) {
             dz.classList.add('border-solid', 'border-green-500', 'bg-green-100', 'text-green-900');
             element.classList.add('opacity-50', 'cursor-not-allowed');
@@ -407,37 +394,23 @@
             dz.classList.add('border-solid', 'border-red-500', 'bg-red-100', 'text-red-900');
          }
       }
-
       UI.fbAntwoord.classList.remove('hidden', 'bg-green-100', 'border-green-500', 'text-green-900', 'bg-red-100', 'border-red-500', 'text-red-900', 'animate-shake');
-
       if (isCorrect) {
         state.score++;
         UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900');
         UI.fbAntwoord.innerHTML = `<strong>${getRandomItem(aanmoedigingen)}</strong> Helemaal juist!`;
         if (typeof confetti === 'function') confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
       } else {
-        state.fouteAntwoorden.push({
-          vraagObject: q, 
-          land: q.land.naam,
-          vlag: q.land.vlag,
-          foto: q.correctOnderdeel.foto,
-          onderdeelNl: q.correctOnderdeel.nl,
-          jouwAntwoord: gekozen,
-          juisteAntwoord: q.antwoord
-        });
-
+        state.fouteAntwoorden.push({ vraagObject: q, land: q.land.naam, vlag: q.land.vlag, foto: q.correctOnderdeel.foto, onderdeelNl: q.correctOnderdeel.nl, jouwAntwoord: gekozen, juisteAntwoord: q.antwoord });
         UI.fbAntwoord.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
         UI.fbAntwoord.innerHTML = `🔧 <strong>Lekke band!</strong> Het juiste antwoord is: <br><span class="text-lg font-black mt-1 inline-block">${q.antwoord}</span>`;
         void UI.fbAntwoord.offsetWidth; 
         UI.fbAntwoord.classList.add('animate-shake');
       }
-      
       updateVoortgang();
-      
       UI.btnActie.disabled = false;
       UI.btnActie.textContent = 'Trap Verder ➡️';
       UI.btnActie.className = 'flex-grow bg-slate-800 hover:bg-slate-900 text-white font-black py-3 px-6 rounded-xl shadow-lg uppercase tracking-wider text-sm sm:text-base transition-transform active:scale-95 animate-bounce';
-      
       setTimeout(() => { UI.scrollContainer.scrollTo({ top: UI.scrollContainer.scrollHeight, behavior: 'smooth' }); }, 100);
     };
 
@@ -529,16 +502,10 @@
       UI.etappeScherm.classList.add('hidden'); UI.etappeScherm.classList.remove('flex');
       UI.schermBericht.classList.remove('hidden'); UI.schermBericht.classList.add('flex');
       UI.bodyBg.className = "flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100";
-      
-      UI.eindOndertitel.textContent = state.isRemedieringMode ? "Herstelronde voltooid!" : (forceedStop ? "Je hebt de tocht gestopt." : "Je bent veilig aangekomen in Londen!");
-      
-      UI.eindScore.textContent = state.score; 
-      UI.eindTotaal.textContent = forceedStop ? state.algemeenVraagNummer : state.totaalVragen; 
-      
+      UI.eindOndertitel.textContent = state.isRemedieringMode ? "Herstelronde voltooid!" : (forceedStop ? "Je hebt de tocht gestopt." : "Je bent veilig aangekomen!");
+      UI.eindScore.textContent = state.score; UI.eindTotaal.textContent = forceedStop ? state.algemeenVraagNummer : state.totaalVragen; 
       let m = Math.floor(verstrekenTijd / 60); let s = verstrekenTijd % 60;
       UI.eindTijd.innerHTML = `⏱️ Fietstijd: ${m} min ${s} sec`;
-
-      // Tekst van de classroom opdracht aanpassen op basis van status
       if (state.isRemedieringMode) {
           UI.classroomOpdracht.querySelector('h4').textContent = "Extra Bewijs";
           UI.classroomOpdracht.querySelector('p').innerHTML = "Je mag ook van deze nieuwe, betere score een printscreen toevoegen als bewijs van je harde werk!";
@@ -546,42 +513,17 @@
           UI.classroomOpdracht.querySelector('h4').textContent = "Verplichte Opdracht";
           UI.classroomOpdracht.querySelector('p').innerHTML = "Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!";
       }
-
-      // --- REMEDIËRING LIJST & KNOP OPBOUWEN ---
       if (state.fouteAntwoorden.length > 0) {
         UI.remedieringContainer.classList.remove('hidden');
         UI.btnOefenFouten.classList.remove('hidden'); 
-        
-        let html = `
-          <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col min-h-0 flex-grow">
-            <h3 class="text-xl font-bold mb-3 text-slate-800 border-b pb-2 shrink-0">Hier kan je nog uit leren:</h3>
-            <div class="space-y-3 overflow-y-auto pr-2 scroll-list pb-2 flex-grow">
-        `;
-        
+        let html = `<div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col min-h-0 flex-grow"><h3 class="text-xl font-bold mb-3 text-slate-800 border-b pb-2 shrink-0">Hier kan je nog uit leren:</h3><div class="space-y-3 overflow-y-auto pr-2 scroll-list pb-2 flex-grow">`;
         state.fouteAntwoorden.forEach(fout => {
-          html += `
-            <div class="bg-red-50/80 border-l-4 border-red-400 p-3 rounded-lg shadow-sm text-sm">
-              <div class="flex items-center space-x-3 mb-2">
-                <img src="${fout.foto}" class="h-10 w-10 object-contain bg-white rounded border border-slate-200 p-1 shrink-0">
-                <div class="flex-grow">
-                  <span class="font-bold text-slate-700 bg-white px-2 py-0.5 rounded shadow-sm text-xs inline-flex items-center space-x-1">
-                    <span>${fout.vlag}</span> <span>${fout.land}</span>
-                  </span>
-                  <div class="text-slate-600 font-semibold mt-1 capitalize">${fout.onderdeelNl}</div>
-                </div>
-              </div>
-              <p class="text-red-500 line-through">Jouw antwoord: ${fout.jouwAntwoord}</p>
-              <p class="text-green-600 font-bold">Juist antwoord: ${fout.juisteAntwoord}</p>
-            </div>
-          `;
+          html += `<div class="bg-red-50/80 border-l-4 border-red-400 p-3 rounded-lg shadow-sm text-sm"><div class="flex items-center space-x-3 mb-2"><img src="${fout.foto}" class="h-10 w-10 object-contain bg-white rounded border border-slate-200 p-1 shrink-0"><div class="flex-grow"><span class="font-bold text-slate-700 bg-white px-2 py-0.5 rounded shadow-sm text-xs inline-flex items-center space-x-1"><span>${fout.vlag}</span> <span>${fout.land}</span></span><div class="text-slate-600 font-semibold mt-1 capitalize">${fout.onderdeelNl}</div></div></div><p class="text-red-500 line-through">Jouw antwoord: ${fout.jouwAntwoord}</p><p class="text-green-600 font-bold">Juist antwoord: ${fout.juisteAntwoord}</p></div>`;
         });
-        
         html += `</div></div>`;
         UI.remedieringContainer.innerHTML = html;
       } else {
-        UI.remedieringContainer.classList.add('hidden');
-        UI.remedieringContainer.innerHTML = '';
-        UI.btnOefenFouten.classList.add('hidden'); 
+        UI.remedieringContainer.classList.add('hidden'); UI.remedieringContainer.innerHTML = ''; UI.btnOefenFouten.classList.add('hidden'); 
       }
     };
   </script>
