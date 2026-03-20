@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Dynamic Pech-Onderweg Tocht</title>
+  <title>De Pech-Onderweg Tocht</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -43,18 +43,34 @@
   <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-slate-50/95 backdrop-blur-md">
     
     <div id="start-scherm" class="flex-grow flex flex-col h-full bg-slate-50/90 overflow-hidden relative">
-      <div id="start-story-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative">
+      <div id="start-story-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative flex flex-col justify-center items-center">
         
-        <img id="intro-illustration" src="image_1.png" alt="Dynamic Intro Story: Van België naar Dover" class="w-full max-w-2xl h-auto object-cover rounded-2xl shadow-lg border border-slate-200 mb-6 mx-auto animate-fade-in-up">
-        
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text shrink-0">De Dynamic Pech-Onderweg Tocht</h1>
-        
-        <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base mx-auto shrink-0 relative">
-          <p class="mb-3">Drie landen, drie dynamic uitdagingen:</p>
-          <div class="flex items-center space-x-3 mb-2"><span>🇧🇪</span> <strong>Etappe 1: België</strong> (MC, Waar/Niet-Waar, Foto-MC)</div>
-          <div class="flex items-center space-x-3 mb-2"><span>🇫🇷</span> <strong>Etappe 2: Frankrijk</strong> (Dropzone Woorden)</div>
-          <div class="flex items-center space-x-3 mb-3"><span>🇬🇧</span> <strong>Etappe 3: Engeland</strong> (Engelse Term MC)</div>
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-l-4 border-indigo-500 text-left w-full max-w-lg mb-6 text-slate-700 leading-relaxed text-sm sm:text-base relative animate-fade-in-up mt-8">
+            <div class="absolute -top-10 -left-6 text-6xl rotate-[-10deg] drop-shadow-md">🚴‍♂️</div>
+            <div class="absolute -bottom-6 -right-4 text-5xl rotate-[15deg] drop-shadow-md">🔧</div>
+            
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mt-2">Roadtrip Alert! 🌍</h2>
+            
+            <p class="mb-3">Jij en je maten pakken de fiets voor een epische roadtrip! Het masterplan? Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry pakken naar de krijtrotsen in <strong>Engeland</strong>. Klinkt als de ultieme vrijheid, toch? 🚢💨</p>
+            
+            <p class="mb-5">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet bepaald 'Tour de France'-proof. Onderweg vliegen de kettingen eraf, rammelen de spatborden en sta je wekelijks met een lekke band. 🤦‍♂️ Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
+                <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">De Route:</p>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium">
+                  <span class="text-xl">🇧🇪</span> <span><strong>Etappe 1:</strong> België</span>
+                </div>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium">
+                  <span class="text-xl">🇫🇷</span> <span><strong>Etappe 2:</strong> Frankrijk</span>
+                </div>
+                <div class="flex items-center space-x-3 text-slate-600 font-medium">
+                  <span class="text-xl">🇬🇧</span> <span><strong>Etappe 3:</strong> Engeland</span>
+                </div>
+            </div>
+            
+            <p class="mt-5 font-black text-indigo-600 text-center text-lg">Fix jij de fiets en halen jullie Dover?</p>
         </div>
+
       </div>
       
       <div class="absolute bottom-0 left-0 w-full p-4 sm:p-6 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 z-10 flex justify-center">
