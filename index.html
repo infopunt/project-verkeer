@@ -19,7 +19,7 @@
     /* Hover effecten op knoppen */
     .answ-btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); }
     
-    /* --- NIEUWE ANIMATIES --- */
+    /* --- ANIMATIES --- */
     .animate-fade-in-up {
       animation: fadeInUp 0.5s ease-out forwards;
     }
@@ -91,14 +91,14 @@
             Stop
           </button>
         </div>
-        <div class="w-full bg-slate-900/50 rounded-full h-2 mt-1 overflow-hidden">
+        <div class="w-full bg-slate-700 rounded-full h-2 mt-1 overflow-hidden">
           <div id="progress-bar" class="bg-white h-full progress-bar-fill" style="width: 0%"></div>
         </div>
       </div>
 
       <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-24 relative">
         
-        <div id="animatie-wrapper" class="w-full flex flex-col items-center">
+        <div id="animatie-wrapper" class="w-full flex flex-col items-center relative z-0">
           <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white/90 p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative">
             </div>
 
@@ -109,11 +109,11 @@
             </div>
         </div>
 
-        <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base border-2 mt-2 transition-all">
+        <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base border-2 mt-2 transition-all relative z-10">
           </div>
       </div>
 
-      <div class="shrink-0 p-3 sm:p-4 bg-white/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full rounded-b-2xl">
+      <div class="shrink-0 p-3 sm:p-4 bg-white/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full rounded-b-2xl z-20">
         <div class="max-w-2xl mx-auto flex justify-between items-center space-x-4">
            <div class="text-xs text-slate-400 font-mono font-bold hidden sm:block tracking-widest" id="voortgang-weergave">0/72</div>
            <button id="action-btn" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>
@@ -124,7 +124,7 @@
 
     </div>
 
-    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-center p-6 text-center w-full h-full">
+    <div id="bericht-scherm" class="hidden flex-grow flex-col items-center justify-center p-6 text-center w-full h-full relative">
       <div class="text-6xl mb-2">🏆</div>
       <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Einde van de tocht!</h2>
       <p class="text-slate-600 text-sm sm:text-base mb-6">Je bent veilig aangekomen in Londen!</p>
@@ -145,32 +145,32 @@
   </div>
 
   <script>
-    // Exacte bestandsnamen
+    // Data met de correcte, werkende foto's
     const fietsOnderdelen = [
-      { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
-      { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
-      { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "cranck met pedaal.png" },
-      { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "standaard.png" },
-      { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
-      { nl: "de reflector met geïntegreerd achterlicht", fr: "le réflecteur avec feu arrière", en: "the reflector with taillight", foto: "reflector en geïntegreerd achterlicht.png" },
-      { nl: "de reflector met geïntegreerd voorlicht", fr: "le réflecteur avec phare", en: "the reflector with headlight", foto: "reflector met geïntegreerd koplamp.png" },
-      { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "fietsbel.png" },
-      { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", foto: "remgreep.png" },
-      { nl: "de stuurpen met balhoofd", fr: "la potence avec jeu de direction", en: "the stem with headset", foto: "stuurpen met balhoofd.png" },
-      { nl: "het multigripstuur", fr: "le guidon multipositions", en: "the multi-grip handlebar", foto: "multigripstuur.png" },
-      { nl: "het zadel met zadelpen", fr: "la selle avec tige de selle", en: "the saddle with seatpost", foto: "zadel en zadelpen.png" },
-      { nl: "het frame met voorvork", fr: "le cadre avec fourche avant", en: "the frame with front fork", foto: "frame en voorvork.png" },
-      { nl: "de voortandwielen", fr: "les plateaux", en: "the chainrings", foto: "voortandwielen en crank.png" },
-      { nl: "de voorderailleur", fr: "le dérailleur avant", en: "the front derailleur", foto: "voorderailleur.png" },
-      { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
-      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "derailleur.jpg" },
-      { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
-      { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
-      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.jpg" },
-      { nl: "de velg voor achterwiel", fr: "la jante pour roue arrière", en: "the rear wheel rim", foto: "velg voor achterwiel met freewheel.png" },
-      { nl: "de velg voor voorwiel", fr: "la jante pour roue avant", en: "the front wheel rim", foto: "velg voor voorwiel.jpg" },
-      { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
-      { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" }
+      { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Bicycle_dynamo_closeup.jpg/800px-Bicycle_dynamo_closeup.jpg" },
+      { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Bottom_bracket_parts.jpg/800px-Bottom_bracket_parts.jpg" },
+      { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Square-taper-crankset.jpg/800px-Square-taper-crankset.jpg" },
+      { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/A_bicycle_kickstand.jpg/800px-A_bicycle_kickstand.jpg" },
+      { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Front_fender_mudguard.jpg/800px-Front_fender_mudguard.jpg" },
+      { nl: "de reflector met geïntegreerd achterlicht", fr: "le réflecteur avec feu arrière", en: "the reflector with taillight", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Rear-bicycle-reflector.jpg/800px-Rear-bicycle-reflector.jpg" },
+      { nl: "de reflector met geïntegreerd voorlicht", fr: "le réflecteur avec phare", en: "the reflector with headlight", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Headlight_of_a_classic_roadsters_by_busch_and_mueller.jpg/800px-Headlight_of_a_classic_roadsters_by_busch_and_mueller.jpg" },
+      { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Bicycle_bell_1.jpg/800px-Bicycle_bell_1.jpg" },
+      { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Brake_lever.JPG/800px-Brake_lever.JPG" },
+      { nl: "de stuurpen met balhoofd", fr: "la potence avec jeu de direction", en: "the stem with headset", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Headset_exploded_diagram_%28Dutch%29.jpg/800px-Headset_exploded_diagram_%28Dutch%29.jpg" },
+      { nl: "het multigripstuur", fr: "le guidon multipositions", en: "the multi-grip handlebar", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Multi-grip_handlebar.jpg/800px-Multi-grip_handlebar.jpg" },
+      { nl: "het zadel met zadelpen", fr: "la selle avec tige de selle", en: "the saddle with seatpost", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Seat_post_head.jpg/800px-Seat_post_head.jpg" },
+      { nl: "het frame met voorvork", fr: "le cadre avec fourche avant", en: "the frame with front fork", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Bicycle_frame_diagram_with_fork.png/800px-Bicycle_frame_diagram_with_fork.png" },
+      { nl: "de voortandwielen", fr: "les plateaux", en: "the chainrings", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Triples_Crankset.jpg/800px-Triples_Crankset.jpg" },
+      { nl: "de voorderailleur", fr: "le dérailleur avant", en: "the front derailleur", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Deraileur_Sram_A_H%28cropped%29.jpg/800px-Deraileur_Sram_A_H%28cropped%29.jpg" },
+      { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Bicycle_chain_closeup.jpg/800px-Bicycle_chain_closeup.jpg" },
+      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Achterderailleur_Racefiets.jpg/800px-Achterderailleur_Racefiets.jpg" },
+      { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Bicycle-spoke-nipples.jpg/800px-Bicycle-spoke-nipples.jpg" },
+      { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Bicycle_hub_front_%28exploded%29.jpg/800px-Bicycle_hub_front_%28exploded%29.jpg" },
+      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Bicycle_freewheel_%28exploded%29.jpg/800px-Bicycle_freewheel_%28exploded%29.jpg" },
+      { nl: "de velg voor achterwiel", fr: "la jante pour roue arrière", en: "the rear wheel rim", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Rear_derailleur_and_cassette.jpg/800px-Rear_derailleur_and_cassette.jpg" },
+      { nl: "de velg voor voorwiel", fr: "la jante pour roue avant", en: "the front wheel rim", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Front_wheel_%28Dutch%29.jpg/800px-Front_wheel_%28Dutch%29.jpg" },
+      { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Presta_Schrader_Dunlop_valves_%28side_view%29.jpg/800px-Presta_Schrader_Dunlop_valves_%28side_view%29.jpg" },
+      { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Pomp_bicycle_on_frame.jpg/800px-Pomp_bicycle_on_frame.jpg" }
     ];
 
     const verhalen = {
@@ -313,7 +313,6 @@
     }
 
     function triggerVraagAnimatie() {
-      // Reset animatie class
       UI.animatieWrapper.classList.remove('animate-fade-in-up');
       void UI.animatieWrapper.offsetWidth; // trigger reflow
       UI.animatieWrapper.classList.add('animate-fade-in-up');
@@ -414,7 +413,6 @@
           UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900');
           UI.fbAntwoord.innerHTML = `<strong>${randomAanmoediging}</strong> Helemaal juist!`;
           
-          // Mini confetti effectje op het scherm!
           if (typeof confetti === 'function') {
             confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
           }
@@ -422,8 +420,7 @@
           UI.fbAntwoord.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
           UI.fbAntwoord.innerHTML = `🔧 <strong>Lekke band!</strong> Het juiste antwoord is: <br><span class="text-lg font-black mt-1 inline-block">${deOplossing}</span>`;
           
-          // Shake animatie bij een fout antwoord
-          void UI.fbAntwoord.offsetWidth; // trigger reflow
+          void UI.fbAntwoord.offsetWidth; 
           UI.fbAntwoord.classList.add('animate-shake');
         }
         
