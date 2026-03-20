@@ -3,31 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Grote Fiets & Taal Quiz - Chromebook Editie</title>
+  <title>De Grote Fiets & Taal Quiz - Avontuur Editie</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     /* Zorgt ervoor dat we de volledige hoogte gebruiken, zonder globale scrollbalk */
     body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
     
-    .bg-be { background: linear-gradient(to right, rgba(0,0,0,0.02), rgba(253,216,53,0.05), rgba(229,57,53,0.05)); }
-    .bg-fr { background: linear-gradient(to right, rgba(30,136,229,0.05), rgba(255,255,255,0.05), rgba(229,57,53,0.05)); }
-    .bg-gb { background: linear-gradient(to right, rgba(30,136,229,0.05), rgba(229,57,53,0.05), rgba(255,255,255,0.05)); }
+    /* Vlag-achtergronden voor sfeer (heel zacht maar kleurrijker) */
+    .bg-be { background: linear-gradient(to right, rgba(0,0,0,0.02), rgba(253,216,53,0.08), rgba(229,57,53,0.08)); }
+    .bg-fr { background: linear-gradient(to right, rgba(30,136,229,0.08), rgba(255,255,255,0.08), rgba(229,57,53,0.08)); }
+    .bg-gb { background: linear-gradient(to right, rgba(30,136,229,0.08), rgba(229,57,53,0.08), rgba(255,255,255,0.08)); }
     
     .progress-bar-fill { transition: width 0.4s ease-out; }
     .btn-active-state { transform: scale(0.97); }
     
     /* Zorgt voor een soepele scroll binnen de content-area als dat uitzonderlijk toch nodig is */
     #scroll-container { scrollbar-width: thin; }
+    
+    /* Extra speelse elementen */
+    .answ-btn-hover:hover { transform: translateY(-1px); border-color: #3b82f6; }
   </style>
 </head>
-<body id="body-bg" class="flex justify-center items-center sm:p-4">
+<body id="body-bg" class="flex justify-center items-center sm:p-4 bg-be">
 
   <div class="w-full max-w-3xl h-full sm:h-[95vh] bg-white sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative">
     
     <div id="start-scherm" class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 text-center bg-slate-50 overflow-y-auto">
-      <div class="text-6xl mb-4 animate-bounce">🚴‍♂️💨</div>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4">De Pech-Onderweg Tocht</h1>
+      <div class="text-7xl mb-4 animate-bounce">🚴‍♂️💨</div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">De Pech-Onderweg Tocht</h1>
       <div class="text-slate-600 font-medium mb-6 w-full max-w-md text-left bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500 text-sm sm:text-base">
         <p class="mb-3">Ga mee op een epische fietstocht door 3 landen:</p>
         <div class="flex items-center space-x-3 mb-2"><span>🇧🇪</span> <strong>België</strong> (NL)</div>
@@ -35,17 +39,17 @@
         <div class="flex items-center space-x-3 mb-3"><span>🇬🇧</span> <strong>Engeland</strong> (EN)</div>
         <p class="text-xs sm:text-sm bg-blue-50 p-2 rounded text-blue-800">💡 <strong>Tip:</strong> Soms kies je een woord, soms een foto, soms Waar/Niet Waar.</p>
       </div>
-      <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 sm:py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105">
+      <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 sm:py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95">
         Start het Avontuur!
       </button>
     </div>
 
     <div id="game-ui" class="hidden flex-col h-full w-full">
       
-      <div class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10">
+      <div id="game-header" class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors">
         <div class="flex justify-between items-center mb-1 px-1">
           <div class="flex items-center space-x-2">
-            <span id="land-icoon" class="text-2xl">🇧🇪</span>
+            <span id="land-icoon" class="text-3xl">🇧🇪</span>
             <span class="font-bold text-sm hidden sm:block" id="land-naam">België</span>
           </div>
           <div class="flex items-center space-x-4">
@@ -54,7 +58,7 @@
               <div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-blue-300 leading-none">00:00</div>
             </div>
             <div class="text-center">
-              <div class="text-[10px] text-slate-400 uppercase font-bold">Score</div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold leading-none">Score⭐</div>
               <div id="score-weergave" class="text-base sm:text-lg font-bold text-green-400 leading-none">0</div>
             </div>
           </div>
@@ -67,15 +71,15 @@
         </div>
       </div>
 
-      <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-24">
+      <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-24 relative">
         
-        <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl">
+        <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative">
           </div>
 
-        <div id="vraag-container" class="mb-3 w-full max-w-2xl">
+        <div id="vraag-container" class="mb-3 w-full max-w-2xl relative">
           </div>
 
-        <div id="antwoord-container" class="w-full max-w-2xl mb-2">
+        <div id="antwoord-container" class="w-full max-w-2xl mb-2 relative">
           </div>
 
         <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-medium text-sm sm:text-base border-2 mt-2">
@@ -85,7 +89,7 @@
       <div class="shrink-0 p-3 sm:p-4 bg-white border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] absolute bottom-0 w-full">
         <div class="max-w-2xl mx-auto flex justify-between items-center space-x-4">
            <div class="text-xs text-slate-400 font-mono font-bold hidden sm:block tracking-widest" id="voortgang-weergave">0/72</div>
-           <button id="action-btn" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>
+           <button id="action-btn" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all cursor-not-allowed" disabled>
              Kies een antwoord
            </button>
         </div>
@@ -114,7 +118,7 @@
   </div>
 
   <script>
-    // Data met de correcte .png en .jpg extensies zoals ze effectief in jouw bestanden staan
+    // Data met de correcte .png extensies zoals ze effectief in jouw bestanden staan
     const fietsOnderdelen = [
       { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
       { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
@@ -132,10 +136,10 @@
       { nl: "de voortandwielen", fr: "les plateaux", en: "the chainrings", foto: "voortandwielen en crank.png" },
       { nl: "de voorderailleur", fr: "le dérailleur avant", en: "the front derailleur", foto: "voorderailleur.png" },
       { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
-      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "derailleur.jpg" },
+      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "derailleur.png" },
       { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
       { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
-      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.jpg" },
+      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.png" },
       { nl: "de velg voor achterwiel", fr: "la jante pour roue arrière", en: "the rear wheel rim", foto: "velg voor achterwiel met freewheel.png" },
       { nl: "de velg voor voorwiel", fr: "la jante pour roue avant", en: "the front wheel rim", foto: "velg voor voorwiel.jpg" },
       { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
@@ -163,7 +167,7 @@
       antwoordContainer: document.getElementById('antwoord-container'), fbAntwoord: document.getElementById('feedback-antwoord'), 
       btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), 
       eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd'),
-      scrollContainer: document.getElementById('scroll-container')
+      scrollContainer: document.getElementById('scroll-container'), gameHeader: document.getElementById('game-header')
     };
 
     function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
@@ -172,9 +176,9 @@
     function genereerSpeelLijst() {
       let lijst = [];
       const landen = [
-        { code: 'en', vlag: '🇬🇧', naam: 'Engeland', bg: 'bg-gb' },
-        { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', bg: 'bg-fr' },
-        { code: 'nl', vlag: '🇧🇪', naam: 'België', bg: 'bg-be' }
+        { code: 'en', vlag: '🇬🇧', naam: 'Engeland', bg: 'bg-gb', header: 'bg-gradient-to-r from-red-600 to-blue-600' },
+        { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', bg: 'bg-fr', header: 'bg-gradient-to-r from-blue-600 to-red-600' },
+        { code: 'nl', vlag: '🇧🇪', naam: 'België', bg: 'bg-be', header: 'bg-gradient-to-r from-slate-900 via-yellow-400 to-red-600' }
       ];
 
       landen.forEach(land => {
@@ -201,7 +205,7 @@
             while(opties.size < 3) opties.add(getRandomItem(fietsOnderdelen));
             vraagObj.opties = shuffle(Array.from(opties));
           }
-          lijst.push(vraagObj);
+          lijst.push(vraObj);
         });
       });
       return lijst;
@@ -268,6 +272,7 @@
       let q = speelLijst.pop(); state.currentProblem = q;
 
       UI.bodyBg.className = `flex justify-center items-center sm:p-4 ${q.land.bg}`;
+      UI.gameHeader.className = `p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors ${q.land.header} text-white`;
       UI.landIcoon.textContent = q.land.vlag; UI.landNaam.textContent = q.land.naam;
 
       UI.verhaalTekst.innerHTML = q.vraagTekst;
@@ -284,7 +289,7 @@
         let grid = document.createElement('div'); grid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2";
         q.opties.forEach(opt => {
           let btn = document.createElement('button');
-          btn.className = "antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-2 sm:p-3 rounded-xl hover:bg-blue-50 hover:border-blue-300 text-left text-sm shadow-sm";
+          btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-2 sm:p-3 rounded-xl hover:bg-blue-50 text-left text-sm shadow-sm transition-all";
           btn.textContent = opt; btn.onclick = () => selectAnswer(opt, btn); grid.appendChild(btn);
         });
         UI.antwoordContainer.appendChild(grid);
@@ -298,21 +303,21 @@
         let grid = document.createElement('div'); grid.className = "grid grid-cols-2 gap-2 mt-2";
         
         let btnWaar = document.createElement('button');
-        btnWaar.className = "antwoord-btn bg-white border-2 border-slate-200 text-green-600 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm";
+        btnWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-green-600 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
         btnWaar.innerHTML = "✅ WAAR"; btnWaar.onclick = () => selectAnswer('waar', btnWaar);
         
         let btnNietWaar = document.createElement('button');
-        btnNietWaar.className = "antwoord-btn bg-white border-2 border-slate-200 text-red-500 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm";
+        btnNietWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-red-500 font-black p-3 sm:p-4 rounded-xl text-base shadow-sm transition-all";
         btnNietWaar.innerHTML = "❌ NIET WAAR"; btnNietWaar.onclick = () => selectAnswer('niet-waar', btnNietWaar);
 
         grid.appendChild(btnWaar); grid.appendChild(btnNietWaar); UI.antwoordContainer.appendChild(grid);
       }
       else if (q.type === 'mc-image') {
-        UI.vraagContainer.innerHTML = `<div class="text-center bg-blue-50 border border-blue-200 text-blue-900 font-black text-lg sm:text-xl p-3 rounded-xl shadow-inner mb-2">"${q.correctOnderdeel[q.land.code]}"</div>`;
+        UI.vraagContainer.innerHTML = `<div class="text-center bg-blue-50 border border-blue-200 text-blue-900 font-black text-lg sm:text-xl p-3 rounded-xl shadow-inner mb-2 relative"><span class="absolute top-0 right-0 text-3xl opacity-20">?</span>"${q.correctOnderdeel[q.land.code]}"</div>`;
         let grid = document.createElement('div'); grid.className = "grid grid-cols-3 gap-2";
         q.opties.forEach(opt => {
           let btn = document.createElement('button');
-          btn.className = "antwoord-btn bg-white border-2 border-slate-200 p-2 rounded-xl hover:border-blue-400 shadow-sm h-24 flex items-center justify-center";
+          btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 p-2 rounded-xl h-24 flex items-center justify-center shadow-sm transition-all";
           btn.innerHTML = `<img src="${opt.foto}" class="max-h-full max-w-full object-contain pointer-events-none">`;
           btn.onclick = () => selectAnswer(opt[q.land.code], btn); grid.appendChild(btn);
         });
