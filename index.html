@@ -19,7 +19,7 @@
       <h1 class="text-3xl font-bold text-blue-700 mb-4">De Pech-Onderweg Fietstocht</h1>
       <div class="text-slate-600 font-medium mb-6 max-w-md text-left bg-white p-4 rounded-lg shadow-sm border border-slate-200">
         <p class="mb-2">We maken een prachtige fietstocht doorheen België, richting Frankrijk om in Calais de boot te nemen. Daarna zetten we onze tocht verder in Engeland!</p>
-        <p>Maar oei... we hebben pech onderweg. Om je fiets bij een lokale fietsenmaker te laten herstellen, moet je de onderdelen in de juiste taal kunnen aanduiden.</p>
+        <p>Maar oei... we hebben af en toe pech. Elke 'ronde' fietsen we door België (NL), Frankrijk (FR) en Engeland (EN). Om je fiets te laten herstellen, moet je de onderdelen in de juiste taal kennen.</p>
       </div>
       <button onclick="startSpel()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg uppercase text-lg w-full max-w-xs transition-transform transform hover:scale-105">
         Start de Tocht!
@@ -49,7 +49,7 @@
         <div class="flex justify-center items-center p-2 bg-white rounded-xl mb-4 shadow-sm border-2 border-slate-200 min-h-[180px] relative overflow-hidden" id="visual-container"></div>
         <div class="flex justify-center mb-4 w-full">
           <div id="box-antwoord" class="p-4 bg-white rounded-xl border-2 border-slate-200 shadow-sm w-full max-w-sm">
-            <label id="vraag-tekst" class="block text-slate-700 font-bold mb-3 text-sm text-center leading-relaxed"></label>
+            <label id="vraag-tekst" class="block text-slate-700 font-medium mb-3 text-sm text-center leading-relaxed"></label>
             <div id="mc-container" class="grid grid-cols-1 gap-2"></div>
             <div id="feedback-antwoord" class="mt-4 text-sm font-bold hidden leading-relaxed text-center"></div>
           </div>
@@ -74,7 +74,6 @@
   </div>
 
   <script>
-    // Lijst met lidwoorden én de correcte fotolinks
     const fietsOnderdelen = [
       { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
       { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
@@ -102,8 +101,31 @@
       { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" }
     ];
 
-    // GENERATOR VOOR DE 72 VRAGEN AANGEPAST AAN DE VERHAALLIJN
-    let vragenBank = [];
+    // VERHAALLIJNEN PER LAND
+    const verhalenNL = [
+      "We vertrekken vanuit België! Je kijkt je fiets nog even goed na. Welk onderdeel zie je hier in het <strong>Nederlands</strong>?",
+      "Tijdens een rit over de Vlaamse kasseien trilt er iets los. Hoe heet dit in het <strong>Nederlands</strong>?",
+      "Pauze in een Belgisch wielercafé. Je bespreekt je fiets met een andere fietser. Wat is de <strong>Nederlandse</strong> naam hiervan?",
+      "Vlak voor de Franse grens doen we nog een snelle check. Wat is dit onderdeel in het <strong>Nederlands</strong>?"
+    ];
+
+    const verhalenFR = [
+      "Bonjour la France! We naderen Calais maar hebben pech. Hoe vraag je naar dit onderdeel bij de <strong>Franse</strong> fietsenmaker?",
+      "Bij de douane in Calais moet je fiets aan de kant. De beambte wijst ernaar. Wat is de <strong>Franse</strong> vertaling hiervan?",
+      "Je staat in de haven van Calais te wachten op de boot. Iemand vraagt iets over dit onderdeel. Hoe noem je dit in het <strong>Frans</strong>?",
+      "Oeps, een Franse fietser botst bijna tegen je aan en dit onderdeel raakt beschadigd. Wat is de <strong>Franse</strong> term?"
+    ];
+
+    const verhalenEN = [
+      "Welcome to England! We fietsen nu aan de linkerkant, maar oei, problemen. Wat is de <strong>Engelse</strong> naam hiervan?",
+      "Het beroemde Engelse weer slaat toe: regen! Je zoekt een fietsenwinkel in Dover. Hoe noem je dit in het <strong>Engels</strong>?",
+      "Een behulpzame Britse fietser stopt om je te helpen. Hij wijst naar dit onderdeel. Wat is dit in het <strong>Engels</strong>?",
+      "De laatste loodjes van de tocht! Nog één reparatie voor we in Londen zijn. Wat is de juiste <strong>Engelse</strong> vertaling?"
+    ];
+
+    function getRandomTekst(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
 
     function haalOpties(taal, correctAntwoord) {
       let opties = new Set();
@@ -115,39 +137,13 @@
       return Array.from(opties).sort(() => Math.random() - 0.5); 
     }
 
-    fietsOnderdelen.forEach(deel => {
-      let visueleHTML = `<img src="${deel.foto}" alt="Fiets onderdeel" class="max-h-40 w-full object-contain mx-auto rounded-lg">`;
-
-      // 1. Vraag in het Nederlands (België)
-      vragenBank.push({
-        visueel: visueleHTML,
-        hint: `🇧🇪 Pech in België!`,
-        vraag: `Je fiets is stuk tijdens het eerste deel van de tocht. Welk onderdeel is dit in het <strong>Nederlands</strong>?`,
-        antwoord: deel.nl,
-        opties: haalOpties('nl', deel.nl),
-        feedback: `Correct! Dit is ${deel.nl}.`
-      });
-
-      // 2. Vraag in het Frans (Frankrijk / Calais)
-      vragenBank.push({
-        visueel: visueleHTML,
-        hint: `🇫🇷 Pech in Frankrijk!`,
-        vraag: `Oh nee, panne vlakbij Calais! Je hebt dit onderdeel (<strong>${deel.nl}</strong>) nodig. Wat vraag je aan de Franse fietsenmaker?`,
-        antwoord: deel.fr,
-        opties: haalOpties('fr', deel.fr),
-        feedback: `De juiste term is inderdaad <strong>${deel.fr}</strong>.`
-      });
-
-      // 3. Vraag in het Engels (Engeland)
-      vragenBank.push({
-        visueel: visueleHTML,
-        hint: `🇬🇧 Pech in Engeland!`,
-        vraag: `Je bent met de boot overgestoken en fietst in Engeland. Hoe noem je dit onderdeel (<strong>${deel.nl}</strong>) in het Engels?`,
-        antwoord: deel.en,
-        opties: haalOpties('en', deel.en),
-        feedback: `Goed zo! De Engelse term is <strong>${deel.en}</strong>.`
-      });
-    });
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
 
     let state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedMC: null };
     let speelLijst = []; 
@@ -166,20 +162,50 @@
       eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd')
     };
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
     window.startSpel = function() {
       state = { score: 0, vraagNummer: 0, isAnswered: false, currentProblem: null, selectedMC: null };
       verstrekenTijd = 0;
       
-      speelLijst = vragenBank.map((_, i) => i); 
-      speelLijst = shuffleArray(speelLijst);
+      // We maken eerst 3 aparte lijsten, en schudden de volgorde van de foto's per land
+      let lijstNL = shuffleArray([...fietsOnderdelen]);
+      let lijstFR = shuffleArray([...fietsOnderdelen]);
+      let lijstEN = shuffleArray([...fietsOnderdelen]);
+      
+      speelLijst = [];
+      
+      // We weven de lijsten door elkaar: 1x NL, 1x FR, 1x EN... 24 keer lang!
+      for(let i=0; i<fietsOnderdelen.length; i++) {
+        // Vraag NL
+        speelLijst.push({
+          visueel: `<img src="${lijstNL[i].foto}" alt="Fiets onderdeel" class="max-h-40 w-full object-contain mx-auto rounded-lg">`,
+          hint: `🇧🇪 Etape ${i+1}: Pech in België`,
+          vraag: getRandomTekst(verhalenNL),
+          antwoord: lijstNL[i].nl,
+          opties: haalOpties('nl', lijstNL[i].nl),
+          feedback: `Correct! Dit is <strong>${lijstNL[i].nl}</strong>.`
+        });
+        // Vraag FR
+        speelLijst.push({
+          visueel: `<img src="${lijstFR[i].foto}" alt="Fiets onderdeel" class="max-h-40 w-full object-contain mx-auto rounded-lg">`,
+          hint: `🇫🇷 Etape ${i+1}: Pech in Frankrijk`,
+          vraag: getRandomTekst(verhalenFR),
+          antwoord: lijstFR[i].fr,
+          opties: haalOpties('fr', lijstFR[i].fr),
+          feedback: `De juiste term is <strong>${lijstFR[i].fr}</strong>.`
+        });
+        // Vraag EN
+        speelLijst.push({
+          visueel: `<img src="${lijstEN[i].foto}" alt="Fiets onderdeel" class="max-h-40 w-full object-contain mx-auto rounded-lg">`,
+          hint: `🇬🇧 Etape ${i+1}: Pech in Engeland`,
+          vraag: getRandomTekst(verhalenEN),
+          antwoord: lijstEN[i].en,
+          opties: haalOpties('en', lijstEN[i].en),
+          feedback: `Good job! Het is <strong>${lijstEN[i].en}</strong>.`
+        });
+      }
+      
+      // Omkeren zodat pop() begint bij de eerste vraag (NL)
+      speelLijst.reverse();
 
       UI.startScherm.classList.add('hidden');
       UI.gameUI.classList.remove('hidden');
@@ -226,7 +252,7 @@
 
     function updateScoreUI() {
       UI.scoreWeergave.textContent = state.score;
-      UI.voortgangWeergave.textContent = `${state.vraagNummer}/${vragenBank.length}`;
+      UI.voortgangWeergave.textContent = `${state.vraagNummer}/72`;
     }
 
     function startNieuweVraag() {
@@ -240,8 +266,7 @@
       state.selectedMC = null;
       updateScoreUI();
       
-      let vraagIndex = speelLijst.pop();
-      let q = vragenBank[vraagIndex];
+      let q = speelLijst.pop();
       state.currentProblem = q;
 
       UI.formuleHint.innerHTML = q.hint;
