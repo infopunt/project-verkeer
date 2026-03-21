@@ -35,8 +35,13 @@
             <div class="absolute -top-10 -left-6 text-6xl rotate-[-10deg] drop-shadow-md">🚴‍♂️</div>
             <div class="absolute -bottom-6 -right-4 text-5xl rotate-[15deg] drop-shadow-md">🔧</div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mt-2">Roadtrip Alert! 🌍</h2>
-            <p class="mb-3">Jij en je maten pakken de fiets voor een epische roadtrip! Vertrekken in <strong>België</strong>, via <strong>Frankrijk</strong> naar <strong>Engeland</strong>. Klinkt als de ultieme vrijheid, toch? 🚢💨</p>
-            <p class="mb-5">Maar voor we de grens oversteken, moeten we zeker zijn dat we onderweg niet crashen, uithongeren of met rammelende fietsen staan. Tijd voor een grondige <strong>Check-Up</strong>!</p>
+            
+            <p class="mb-3">Jij en je <strong>vrienden</strong> pakken de fiets voor een epische roadtrip! Het masterplan? Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry pakken naar de krijtrotsen in <strong>Engeland</strong>. Klinkt als de ultieme vrijheid, toch? 🚢💨</p>
+            
+            <p class="mb-3">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet bepaald 'Tour de France'-proof. Onderweg vliegen de kettingen eraf, rammelen de spatborden en sta je wekelijks met een lekke band. 🤦‍♂️ Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
+            
+            <p class="mb-5">Voor we aan dit avontuur beginnen en de grens oversteken, moeten we ook zeker zijn dat we onderweg niet crashen, uithongeren of met nog meer brokken staan. Tijd voor een grondige <strong>Check-Up</strong>!</p>
+            
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
                 <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">De Route:</p>
                 <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🛠️</span> <span><strong>Voorbereiding:</strong> De Check-Up</span></div>
@@ -143,11 +148,11 @@
         type: 'info', thema: 'Ergonomie (Zithouding) 📏', 
         inhoud: `<strong>Voorkom blessures met een goede afstelling:</strong><br>
         🪑 <em>Zadelhoogte:</em> Zet je hak op het pedaal in de laagste stand. Je been moet nu <strong>volledig gestrekt</strong> zijn.<br>
-        🚲 <em>Stuur:</em> Voor een comfortabele roadtrip staat je stuur het best iets <strong>hoger dan of gelijk aan</strong> je zadel. Dit ontlast je nek en rug!`
+        🚲 <em>Stuur:</em> Voor een comfortabele roadtrip staat je stuur het best iets <strong>hoger dan of gelijk aan</strong> je zadel. Zorg er ook voor dat het <strong>niet te ver naar voren</strong> staat, anders overbelast je je nek en schouders!`
       },
       { type: 'mc-prep', vraagTekst: "Hoe weet je dat je zadel op de perfecte hoogte staat?", antwoord: "Als je been gestrekt is met je hak op het laagste pedaal", opties: ["Als je met beide voeten plat op de grond kan", "Als je knieën je stuur raken", "Als je been gestrekt is met je hak op het laagste pedaal", "Als je stuur lager staat dan je zadel"] },
       { type: 'mc-prep', vraagTekst: "Wat is een veelvoorkomend gevolg van een te laag zadel?", antwoord: "Pijn aan de knieën en minder kracht", opties: ["Pijn aan de knieën en minder kracht", "Pijn in de nek", "Je remmen werken minder goed", "Je fietst veel sneller"] },
-      { type: 'mc-prep', vraagTekst: "Hoe zet je je stuur het best voor een lange, relaxte roadtrip?", antwoord: "Iets hoger dan of gelijk aan je zadel", opties: ["Zo laag mogelijk (zoals een wielrenner)", "Iets hoger dan of gelijk aan je zadel", "Lager dan je voorvork", "Maakt helemaal niets uit"] },
+      { type: 'mc-prep', vraagTekst: "Hoe zet je je stuur het best voor een lange, relaxte roadtrip?", antwoord: "Iets hoger dan/gelijk aan je zadel, en niet te ver naar voren", opties: ["Zo laag en ver mogelijk (zoals een wielrenner)", "Iets hoger dan/gelijk aan je zadel, en niet te ver naar voren", "Lager dan je voorvork", "Maakt helemaal niets uit"] },
 
       {
         type: 'info', thema: 'Veiligheid & Kledij 🦺', 
@@ -238,7 +243,7 @@
       
       // 0. VOORBEREIDING
       let prepItems = [...theorieData];
-      prepItems.reverse().forEach(item => { // Reverse for popping logic
+      prepItems.reverse().forEach(item => { 
         let q = { ...item, land: landenData[0] };
         etappes[0].push(q);
       });
@@ -330,7 +335,7 @@
       let q = etappesLijst[state.huidigeEtappeIndex].pop(); 
       state.currentProblem = q; state.isAnswered = false; state.selectedAnswer = null; 
       
-      if (q.type !== 'info') state.algemeenVraagNummer++; // Only count actual questions for progress
+      if (q.type !== 'info') state.algemeenVraagNummer++; 
       updateVoortgang();
 
       UI.bodyBg.className = `flex justify-center items-center sm:p-4 bg-gradient-to-br from-slate-100 to-slate-200`;
@@ -375,7 +380,6 @@
         state.score++; UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900'); UI.fbAntwoord.innerHTML = `<strong>${getRandomItem(aanmoedigingen)}</strong> Helemaal juist!`;
         if (typeof confetti === 'function') confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
       } else {
-        // Safe fallback for prep questions lacking 'correctOnderdeel' or 'foto'
         let img = q.correctOnderdeel ? q.correctOnderdeel.foto : '';
         let naam = q.correctOnderdeel ? q.correctOnderdeel.nl : q.thema || 'Theorie';
         state.fouteAntwoorden.push({ vraagObject: q, land: q.land.naam, vlag: q.land.vlag, foto: img, onderdeelNl: naam, jouwAntwoord: gekozen, juisteAntwoord: q.antwoord });
@@ -391,7 +395,7 @@
     // ----- RENDER FUNCTIES -----
     function renderInfo(q) {
       UI.vraagContainer.innerHTML = `<div class="bg-teal-50 border-l-4 border-teal-500 p-4 sm:p-6 rounded-r-xl shadow-inner text-left text-slate-700 leading-relaxed text-sm sm:text-base">${q.inhoud}</div>`;
-      state.isAnswered = true; // Auto answer for info screens
+      state.isAnswered = true; 
       UI.btnActie.disabled = false; UI.btnActie.textContent = 'Begrepen, let\'s go! 🚀'; UI.btnActie.className = 'flex-grow bg-teal-600 hover:bg-teal-700 text-white font-black py-3 px-6 rounded-xl shadow-lg uppercase tracking-wider text-sm sm:text-base transition-transform active:scale-95 animate-bounce';
     }
 
