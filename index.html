@@ -27,6 +27,18 @@
 </head>
 <body id="body-bg" class="flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100">
 
+  <div id="spiek-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-sm flex justify-center items-center p-2 sm:p-6 transition-opacity">
+    <div class="bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col overflow-hidden relative shadow-2xl border-4 border-indigo-500">
+       <div class="p-3 sm:p-4 bg-slate-800 text-white flex justify-between items-center shrink-0">
+          <h3 class="font-black text-lg sm:text-xl text-yellow-400">🚲 Spiekbriefje: Fietsonderdelen</h3>
+          <button onclick="toggleSpiekbriefje()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-md">Sluiten ❌</button>
+       </div>
+       <div class="overflow-auto p-2 bg-slate-100 flex-grow flex justify-center items-start">
+          <img src="de-onderdelen-van-de-fiets-afbeelding-21.png" alt="Onderdelen van de fiets" class="max-w-full h-auto object-contain rounded-xl shadow-sm border border-slate-300 bg-white">
+       </div>
+    </div>
+  </div>
+
   <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-slate-50/95 backdrop-blur-md">
     
     <div id="start-scherm" class="flex-grow flex flex-col h-full bg-slate-50/90 overflow-hidden relative">
@@ -40,7 +52,7 @@
             
             <p class="mb-3">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet bepaald 'Tour de France'-proof. Onderweg vliegen de kettingen eraf, rammelen de spatborden en sta je wekelijks met een lekke band. 🤦‍♂️ Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
             
-            <p class="mb-5">Voor we aan dit avontuur beginnen en de grens oversteken, moeten we ook zeker zijn dat we onderweg niet crashen, uithongeren of met nog meer brokken staan. Tijd voor een grondige <strong>Check-Up</strong>!</p>
+            <p class="mb-5">Weet je een onderdeel niet? Geen stress! Je kan tijdens de tocht altijd op het <strong>Spiekbriefje 🚲</strong> klikken om het op te zoeken. Voor we aan dit avontuur beginnen, doen we eerst een grondige <strong>Check-Up</strong>!</p>
             
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
                 <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">De Route (100 Vragen):</p>
@@ -69,8 +81,11 @@
       <div id="game-header" class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors duration-500">
         <div class="flex justify-between items-center mb-1 px-1">
           <div class="flex items-center space-x-2"><span id="land-icoon" class="text-3xl animate-pulse">🛠️</span><span class="font-bold text-sm hidden sm:block" id="land-naam">Voorbereiding</span></div>
-          <div class="flex items-center space-x-4">
-            <div class="text-center"><div class="text-[10px] text-slate-200 uppercase font-bold">Tijd</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-white leading-none">00:00</div></div>
+          <div class="flex items-center space-x-3 sm:space-x-4">
+            
+            <button onclick="toggleSpiekbriefje()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-black text-xs sm:text-sm transition-colors shadow-sm animate-pulse border border-yellow-600">Spiekbriefje 🧐</button>
+            
+            <div class="text-center hidden sm:block"><div class="text-[10px] text-slate-200 uppercase font-bold">Tijd</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-white leading-none">00:00</div></div>
             <div class="text-center"><div class="text-[10px] text-slate-200 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-bold text-yellow-300 leading-none">0</div></div>
           </div>
           <button onclick="eindigSpel(true)" class="bg-slate-700/50 hover:bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors border border-white/20">Stop</button>
@@ -129,106 +144,65 @@
   </div>
 
   <script>
+    // FUNCTIE: SPIEKBRIEFJE TONEN/VERBERGEN
+    window.toggleSpiekbriefje = function() {
+      const modal = document.getElementById('spiek-modal');
+      if(modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    };
+
     // DEEL 1: DATA (VOORBEREIDING + ONDERDELEN)
     const theorieData = [
-      // THEMA 1: M-CHECK (3)
-      {
-        type: 'info', thema: 'De M-Check 🛠️', 
-        inhoud: `<strong>Controleer je fiets in een 'M' vorm:</strong><br>
-        1️⃣ Voorwiel & Banden: Check de zijkant van je band voor de juiste bandenspanning.<br>
-        2️⃣ Stuur & Remmen: Werken ze direct?<br>
-        3️⃣ Trapas & Pedalen: Geen speling?<br>
-        4️⃣ Zadel: Staat het vast?<br>
-        5️⃣ Achterwiel & Ketting: Ligt hij strak en is hij gesmeerd?`
-      },
+      // THEMA 1: M-CHECK (3 vragen)
+      { type: 'info', thema: 'De M-Check 🛠️', inhoud: `<strong>Controleer je fiets in een 'M' vorm:</strong><br>1️⃣ Voorwiel & Banden: Check de zijkant van je band voor de juiste bandenspanning.<br>2️⃣ Stuur & Remmen: Werken ze direct?<br>3️⃣ Trapas & Pedalen: Geen speling?<br>4️⃣ Zadel: Staat het vast?<br>5️⃣ Achterwiel & Ketting: Ligt hij strak en is hij gesmeerd?` },
       { type: 'mc-prep', vraagTekst: "Waar vind je de juiste bandenspanning voor jouw fiets?", antwoord: "Op de zijkant van de buitenband", opties: ["Op het ventiel", "Op de zijkant van de buitenband", "Op de velg", "In de handleiding van je fietspomp"] },
       { type: 'mc-prep', vraagTekst: "Welke vorm volg je idealiter als je de fiets nakijkt voor vertrek?", antwoord: "De letter M", opties: ["De letter O", "De letter Z", "De letter M", "Van achter naar voor"] },
       { type: 'mc-prep', vraagTekst: "Waarom is het belangrijk om je ketting goed na te kijken?", antwoord: "Zodat hij soepel draait en er niet af valt", opties: ["Voor een betere aerodynamica", "Zodat hij soepel draait en er niet af valt", "Om roest aan het stuur te voorkomen", "Zodat je remmen beter werken"] },
 
-      // THEMA 2: ERGONOMIE (3)
-      {
-        type: 'info', thema: 'Ergonomie (Zithouding) 📏', 
-        inhoud: `<strong>Voorkom blessures met een goede afstelling:</strong><br>
-        🪑 <em>Zadelhoogte:</em> Zet je hak op het pedaal in de laagste stand. Je been moet nu <strong>volledig gestrekt</strong> zijn.<br>
-        🚲 <em>Stuur:</em> Voor een comfortabele roadtrip staat je stuur het best iets <strong>hoger dan of gelijk aan</strong> je zadel. Zorg er ook voor dat het <strong>niet te ver naar voren</strong> staat, anders overbelast je je nek en schouders!`
-      },
+      // THEMA 2: ERGONOMIE (3 vragen)
+      { type: 'info', thema: 'Ergonomie (Zithouding) 📏', inhoud: `<strong>Voorkom blessures met een goede afstelling:</strong><br>🪑 <em>Zadelhoogte:</em> Zet je hak op het pedaal in de laagste stand. Je been moet nu <strong>volledig gestrekt</strong> zijn.<br>🚲 <em>Stuur:</em> Voor een comfortabele roadtrip staat je stuur het best iets <strong>hoger dan of gelijk aan</strong> je zadel. Zorg er ook voor dat het <strong>niet te ver naar voren</strong> staat, anders overbelast je je nek en schouders!` },
       { type: 'mc-prep', vraagTekst: "Hoe weet je dat je zadel op de perfecte hoogte staat?", antwoord: "Als je been gestrekt is met je hak op het laagste pedaal", opties: ["Als je met beide voeten plat op de grond kan", "Als je knieën je stuur raken", "Als je been gestrekt is met je hak op het laagste pedaal", "Als je stuur lager staat dan je zadel"] },
       { type: 'mc-prep', vraagTekst: "Wat is een veelvoorkomend gevolg van een te laag zadel?", antwoord: "Pijn aan de knieën en minder kracht", opties: ["Pijn aan de knieën en minder kracht", "Pijn in de nek", "Je remmen werken minder goed", "Je fietst veel sneller"] },
-      { type: 'mc-prep', vraagTekst: "Hoe zet je je stuur het best voor een lange, relaxte roadtrip?", antwoord: "Iets hoger dan/gelijk aan je zadel, en niet te ver naar voren", opties: ["Zo laag en ver mogelijk (zoals een wielrenner)", "Iets hoger dan/gelijk aan je zadel, en niet te ver naar voren", "Lager dan je voorvork", "Maakt helemaal niets uit"] },
+      { type: 'mc-prep', vraagTekst: "Hoe zet je je stuur het best voor een lange, relaxte roadtrip?", antwoord: "Iets hoger dan/gelijk aan je zadel, and not too ver naar voren", opties: ["Zo laag en ver mogelijk (zoals een wielrenner)", "Iets hoger dan/gelijk aan je zadel, and not too ver naar voren", "Lager dan je voorvork", "Maakt helemaal niets uit"] },
 
-      // THEMA 3: VEILIGHEID (3)
-      {
-        type: 'info', thema: 'Veiligheid & Kledij 🦺', 
-        inhoud: `<strong>Zien en gezien worden:</strong><br>
-        ⛑️ <em>Helm:</em> Vervang hem na elke harde val, of na 5 jaar (het materiaal veroudert).<br>
-        💡 <em>In het donker:</em> Verplichte lichten (wit voor, rood achter) én reflectoren.<br>
-        👕 <em>Kledij:</em> Fluorescerend geel/groen valt overdag op, <strong>reflecterende strips</strong> vallen 's nachts op!`
-      },
+      // THEMA 3: VEILIGHEID (3 vragen)
+      { type: 'info', thema: 'Veiligheid & Kledij 🦺', inhoud: `<strong>Zien en gezien worden:</strong><br>⛑️ <em>Helm:</em> Vervang hem na elke harde val, of na 5 jaar (het materiaal veroudert).<br>💡 <em>In het donker:</em> Verplichte lichten (wit voor, rood achter) én reflectoren.<br>👕 <em>Kledij:</em> Fluorescerend geel/groen valt overdag op, <strong>reflecterende strips</strong> vallen 's nachts op!` },
       { type: 'mc-prep', vraagTekst: "Wanneer móét je een fietshelm absoluut vervangen?", antwoord: "Na een harde val of crash", opties: ["Als hij nat is geworden door de regen", "Na een harde val of crash", "Elk jaar", "Als de kleur vervaagd is"] },
       { type: 'mc-prep', vraagTekst: "Wat is wettelijk verplicht als je in het donker fietst?", antwoord: "Voorlicht, achterlicht en reflectoren", opties: ["Enkel een fluohesje", "Voorlicht, achterlicht en reflectoren", "Een zaklamp vasthouden", "Enkel een rood licht vooraan"] },
       { type: 'mc-prep', vraagTekst: "Welke kledij is het meest veilig in het pikdonker?", antwoord: "Kledij met reflecterende strips", opties: ["Volledig witte kledij", "Een zwarte jas", "Kledij met reflecterende strips", "Kledij met veel felle kleuren (zonder reflectie)"] },
 
-      // THEMA 4: SPORTVOEDING (3)
-      {
-        type: 'info', thema: 'Sportvoeding (> 2 uur) 🍌', 
-        inhoud: `<strong>Eten is brandstof voor je spieren:</strong><br>
-        🍝 <em>Vóór de rit:</em> Stapel koolhydraten (bijv. pasta de avond ervoor).<br>
-        🍌 <em>Tijdens de rit:</em> Snelle suikers! Eet een banaan, energiereep of drink isotone sportdrank.<br>
-        🥛 <em>Na de rit:</em> Eiwitten voor spierherstel (bijv. chocomelk of een eiwitshake)!`
-      },
+      // THEMA 4: SPORTVOEDING (3 vragen)
+      { type: 'info', thema: 'Sportvoeding (> 2 uur) 🍌', inhoud: `<strong>Eten is brandstof voor je spieren:</strong><br>🍝 <em>Vóór de rit:</em> Stapel koolhydraten (bijv. pasta de avond ervoor).<br>🍌 <em>Tijdens de rit:</em> Snelle suikers! Eet een banaan, energiereep of drink isotone sportdrank.<br>🥛 <em>Na de rit:</em> Eiwitten voor spierherstel (bijv. chocomelk of een eiwitshake)!` },
       { type: 'mc-prep', vraagTekst: "Wat is de beste maaltijd de avond voor een zware, lange fietstocht?", antwoord: "Een maaltijd rijk aan koolhydraten (zoals pasta)", opties: ["Een zware fastfood hamburger", "Een maaltijd rijk aan koolhydraten (zoals pasta)", "Enkel een kleine salade", "Helemaal niets eten"] },
       { type: 'mc-prep', vraagTekst: "Wat eet je het best TĲDENS het fietsen voor snelle energie?", antwoord: "Een banaan of energiereep", opties: ["Een banaan of energiereep", "Een stuk kaas", "Een zakje chips", "Een boterham met pindakaas"] },
       { type: 'mc-prep', vraagTekst: "Wat heeft je lichaam direct NA het sporten vooral nodig om te herstellen?", antwoord: "Eiwitten (bijv. uit chocomelk of kwark)", opties: ["Vetrijke voeding", "Enkel water", "Eiwitten (bijv. uit chocomelk of kwark)", "Zout"] },
 
-      // --- NIEUWE THEMA'S (4 x 4 = 16 vragen) ---
-      
-      // THEMA 5: ROUTE & NAVIGATIE (4)
-      {
-        type: 'info', thema: 'Route & Navigatie 🗺️', 
-        inhoud: `<strong>Verdwaal niet in Europa:</strong><br>
-        🚴‍♀️ Gebruik in België en Nederland de <strong>fietsknooppunten</strong> (groen-witte bordjes).<br>
-        🌍 Voor grensoverschrijdende trips zijn er de <strong>EuroVelo routes</strong>.<br>
-        🏞️ Vermijd grote autowegen. <strong>Jaagpaden</strong> (naast rivieren en kanalen) zijn ideaal: plat, veilig en autovrij!`
-      },
+      // THEMA 5: ROUTE & NAVIGATIE (4 vragen)
+      { type: 'info', thema: 'Route & Navigatie 🗺️', inhoud: `<strong>Verdwaal niet in Europa:</strong><br>🚴‍♀️ Gebruik in België en Nederland de <strong>fietsknooppunten</strong> (groen-witte bordjes).<br>🌍 Voor grensoverschrijdende trips zijn er de <strong>EuroVelo routes</strong>.<br>🏞️ Vermijd grote autowegen. <strong>Jaagpaden</strong> (naast rivieren en kanalen) zijn ideaal: plat, veilig en autovrij!` },
       { type: 'mc-prep', vraagTekst: "Wat is een EuroVelo route?", antwoord: "Een lange afstandsfietsroute door Europa", opties: ["Een racecircuit in Frankrijk", "Een lange afstandsfietsroute door Europa", "Een app om je snelheid te meten", "Een route speciaal voor elektrische fietsen"] },
       { type: 'mc-prep', vraagTekst: "Waarom fiets je beter langs jaagpaden dan langs de kortste autoweg?", antwoord: "Het is veiliger, platter en je hebt geen last van auto's", opties: ["Het is veiliger, platter en je hebt geen last van auto's", "Je mag er veel sneller rijden", "Er zijn altijd supermarkten in de buurt", "Het is wettelijk verplicht"] },
       { type: 'mc-prep', vraagTekst: "Hoe herken je de fietsknooppunten in België meestal?", antwoord: "Aan de groen-witte of blauw-witte bordjes met nummers", opties: ["Aan de grote gele driehoeken op de weg", "Aan de groen-witte of blauw-witte bordjes met nummers", "Via rode lijnen geschilderd op straat", "Aan de knipperlichten langs het fietspad"] },
       { type: 'mc-prep', vraagTekst: "Wat is een groot voordeel van een fysieke fietsknooppuntenkaart als back-up?", antwoord: "De batterij raakt nooit leeg", opties: ["Het is lichter dan een smartphone", "De batterij raakt nooit leeg", "Het toont ook de weersverwachting", "Je kunt er muziek op luisteren"] },
 
-      // THEMA 6: OVERNACHTEN (4)
-      {
-        type: 'info', thema: 'Overnachten ⛺', 
-        inhoud: `<strong>Waar leggen we ons hoofd neer?</strong><br>
-        🚫 <em>Wildkamperen:</em> Zomaar je tent in het bos zetten is in België, Frankrijk en Engeland <strong>meestal verboden</strong> (behalve op specifieke bivakzones).<br>
-        🛏️ <em>Jeugdherbergen:</em> Handig voor een comfortabel bed, een warme douche én om je kleren te drogen na een regendag.<br>
-        🏕️ <em>Campings:</em> Boek op voorhand als je met een groep bent, zeker in de zomer!`
-      },
+      // THEMA 6: OVERNACHTEN (4 vragen)
+      { type: 'info', thema: 'Overnachten ⛺', inhoud: `<strong>Waar leggen we ons hoofd neer?</strong><br>🚫 <em>Wildkamperen:</em> Zomaar je tent in het bos zetten is in België, Frankrijk en Engeland <strong>meestal verboden</strong> (behalve op specifieke bivakzones).<br>🛏️ <em>Jeugdherbergen:</em> Handig voor een comfortabel bed, een warme douche én om je kleren te drogen na een regendag.<br>🏕️ <em>Campings:</em> Boek op voorhand als je met een groep bent, zeker in de zomer!` },
       { type: 'mc-prep', vraagTekst: "Mag je in België, Frankrijk of Engeland zomaar overal je tent opzetten (wildkamperen)?", antwoord: "Nee, dat is in de meeste gebieden verboden", opties: ["Ja, overal zolang je opruimt", "Nee, dat is in de meeste gebieden verboden", "Ja, maar enkel in de winter", "Enkel als je jonger dan 18 bent"] },
       { type: 'mc-prep', vraagTekst: "Wat is een groot voordeel van overnachten in een jeugdherberg bij slecht weer?", antwoord: "Je spullen kunnen drogen en je slaapt in een echt bed", opties: ["Het is altijd gratis", "Je mag je fiets mee in bed nemen", "Je spullen kunnen drogen en je slaapt in een echt bed", "Je hoeft je eigen kledij niet te wassen"] },
       { type: 'mc-prep', vraagTekst: "Waar mag je soms wél legaal en gratis je tent opzetten in de natuur?", antwoord: "Op speciale paalkampeerterreinen of bivakzones", opties: ["Op privé-opritten van mensen", "Op het strand", "Op speciale paalkampeerterreinen of bivakzones", "In het midden van een rotonde"] },
       { type: 'mc-prep', vraagTekst: "Waarom is het slim om je slaapplaats voor een groep op voorhand te boeken?", antwoord: "Zodat je na een lange fietsdag 100% zeker bent van een plek", opties: ["Zodat je na een lange fietsdag 100% zeker bent van een plek", "Anders mag je de grens niet over", "Zodat je geen fietstassen hoeft mee te nemen", "Omdat campings anders gesloten blijven"] },
 
-      // THEMA 7: BAGAGE (4)
-      {
-        type: 'info', thema: 'Bagage & Fietstassen 🎒', 
-        inhoud: `<strong>Slim inpakken is een kunst:</strong><br>
-        ⚖️ <em>Zwaartepunt:</em> Steek je zwaarste spullen (zoals je tent of kookvuurtje) <strong>helemaal onderaan</strong> in je fietstassen voor een betere balans.<br>
-        🚲 <em>Verdeling:</em> Verdeel het gewicht over je voor- en achterwiel. Niet alles vanachter hangen, anders gaat je voorwiel steigeren!<br>
-        ❌ <em>Geen rugzak:</em> Vermijd een zware rugzak. Dit zorgt snel voor zadelpijn, schouderpijn én een zweetrug.`
-      },
+      // THEMA 7: BAGAGE (4 vragen)
+      { type: 'info', thema: 'Bagage & Fietstassen 🎒', inhoud: `<strong>Slim inpakken is een kunst:</strong><br>⚖️ <em>Zwaartepunt:</em> Steek je zwaarste spullen (zoals je tent of kookvuurtje) <strong>helemaal onderaan</strong> in je fietstassen voor een betere balans.<br>🚲 <em>Verdeling:</em> Verdeel het gewicht over je voor- en achterwiel. Niet alles vanachter hangen, anders gaat je voorwiel steigeren!<br>❌ <em>Geen rugzak:</em> Vermijd een zware rugzak. Dit zorgt snel voor zadelpijn, schouderpijn én een zweetrug.` },
       { type: 'mc-prep', vraagTekst: "Waar stop je de zwaarste spullen in je fietstassen?", antwoord: "Helemaal onderaan, voor een beter zwaartepunt/evenwicht", opties: ["Helemaal bovenaan, zodat je er snel bij kan", "Helemaal onderaan, voor een beter zwaartepunt/evenwicht", "Je hangt ze gewoon aan je stuur", "Je steekt ze in je jas"] },
       { type: 'mc-prep', vraagTekst: "Waarom draag je best geen zware rugzak tijdens een lange fietstocht?", antwoord: "Het zorgt sneller voor rugpijn, zadelpijn en een zweetrug", opties: ["Het zorgt sneller voor rugpijn, zadelpijn en een zweetrug", "Het maakt je minder aerodynamisch", "Je kunt je armen niet meer goed bewegen", "Je wordt te zwaar voor de fiets"] },
       { type: 'mc-prep', vraagTekst: "Hoe verdeel je de bagage het best over je fiets als je veel bij hebt?", antwoord: "Gelijkmatig over zowel het voorwiel als het achterwiel", opties: ["Alles aan één kant van de fiets", "Alles achteraan", "Gelijkmatig over zowel het voorwiel als het achterwiel", "Alles op het stuur"] },
       { type: 'mc-prep', vraagTekst: "Wat doe je best met belangrijke spullen zoals je gsm, geld en paspoort?", antwoord: "In een klein stuurtasje steken dat je makkelijk mee kan nemen", opties: ["Onderaan je diepste fietstas steken", "In je schoenen verstoppen", "Los in je jaszak steken", "In een klein stuurtasje steken dat je makkelijk mee kan nemen"] },
 
-      // THEMA 8: VERKEERSREGELS UK & FR (4)
-      {
-        type: 'info', thema: 'Verkeersregels over de Grens 🇬🇧', 
-        inhoud: `<strong>Andere landen, andere regels!</strong><br>
-        🇬🇧 <em>Engeland:</em> Vanaf je van de boot stapt, moet je aan de <strong>linkerkant</strong> van de weg fietsen! Rotondes neem je <strong>met de klok mee</strong>.<br>
-        🇫🇷 <em>Frankrijk:</em> 's Nachts of bij slechte zichtbaarheid is het buiten de bebouwde kom verplicht om een <strong>reflecterend veiligheidshesje</strong> te dragen.<br>
-        🚲 <em>Groepen:</em> Op smalle wegen fiets je het best allemaal veilig achter elkaar (ritsen).`
-      },
+      // THEMA 8: VERKEERSREGELS UK & FR (4 vragen)
+      { type: 'info', thema: 'Verkeersregels over de Grens 🇬🇧', inhoud: `<strong>Andere landen, andere regels!</strong><br>🇬🇧 <em>Engeland:</em> Vanaf je van de boot stapt, moet je aan de <strong>linkerkant</strong> van de weg fietsen! Rotondes neem je <strong>met de klok mee</strong>.<br>🇫🇷 <em>Frankrijk:</em> 's Nachts of bij slechte zichtbaarheid is het buiten de bebouwde kom verplicht om een <strong>reflecterend veiligheidshesje</strong> te dragen.<br>🚲 <em>Groepen:</em> Op smalle wegen fiets je het best allemaal veilig achter elkaar (ritsen).` },
       { type: 'mc-prep', vraagTekst: "Aan welke kant van de weg moet je fietsen zodra je in Engeland (UK) bent?", antwoord: "Aan de linkerkant", opties: ["Aan de rechterkant", "In het midden van de weg", "Aan de linkerkant", "Dat mag je daar zelf kiezen"] },
       { type: 'mc-prep', vraagTekst: "Hoe moet je als fietser een rotonde oprijden in Engeland?", antwoord: "Met de klok mee (naar links meedraaien)", opties: ["Tegen de klok in (naar rechts)", "Gewoon rechtdoor erover", "Met de klok mee (naar links meedraaien)", "Je mag in Engeland niet fietsen op een rotonde"] },
       { type: 'mc-prep', vraagTekst: "Wat is in Frankrijk verplicht als je 's nachts fietst buiten de bebouwde kom?", antwoord: "Het dragen van een reflecterend hesje", opties: ["Een helm met zwaailicht", "Het dragen van een reflecterend hesje", "Fietsen met twee personen naast elkaar", "Een extra zware ketting"] },
@@ -299,14 +273,12 @@
     function genereerEtappes() {
       let etappes = [[], [], [], []]; 
       
-      // 0. VOORBEREIDING
       let prepItems = [...theorieData];
       prepItems.reverse().forEach(item => { 
         let q = { ...item, land: landenData[0] };
         etappes[0].push(q);
       });
 
-      // 1. BELGIË
       let beVragen = shuffle([...fietsOnderdelen]);
       beVragen.forEach(onderdeel => {
         let types = ['mc-text', 'tf', 'mc-image']; let type = getRandomItem(types);
@@ -323,7 +295,6 @@
         etappes[1].push(q);
       });
 
-      // 2. FRANKRIJK
       let frVragen = shuffle([...fietsOnderdelen]);
       frVragen.forEach(onderdeel => {
         let q = { land: landenData[2], type: 'drag-drop', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.fr), antwoord: onderdeel.fr };
@@ -331,7 +302,6 @@
         etappes[2].push(q);
       });
 
-      // 3. ENGELAND
       let enVragen = shuffle([...fietsOnderdelen]);
       enVragen.forEach(onderdeel => {
         let q = { land: landenData[3], type: 'mc-engels', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.en), antwoord: onderdeel.en };
