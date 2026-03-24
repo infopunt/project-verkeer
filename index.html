@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Pech-Onderweg Tocht</title>
+  <title>De Pech-Onderweg Tocht: XL Editie</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -45,21 +45,22 @@
       <div id="start-story-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative flex flex-col justify-center items-center">
         <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-l-4 border-indigo-500 text-left w-full max-w-lg mb-6 text-slate-700 leading-relaxed text-sm sm:text-base relative animate-fade-in-up mt-8">
             <div class="absolute -top-10 -left-6 text-6xl rotate-[-10deg] drop-shadow-md">🚴‍♂️</div>
-            <div class="absolute -bottom-6 -right-4 text-5xl rotate-[15deg] drop-shadow-md">🔧</div>
+            <div class="absolute -bottom-6 -right-4 text-5xl rotate-[15deg] drop-shadow-md">🗺️</div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mt-2">Roadtrip Alert! 🌍</h2>
             
-            <p class="mb-3">Jij en je <strong>vrienden</strong> pakken de fiets voor een epische roadtrip! Het masterplan? Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry pakken naar de krijtrotsen in <strong>Engeland</strong>. Klinkt als de ultieme vrijheid, toch? 🚢💨</p>
+            <p class="mb-3">Jij en je <strong>vrienden</strong> pakken de fiets voor een epische roadtrip! Het masterplan? Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry pakken naar de krijtrotsen in <strong>Engeland</strong>. 🚢💨</p>
             
-            <p class="mb-3">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet bepaald 'Tour de France'-proof. Onderweg vliegen de kettingen eraf, rammelen de spatborden en sta je wekelijks met een lekke band. 🤦‍♂️ Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
+            <p class="mb-3">Onderweg wachten vele kilometers, navigatie-uitdagingen, EHBO-situaties en natuurlijk... mechanische pech. Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen in drie talen, én weten hoe je een fiets onderhoudt!</p>
             
-            <p class="mb-5">Weet je een onderdeel niet? Geen stress! Je kan tijdens de tocht altijd op het <strong>Spiekbriefje 🚲</strong> klikken om het op te zoeken. Voor we aan dit avontuur beginnen, doen we eerst een grondige <strong>Check-Up</strong>!</p>
+            <p class="mb-5">Weet je een onderdeel niet? Klik tijdens de tocht op het <strong>Spiekbriefje 🚲</strong>. We starten met een grondige <strong>Check-Up & Navigatie-les</strong>!</p>
             
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
-                <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">De Route (100 Vragen):</p>
-                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🛠️</span> <span><strong>Voorbereiding:</strong> De Check-Up</span></div>
-                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🇧🇪</span> <span><strong>Etappe 1:</strong> België</span></div>
-                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🇫🇷</span> <span><strong>Etappe 2:</strong> Frankrijk</span></div>
-                <div class="flex items-center space-x-3 text-slate-600 font-medium"><span class="text-xl">🇬🇧</span> <span><strong>Etappe 3:</strong> Engeland</span></div>
+                <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">Jouw Missie (Modules):</p>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🛠️</span> <span><strong>Module 1:</strong> Voorbereiding & Navigatie</span></div>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🇧🇪</span> <span><strong>Module 2:</strong> Door België</span></div>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🇫🇷</span> <span><strong>Module 3:</strong> Frankrijk in!</span></div>
+                <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🧰</span> <span><strong>Module 4:</strong> De Grote Pitstop (EHBO & Pech)</span></div>
+                <div class="flex items-center space-x-3 text-slate-600 font-medium"><span class="text-xl">🇬🇧</span> <span><strong>Module 5:</strong> Aankomst in Engeland</span></div>
             </div>
         </div>
       </div>
@@ -69,8 +70,9 @@
     </div>
 
     <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-slate-900/95 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto">
-      <h2 class="text-4xl font-black text-white mb-2" id="etappe-titel">Fase Voltooid!</h2>
-      <p class="text-xl text-blue-300 mb-8" id="etappe-ondertitel">Goed bezig!</p>
+      <h2 class="text-4xl font-black text-white mb-2" id="etappe-titel">Module Voltooid!</h2>
+      <p class="text-xl text-yellow-300 font-bold mb-4" id="etappe-boodschap">Klaar voor de start!</p>
+      <p class="text-base text-blue-200 mb-8 max-w-lg" id="etappe-ondertitel">Goed bezig!</p>
       <div class="w-full overflow-hidden relative h-20 mb-8"><div class="text-6xl absolute bottom-0 left-0 animate-ride-across"><span style="display:inline-block; transform: scaleX(-1);">🚴‍♂️</span>💨</div></div>
       <button onclick="startVolgendeEtappe()" class="bg-green-500 hover:bg-green-600 text-white font-black py-4 px-10 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.5)] uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg border-2 border-white">
         Start <span id="volgende-land-naam">Volgende</span>!
@@ -82,9 +84,7 @@
         <div class="flex justify-between items-center mb-1 px-1">
           <div class="flex items-center space-x-2"><span id="land-icoon" class="text-3xl animate-pulse">🛠️</span><span class="font-bold text-sm hidden sm:block" id="land-naam">Voorbereiding</span></div>
           <div class="flex items-center space-x-3 sm:space-x-4">
-            
             <button onclick="toggleSpiekbriefje()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-black text-xs sm:text-sm transition-colors shadow-sm animate-pulse border border-yellow-600">Spiekbriefje 🧐</button>
-            
             <div class="text-center hidden sm:block"><div class="text-[10px] text-slate-200 uppercase font-bold">Tijd</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-white leading-none">00:00</div></div>
             <div class="text-center"><div class="text-[10px] text-slate-200 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-bold text-yellow-300 leading-none">0</div></div>
           </div>
@@ -118,8 +118,9 @@
         
         <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-md mb-4 shadow-xl relative overflow-hidden shrink-0">
           <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
-          <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score (%)</p>
-          <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">0</span></p>
+          <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Jouw Score</p>
+          <p class="text-5xl font-black text-slate-800 mb-1"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">0</span></p>
+          <p class="text-2xl text-slate-600 font-black mb-2">Dit is <span id="eind-percentage" class="text-indigo-600">0%</span>!</p>
           <div class="mt-2 p-2 bg-slate-50 rounded-lg border border-slate-100 inline-block"><p class="text-xs font-bold text-slate-600" id="eind-tijd"></p></div>
         </div>
 
@@ -127,7 +128,7 @@
           <div class="text-3xl animate-bounce">📸</div>
           <div>
             <h4 class="font-black text-yellow-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
-            <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!</p>
+            <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je percentage en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>.</p>
           </div>
         </div>
 
@@ -144,96 +145,75 @@
   </div>
 
   <script>
-    // FUNCTIE: SPIEKBRIEFJE TONEN/VERBERGEN
     window.toggleSpiekbriefje = function() {
       const modal = document.getElementById('spiek-modal');
-      if(modal.classList.contains('hidden')) {
-        modal.classList.remove('hidden');
-      } else {
-        modal.classList.add('hidden');
-      }
+      if(modal.classList.contains('hidden')) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
     };
 
-    // DEEL 1: DATA (VOORBEREIDING + ONDERDELEN)
+    // DEEL 1: THEORIE (VOORBEREIDING)
     const theorieData = [
-      // THEMA 1: M-CHECK (3 vragen)
-      { type: 'info', thema: 'De M-Check 🛠️', inhoud: `<strong>Controleer je fiets in een 'M' vorm:</strong><br>1️⃣ Voorwiel & Banden: Check de zijkant van je band voor de juiste bandenspanning.<br>2️⃣ Stuur & Remmen: Werken ze direct?<br>3️⃣ Trapas & Pedalen: Geen speling?<br>4️⃣ Zadel: Staat het vast?<br>5️⃣ Achterwiel & Ketting: Ligt hij strak en is hij gesmeerd?` },
+      { type: 'info', thema: 'De M-Check 🛠️', inhoud: `<strong>Controleer je fiets in een 'M' vorm:</strong><br>1️⃣ Voorwiel & Banden: Check de zijkant van de band voor de juiste spanning.<br>2️⃣ Stuur & Remmen: Werken ze direct?<br>3️⃣ Trapas & Pedalen: Geen speling?<br>4️⃣ Zadel: Staat het vast?<br>5️⃣ Achterwiel & Ketting: Strak en gesmeerd?` },
       { type: 'mc-prep', vraagTekst: "Waar vind je de juiste bandenspanning voor jouw fiets?", antwoord: "Op de zijkant van de buitenband", opties: ["Op het ventiel", "Op de zijkant van de buitenband", "Op de velg", "In de handleiding van je fietspomp"] },
-      { type: 'mc-prep', vraagTekst: "Welke vorm volg je idealiter als je de fiets nakijkt voor vertrek?", antwoord: "De letter M", opties: ["De letter O", "De letter Z", "De letter M", "Van achter naar voor"] },
-      { type: 'mc-prep', vraagTekst: "Waarom is het belangrijk om je ketting goed na te kijken?", antwoord: "Zodat hij soepel draait en er niet af valt", opties: ["Voor een betere aerodynamica", "Zodat hij soepel draait en er niet af valt", "Om roest aan het stuur te voorkomen", "Zodat je remmen beter werken"] },
+      
+      { type: 'info', thema: 'Digitale Navigatie (Komoot & co) 📱', inhoud: `<strong>Verdwaal niet!</strong><br>Naast papieren fietsknooppunten gebruiken we vaak apps zoals <strong>Komoot</strong> of Strava om routes te plannen.<br>🔋 <em>Let op:</em> Navigeren via GPS slurpt je batterij leeg. Neem altijd een opgeladen <strong>powerbank</strong> mee!<br>🌧️ Zorg ook voor een waterdichte gsm-houder op je stuur.` },
+      { type: 'mc-prep', vraagTekst: "Waarom is een powerbank onmisbaar als je navigeert met een app zoals Komoot?", antwoord: "Omdat GPS op je gsm heel veel batterij verbruikt", opties: ["Om je elektrische fiets op te laden", "Omdat GPS op je gsm heel veel batterij verbruikt", "Om je fietsverlichting van stroom te voorzien", "Als reserve-onderdeel voor je ketting"] },
+      
+      { type: 'info', thema: 'Kledij & Weer 🌧️', inhoud: `<strong>Slecht weer bestaat niet...</strong><br>...alleen slechte kledij! Werk altijd met laagjes. Draag <strong>altijd</strong> een valhelm, dat is je levensverzekering!<br>🧤 Vergeet ook je <strong>fietshandschoenen</strong> niet: ze houden je handen warm, geven grip en vangen de klap op als je valt.` },
+      { type: 'mc-prep', vraagTekst: "Jullie naderen de Franse grens en het begint koud te worden. Waarom is het zo'n goed idee om je fietshandschoenen aan te doen?", antwoord: "Ze houden je handen warm, geven grip én beschermen je handen bij een val", opties: ["Ze houden je handen warm, geven grip én beschermen je handen bij een val", "Ze zorgen ervoor dat je sneller en strakker kan sturen", "Je bent verplicht ze te dragen volgens de Franse wegcode", "Ze voorkomen dat je kettingolie op je handen krijgt"] },
 
-      // THEMA 2: ERGONOMIE (3 vragen)
-      { type: 'info', thema: 'Ergonomie (Zithouding) 📏', inhoud: `<strong>Voorkom blessures met een goede afstelling:</strong><br>🪑 <em>Zadelhoogte:</em> Zet je hak op het pedaal in de laagste stand. Je been moet nu <strong>volledig gestrekt</strong> zijn.<br>🚲 <em>Stuur:</em> Voor een comfortabele roadtrip staat je stuur het best iets <strong>hoger dan of gelijk aan</strong> je zadel. Zorg er ook voor dat het <strong>niet te ver naar voren</strong> staat, anders overbelast je je nek en schouders!` },
-      { type: 'mc-prep', vraagTekst: "Hoe weet je dat je zadel op de perfecte hoogte staat?", antwoord: "Als je been gestrekt is met je hak op het laagste pedaal", opties: ["Als je met beide voeten plat op de grond kan", "Als je knieën je stuur raken", "Als je been gestrekt is met je hak op het laagste pedaal", "Als je stuur lager staat dan je zadel"] },
-      { type: 'mc-prep', vraagTekst: "Wat is een veelvoorkomend gevolg van een te laag zadel?", antwoord: "Pijn aan de knieën en minder kracht", opties: ["Pijn aan de knieën en minder kracht", "Pijn in de nek", "Je remmen werken minder goed", "Je fietst veel sneller"] },
-      { type: 'mc-prep', vraagTekst: "Hoe zet je je stuur het best voor een lange, relaxte roadtrip?", antwoord: "Iets hoger dan/gelijk aan je zadel, and not too ver naar voren", opties: ["Zo laag en ver mogelijk (zoals een wielrenner)", "Iets hoger dan/gelijk aan je zadel, and not too ver naar voren", "Lager dan je voorvork", "Maakt helemaal niets uit"] },
-
-      // THEMA 3: VEILIGHEID (3 vragen)
-      { type: 'info', thema: 'Veiligheid & Kledij 🦺', inhoud: `<strong>Zien en gezien worden:</strong><br>⛑️ <em>Helm:</em> Vervang hem na elke harde val, of na 5 jaar (het materiaal veroudert).<br>💡 <em>In het donker:</em> Verplichte lichten (wit voor, rood achter) én reflectoren.<br>👕 <em>Kledij:</em> Fluorescerend geel/groen valt overdag op, <strong>reflecterende strips</strong> vallen 's nachts op!` },
-      { type: 'mc-prep', vraagTekst: "Wanneer móét je een fietshelm absoluut vervangen?", antwoord: "Na een harde val of crash", opties: ["Als hij nat is geworden door de regen", "Na een harde val of crash", "Elk jaar", "Als de kleur vervaagd is"] },
-      { type: 'mc-prep', vraagTekst: "Wat is wettelijk verplicht als je in het donker fietst?", antwoord: "Voorlicht, achterlicht en reflectoren", opties: ["Enkel een fluohesje", "Voorlicht, achterlicht en reflectoren", "Een zaklamp vasthouden", "Enkel een rood licht vooraan"] },
-      { type: 'mc-prep', vraagTekst: "Welke kledij is het meest veilig in het pikdonker?", antwoord: "Kledij met reflecterende strips", opties: ["Volledig witte kledij", "Een zwarte jas", "Kledij met reflecterende strips", "Kledij met veel felle kleuren (zonder reflectie)"] },
-
-      // THEMA 4: SPORTVOEDING (3 vragen)
-      { type: 'info', thema: 'Sportvoeding (> 2 uur) 🍌', inhoud: `<strong>Eten is brandstof voor je spieren:</strong><br>🍝 <em>Vóór de rit:</em> Stapel koolhydraten (bijv. pasta de avond ervoor).<br>🍌 <em>Tijdens de rit:</em> Snelle suikers! Eet een banaan, energiereep of drink isotone sportdrank.<br>🥛 <em>Na de rit:</em> Eiwitten voor spierherstel (bijv. chocomelk of een eiwitshake)!` },
-      { type: 'mc-prep', vraagTekst: "Wat is de beste maaltijd de avond voor een zware, lange fietstocht?", antwoord: "Een maaltijd rijk aan koolhydraten (zoals pasta)", opties: ["Een zware fastfood hamburger", "Een maaltijd rijk aan koolhydraten (zoals pasta)", "Enkel een kleine salade", "Helemaal niets eten"] },
-      { type: 'mc-prep', vraagTekst: "Wat eet je het best TĲDENS het fietsen voor snelle energie?", antwoord: "Een banaan of energiereep", opties: ["Een banaan of energiereep", "Een stuk kaas", "Een zakje chips", "Een boterham met pindakaas"] },
-      { type: 'mc-prep', vraagTekst: "Wat heeft je lichaam direct NA het sporten vooral nodig om te herstellen?", antwoord: "Eiwitten (bijv. uit chocomelk of kwark)", opties: ["Vetrijke voeding", "Enkel water", "Eiwitten (bijv. uit chocomelk of kwark)", "Zout"] },
-
-      // THEMA 5: ROUTE & NAVIGATIE (4 vragen)
-      { type: 'info', thema: 'Route & Navigatie 🗺️', inhoud: `<strong>Verdwaal niet in Europa:</strong><br>🚴‍♀️ Gebruik in België en Nederland de <strong>fietsknooppunten</strong> (groen-witte bordjes).<br>🌍 Voor grensoverschrijdende trips zijn er de <strong>EuroVelo routes</strong>.<br>🏞️ Vermijd grote autowegen. <strong>Jaagpaden</strong> (naast rivieren en kanalen) zijn ideaal: plat, veilig en autovrij!` },
-      { type: 'mc-prep', vraagTekst: "Wat is een EuroVelo route?", antwoord: "Een lange afstandsfietsroute door Europa", opties: ["Een racecircuit in Frankrijk", "Een lange afstandsfietsroute door Europa", "Een app om je snelheid te meten", "Een route speciaal voor elektrische fietsen"] },
-      { type: 'mc-prep', vraagTekst: "Waarom fiets je beter langs jaagpaden dan langs de kortste autoweg?", antwoord: "Het is veiliger, platter en je hebt geen last van auto's", opties: ["Het is veiliger, platter en je hebt geen last van auto's", "Je mag er veel sneller rijden", "Er zijn altijd supermarkten in de buurt", "Het is wettelijk verplicht"] },
-      { type: 'mc-prep', vraagTekst: "Hoe herken je de fietsknooppunten in België meestal?", antwoord: "Aan de groen-witte of blauw-witte bordjes met nummers", opties: ["Aan de grote gele driehoeken op de weg", "Aan de groen-witte of blauw-witte bordjes met nummers", "Via rode lijnen geschilderd op straat", "Aan de knipperlichten langs het fietspad"] },
-      { type: 'mc-prep', vraagTekst: "Wat is een groot voordeel van een fysieke fietsknooppuntenkaart als back-up?", antwoord: "De batterij raakt nooit leeg", opties: ["Het is lichter dan een smartphone", "De batterij raakt nooit leeg", "Het toont ook de weersverwachting", "Je kunt er muziek op luisteren"] },
-
-      // THEMA 6: OVERNACHTEN (4 vragen)
-      { type: 'info', thema: 'Overnachten ⛺', inhoud: `<strong>Waar leggen we ons hoofd neer?</strong><br>🚫 <em>Wildkamperen:</em> Zomaar je tent in het bos zetten is in België, Frankrijk en Engeland <strong>meestal verboden</strong> (behalve op specifieke bivakzones).<br>🛏️ <em>Jeugdherbergen:</em> Handig voor een comfortabel bed, een warme douche én om je kleren te drogen na een regendag.<br>🏕️ <em>Campings:</em> Boek op voorhand als je met een groep bent, zeker in de zomer!` },
-      { type: 'mc-prep', vraagTekst: "Mag je in België, Frankrijk of Engeland zomaar overal je tent opzetten (wildkamperen)?", antwoord: "Nee, dat is in de meeste gebieden verboden", opties: ["Ja, overal zolang je opruimt", "Nee, dat is in de meeste gebieden verboden", "Ja, maar enkel in de winter", "Enkel als je jonger dan 18 bent"] },
-      { type: 'mc-prep', vraagTekst: "Wat is een groot voordeel van overnachten in een jeugdherberg bij slecht weer?", antwoord: "Je spullen kunnen drogen en je slaapt in een echt bed", opties: ["Het is altijd gratis", "Je mag je fiets mee in bed nemen", "Je spullen kunnen drogen en je slaapt in een echt bed", "Je hoeft je eigen kledij niet te wassen"] },
-      { type: 'mc-prep', vraagTekst: "Waar mag je soms wél legaal en gratis je tent opzetten in de natuur?", antwoord: "Op speciale paalkampeerterreinen of bivakzones", opties: ["Op privé-opritten van mensen", "Op het strand", "Op speciale paalkampeerterreinen of bivakzones", "In het midden van een rotonde"] },
-      { type: 'mc-prep', vraagTekst: "Waarom is het slim om je slaapplaats voor een groep op voorhand te boeken?", antwoord: "Zodat je na een lange fietsdag 100% zeker bent van een plek", opties: ["Zodat je na een lange fietsdag 100% zeker bent van een plek", "Anders mag je de grens niet over", "Zodat je geen fietstassen hoeft mee te nemen", "Omdat campings anders gesloten blijven"] },
-
-      // THEMA 7: BAGAGE (4 vragen)
-      { type: 'info', thema: 'Bagage & Fietstassen 🎒', inhoud: `<strong>Slim inpakken is een kunst:</strong><br>⚖️ <em>Zwaartepunt:</em> Steek je zwaarste spullen (zoals je tent of kookvuurtje) <strong>helemaal onderaan</strong> in je fietstassen voor een betere balans.<br>🚲 <em>Verdeling:</em> Verdeel het gewicht over je voor- en achterwiel. Niet alles vanachter hangen, anders gaat je voorwiel steigeren!<br>❌ <em>Geen rugzak:</em> Vermijd een zware rugzak. Dit zorgt snel voor zadelpijn, schouderpijn én een zweetrug.` },
-      { type: 'mc-prep', vraagTekst: "Waar stop je de zwaarste spullen in je fietstassen?", antwoord: "Helemaal onderaan, voor een beter zwaartepunt/evenwicht", opties: ["Helemaal bovenaan, zodat je er snel bij kan", "Helemaal onderaan, voor een beter zwaartepunt/evenwicht", "Je hangt ze gewoon aan je stuur", "Je steekt ze in je jas"] },
-      { type: 'mc-prep', vraagTekst: "Waarom draag je best geen zware rugzak tijdens een lange fietstocht?", antwoord: "Het zorgt sneller voor rugpijn, zadelpijn en een zweetrug", opties: ["Het zorgt sneller voor rugpijn, zadelpijn en een zweetrug", "Het maakt je minder aerodynamisch", "Je kunt je armen niet meer goed bewegen", "Je wordt te zwaar voor de fiets"] },
-      { type: 'mc-prep', vraagTekst: "Hoe verdeel je de bagage het best over je fiets als je veel bij hebt?", antwoord: "Gelijkmatig over zowel het voorwiel als het achterwiel", opties: ["Alles aan één kant van de fiets", "Alles achteraan", "Gelijkmatig over zowel het voorwiel als het achterwiel", "Alles op het stuur"] },
-      { type: 'mc-prep', vraagTekst: "Wat doe je best met belangrijke spullen zoals je gsm, geld en paspoort?", antwoord: "In een klein stuurtasje steken dat je makkelijk mee kan nemen", opties: ["Onderaan je diepste fietstas steken", "In je schoenen verstoppen", "Los in je jaszak steken", "In een klein stuurtasje steken dat je makkelijk mee kan nemen"] },
-
-      // THEMA 8: VERKEERSREGELS UK & FR (4 vragen)
-      { type: 'info', thema: 'Verkeersregels over de Grens 🇬🇧', inhoud: `<strong>Andere landen, andere regels!</strong><br>🇬🇧 <em>Engeland:</em> Vanaf je van de boot stapt, moet je aan de <strong>linkerkant</strong> van de weg fietsen! Rotondes neem je <strong>met de klok mee</strong>.<br>🇫🇷 <em>Frankrijk:</em> 's Nachts of bij slechte zichtbaarheid is het buiten de bebouwde kom verplicht om een <strong>reflecterend veiligheidshesje</strong> te dragen.<br>🚲 <em>Groepen:</em> Op smalle wegen fiets je het best allemaal veilig achter elkaar (ritsen).` },
-      { type: 'mc-prep', vraagTekst: "Aan welke kant van de weg moet je fietsen zodra je in Engeland (UK) bent?", antwoord: "Aan de linkerkant", opties: ["Aan de rechterkant", "In het midden van de weg", "Aan de linkerkant", "Dat mag je daar zelf kiezen"] },
-      { type: 'mc-prep', vraagTekst: "Hoe moet je als fietser een rotonde oprijden in Engeland?", antwoord: "Met de klok mee (naar links meedraaien)", opties: ["Tegen de klok in (naar rechts)", "Gewoon rechtdoor erover", "Met de klok mee (naar links meedraaien)", "Je mag in Engeland niet fietsen op een rotonde"] },
-      { type: 'mc-prep', vraagTekst: "Wat is in Frankrijk verplicht als je 's nachts fietst buiten de bebouwde kom?", antwoord: "Het dragen van een reflecterend hesje", opties: ["Een helm met zwaailicht", "Het dragen van een reflecterend hesje", "Fietsen met twee personen naast elkaar", "Een extra zware ketting"] },
-      { type: 'mc-prep', vraagTekst: "Wat is de veiligste opstelling als je met de hele klas op een smalle landweg fietst?", antwoord: "Achter elkaar fietsen in een rij", opties: ["Allemaal naast elkaar", "Achter elkaar fietsen in een rij", "Verspreid over de weg", "Aan beide kanten van de weg fietsen"] }
+      { type: 'info', thema: 'Bagage & Fietstassen 🎒', inhoud: `<strong>Slim inpakken is een kunst:</strong><br>⚖️ <em>Zwaartepunt:</em> Steek je zwaarste spullen <strong>onderaan</strong> in je fietstassen voor balans.<br>❌ <em>Geen rugzak:</em> Vermijd een zware rugzak. Dit zorgt voor zadelpijn, schouderpijn én een zweetrug.` },
+      { type: 'mc-prep', vraagTekst: "Waar stop je de zwaarste spullen in je fietstassen?", antwoord: "Helemaal onderaan, voor een beter evenwicht", opties: ["Helemaal bovenaan", "Helemaal onderaan, voor een beter evenwicht", "Aan je stuur", "In je jaszak"] },
     ];
 
+    // DEEL 2: PITSTOP THEORIE (HALVERWEGE)
+    const pitstopData = [
+      { type: 'info', thema: 'De Grote Pitstop 🧰', inhoud: `<strong>We hebben er al flink wat kilometers opzitten!</strong><br>Tijd voor een snelle checkup voor we verder rijden.<br>⛓️ Een piepende ketting? Dat betekent dat ze droog staat en wat <strong>kettingolie</strong> nodig heeft.<br>💨 Zachte banden? Pomp ze bij! Zachte banden trappen veel zwaarder en zorgen sneller voor een <strong>lekke band</strong> (snakebite).` },
+      { type: 'mc-prep', vraagTekst: "Je ketting begint luid te piepen na al die kilometers. Wat doe je?", antwoord: "Ik smeer de ketting met een beetje kettingolie", opties: ["Ik vervang de hele ketting", "Ik smeer de ketting met een beetje kettingolie", "Ik giet er water over", "Ik negeer het, dat is normaal"] },
+      { type: 'mc-prep', vraagTekst: "Wat is een groot nadeel van fietsen met te zachte banden?", antwoord: "Het fietst heel zwaar en je krijgt sneller een lekke band", opties: ["Je gaat veel te snel", "Het fietst heel zwaar en je krijgt sneller een lekke band", "Je remmen werken dan niet meer", "Het stuur begint te trillen"] },
+      
+      { type: 'info', thema: 'EHBO onderweg 🩹', inhoud: `<strong>Oeps, Pech!</strong><br>Een valpartij zit in een klein hoekje (bijvoorbeeld door natte kasseien of tramsporen).<br>🩸 Bij een schaafwonde: eerst altijd goed <strong>spoelen met water</strong>, daarna pas ontsmetten.<br>🦴 Valt iemand hard op zijn pols of arm? Ondersteun deze dan met een <strong>steunverband (zwachtel) of een mitella</strong> tot je bij een dokter bent.` },
+      { type: 'mc-prep', vraagTekst: "Oh nee! Een van je vrienden glijdt uit over een natte kasseistrook en bezeert zijn pols. Hoe kan je die pols het beste ondersteunen?", antwoord: "We leggen een steunverband of een mitella aan", opties: ["Door er heel hard op te wrijven", "We leggen een steunverband of een mitella aan", "Door de arm zo veel mogelijk te bewegen", "We plakken er een grote pleister over"] },
+      { type: 'mc-prep', vraagTekst: "Iemand heeft ook een flinke schaafwonde op zijn been na de val. Wat is de eerste stap?", antwoord: "Eerst goed uitspoelen met water", opties: ["Meteen een dikke laag zalf smeren", "Eerst goed uitspoelen met water", "Ontsmettingsmiddel rechtstreeks in de wonde gieten", "Er gewoon op blazen en verder fietsen"] }
+    ];
+
+    // UITGEBREIDE FIETSONDERDELEN LIJST (Aangepast met jouw nieuwe wensen!)
     const fietsOnderdelen = [
-      { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
-      { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
-      { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "cranck met pedaal.png" },
-      { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "standaard.png" },
-      { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
-      { nl: "de reflector met geïntegreerd achterlicht", fr: "le réflecteur avec feu arrière", en: "the reflector with taillight", foto: "reflector en geïntegreerd achterlicht.png" },
-      { nl: "de reflector met geïntegreerd voorlicht", fr: "le réflecteur avec phare", en: "the reflector with headlight", foto: "reflector met geïntegreerd koplamp.png" },
+      { nl: "het stuur", fr: "le guidon", en: "the handlebar", foto: "butterfly.jpg" }, 
+      { nl: "de handvatten", fr: "les poignées", en: "the grips", foto: "handvatten.png" }, 
       { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "fietsbel.png" },
       { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", foto: "remgreep.png" },
       { nl: "de stuurpen met balhoofd", fr: "la potence avec jeu de direction", en: "the stem with headset", foto: "stuurpen met balhoofd.png" },
-      { nl: "het multigripstuur", fr: "le guidon multipositions", en: "the multi-grip handlebar", foto: "butterfly.jpg" },
+      { nl: "het voorlicht", fr: "le phare", en: "the front light", foto: "reflector met geïntegreerd koplamp.png" },
+      { nl: "de voorvork", fr: "la fourche avant", en: "the front fork", foto: "frame en voorvork.png" },
+      { nl: "het frame", fr: "le cadre", en: "the frame", foto: "frame en voorvork.png" },
       { nl: "het zadel met zadelpen", fr: "la selle avec tige de selle", en: "the saddle with seatpost", foto: "zadel en zadelpen.png" },
-      { nl: "het frame met voorvork", fr: "le cadre avec fourche avant", en: "the frame with front fork", foto: "frame en voorvork.png" },
+      { nl: "het fietsslot", fr: "l'antivol", en: "the bicycle lock", foto: "fietsslot.png" }, 
+      { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" },
+      
+      // Aangepast pedaal:
+      { nl: "het pedaal met reflector", fr: "la pédale avec réflecteur", en: "the pedal with reflector", foto: "pedaal met reflector.png" },
+      
+      { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "cranck met pedaal.png" },
+      { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
       { nl: "de voortandwielen", fr: "les plateaux", en: "the chainrings", foto: "voortandwielen en crank.png" },
-      { nl: "de voorderailleur", fr: "le dérailleur avant", en: "the front derailleur", foto: "voorderailleur.png" },
       { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
       { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", foto: "derailleur.png" },
+      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.png" },
+      { nl: "de remblokjes", fr: "les patins de frein", en: "the brake pads", foto: "remblokjes.png" }, 
+      { nl: "de buitenband", fr: "le pneu", en: "the tyre", foto: "velg voor voorwiel.jpg" }, 
+      { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
       { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
       { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
-      { nl: "het freewheel", fr: "la roue libre", en: "the freewheel", foto: "freewheel.png" },
-      { nl: "de velg voor achterwiel", fr: "la jante pour roue arrière", en: "the rear wheel rim", foto: "velg voor achterwiel met freewheel.png" },
-      { nl: "de velg voor voorwiel", fr: "la jante pour roue avant", en: "the front wheel rim", foto: "velg voor voorwiel.jpg" },
-      { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
-      { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" }
+      { nl: "de dynamo", fr: "la dynamo", en: "the dynamo", foto: "dynamo.png" },
+      
+      // Opgesplitste bagagedragers:
+      { nl: "de voordrager", fr: "le porte-bagages avant", en: "the front carrier", foto: "voordrager.png" },
+      { nl: "de achterdrager", fr: "le porte-bagages arrière", en: "the rear carrier", foto: "achterdrager.png" },
+      
+      { nl: "de snelbinders", fr: "les tendeurs", en: "the bungee cords", foto: "snelbinders.png" },
+      { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
+      { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "standaard.png" }
     ];
 
     const verhalen = {
@@ -242,12 +222,11 @@
       en: ["We staan stil in Engeland. Kies de juiste <strong>Engelse</strong> term.", "Regen in Londen! Weet jij de <strong>Engelse</strong> naam?", "Selecteer de juiste vertaling."]
     };
 
-    const aanmoedigingen = ["Super bezig! 🚀", "Geweldig! 🌟", "Fiets-expert! 🚴", "Knalerop! 🎉", "Fantastisch! ✨", "Bingo! 🎯"];
-    
     const landenData = [
       { code: 'prep', vlag: '🛠️', naam: 'Voorbereiding', header: 'bg-gradient-to-r from-teal-600 to-emerald-700' },
       { code: 'nl', vlag: '🇧🇪', naam: 'België', header: 'bg-gradient-to-r from-slate-900 via-yellow-500 to-red-600' },
       { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', header: 'bg-gradient-to-r from-blue-700 to-red-600' },
+      { code: 'pitstop', vlag: '🧰', naam: 'De Pitstop', header: 'bg-gradient-to-r from-orange-500 to-red-600' },
       { code: 'en', vlag: '🇬🇧', naam: 'Engeland', header: 'bg-gradient-to-r from-red-600 to-blue-800' }
     ];
 
@@ -257,56 +236,56 @@
     const UI = {
       bodyBg: document.getElementById('body-bg'), startScherm: document.getElementById('start-scherm'), gameUI: document.getElementById('game-ui'), 
       schermBericht: document.getElementById('bericht-scherm'), etappeScherm: document.getElementById('etappe-scherm'), etappeTitel: document.getElementById('etappe-titel'),
-      volgendeLandNaam: document.getElementById('volgende-land-naam'), etappeOndertitel: document.getElementById('etappe-ondertitel'), tijdWeergave: document.getElementById('tijd-weergave'), 
+      volgendeLandNaam: document.getElementById('volgende-land-naam'), etappeOndertitel: document.getElementById('etappe-ondertitel'), 
+      etappeBoodschap: document.getElementById('etappe-boodschap'), tijdWeergave: document.getElementById('tijd-weergave'), 
       scoreWeergave: document.getElementById('score-weergave'), voortgangWeergave: document.getElementById('voortgang-weergave'), progressBar: document.getElementById('progress-bar'),
       landIcoon: document.getElementById('land-icoon'), landNaam: document.getElementById('land-naam'), verhaalTekst: document.getElementById('verhaal-tekst'), 
       vraagContainer: document.getElementById('vraag-container'), antwoordContainer: document.getElementById('antwoord-container'), fbAntwoord: document.getElementById('feedback-antwoord'), 
-      btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), eindTotaal: document.getElementById('eind-totaal'), eindTijd: document.getElementById('eind-tijd'),
+      btnActie: document.getElementById('action-btn'), eindScore: document.getElementById('eind-score'), eindTotaal: document.getElementById('eind-totaal'), eindPercentage: document.getElementById('eind-percentage'), eindTijd: document.getElementById('eind-tijd'),
       scrollContainer: document.getElementById('scroll-container'), gameHeader: document.getElementById('game-header'), animatieWrapper: document.getElementById('animatie-wrapper'), 
-      remedieringContainer: document.getElementById('remediering-container'), btnOefenFouten: document.getElementById('btn-oefen-fouten'), eindOndertitel: document.getElementById('eind-ondertitel'),
-      classroomOpdracht: document.getElementById('classroom-opdracht')
+      remedieringContainer: document.getElementById('remediering-container'), btnOefenFouten: document.getElementById('btn-oefen-fouten'),
+      eindOndertitel: document.getElementById('eind-ondertitel')
     };
 
     function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
     function getRandomItem(array) { return array[Math.floor(Math.random() * array.length)]; }
 
     function genereerEtappes() {
-      let etappes = [[], [], [], []]; 
+      let etappes = [[], [], [], [], []]; 
       
+      // Module 1: Prep
       let prepItems = [...theorieData];
-      prepItems.reverse().forEach(item => { 
-        let q = { ...item, land: landenData[0] };
-        etappes[0].push(q);
-      });
+      prepItems.reverse().forEach(item => etappes[0].push({ ...item, land: landenData[0] }));
 
-      let beVragen = shuffle([...fietsOnderdelen]);
+      // Module 2: België (NL vragen) - Nemen 12 random onderdelen
+      let beVragen = shuffle([...fietsOnderdelen]).slice(0, 12);
       beVragen.forEach(onderdeel => {
         let types = ['mc-text', 'tf', 'mc-image']; let type = getRandomItem(types);
         let q = { land: landenData[1], type: type, correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.nl), antwoord: onderdeel.nl };
         if(type === 'mc-text') { let opt = new Set([onderdeel.nl]); while(opt.size < 4) opt.add(getRandomItem(fietsOnderdelen).nl); q.opties = shuffle(Array.from(opt)); } 
-        else if (type === 'tf') {
-          q.isTrue = Math.random() > 0.5;
-          if (q.isTrue) q.getoondeTerm = onderdeel.nl;
-          else { let possibleWrong = fietsOnderdelen.filter(i => i.nl !== onderdeel.nl).map(i => i.nl); q.getoondeTerm = possibleWrong[Math.floor(Math.random() * possibleWrong.length)]; }
-          q.antwoord = q.isTrue ? 'waar' : 'niet-waar';
-        } else if (type === 'mc-image') {
-          let opt = new Set([onderdeel]); while(opt.size < 3) opt.add(getRandomItem(fietsOnderdelen)); q.opties = shuffle(Array.from(opt));
-        }
+        else if (type === 'tf') { q.isTrue = Math.random() > 0.5; q.getoondeTerm = q.isTrue ? onderdeel.nl : getRandomItem(fietsOnderdelen.filter(i => i.nl !== onderdeel.nl)).nl; q.antwoord = q.isTrue ? 'waar' : 'niet-waar'; } 
+        else if (type === 'mc-image') { let opt = new Set([onderdeel]); while(opt.size < 3) opt.add(getRandomItem(fietsOnderdelen)); q.opties = shuffle(Array.from(opt)); }
         etappes[1].push(q);
       });
 
-      let frVragen = shuffle([...fietsOnderdelen]);
+      // Module 3: Frankrijk (FR vragen) - Nemen 12 andere random onderdelen
+      let frVragen = shuffle([...fietsOnderdelen]).slice(0, 12);
       frVragen.forEach(onderdeel => {
         let q = { land: landenData[2], type: 'drag-drop', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.fr), antwoord: onderdeel.fr };
         let opt = new Set([onderdeel.fr]); while(opt.size < 4) opt.add(getRandomItem(fietsOnderdelen).fr); q.opties = shuffle(Array.from(opt));
         etappes[2].push(q);
       });
 
-      let enVragen = shuffle([...fietsOnderdelen]);
+      // Module 4: Pitstop
+      let pitstopItems = [...pitstopData];
+      pitstopItems.reverse().forEach(item => etappes[3].push({ ...item, land: landenData[3] }));
+
+      // Module 5: Engeland (EN vragen) - Nemen 12 random onderdelen
+      let enVragen = shuffle([...fietsOnderdelen]).slice(0, 12);
       enVragen.forEach(onderdeel => {
-        let q = { land: landenData[3], type: 'mc-engels', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.en), antwoord: onderdeel.en };
+        let q = { land: landenData[4], type: 'mc-engels', correctOnderdeel: onderdeel, vraagTekst: getRandomItem(verhalen.en), antwoord: onderdeel.en };
         let opt = new Set([onderdeel.en]); while(opt.size < 4) opt.add(getRandomItem(fietsOnderdelen).en); q.opties = shuffle(Array.from(opt));
-        etappes[3].push(q);
+        etappes[4].push(q);
       });
 
       return etappes;
@@ -326,8 +305,7 @@
       let missedQs = state.fouteAntwoorden.map(fout => fout.vraagObject);
       state = { score: 0, algemeenVraagNummer: 0, huidigeEtappeIndex: 0, isAnswered: false, currentProblem: null, selectedAnswer: null, fouteAntwoorden: [], totaalVragen: missedQs.length, isRemedieringMode: true };
       verstrekenTijd = 0; etappesLijst = [ shuffle([...missedQs]) ]; 
-      UI.schermBericht.classList.add('hidden'); UI.schermBericht.classList.remove('flex');
-      UI.gameUI.classList.remove('hidden'); UI.gameUI.classList.add('flex');
+      UI.schermBericht.classList.add('hidden'); UI.schermBericht.classList.remove('flex'); UI.gameUI.classList.remove('hidden'); UI.gameUI.classList.add('flex');
       updateTijdUI(); clearInterval(timerInterval); timerInterval = setInterval(() => { verstrekenTijd++; updateTijdUI(); }, 1000);
       startNieuweVraag();
     };
@@ -340,11 +318,26 @@
     function toonTussenScherm() {
       UI.gameUI.classList.add('hidden'); UI.gameUI.classList.remove('flex');
       UI.etappeScherm.classList.remove('hidden'); UI.etappeScherm.classList.add('flex');
-      if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, zIndex: 1000 });
+      if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 1000 });
       let volgendLand = landenData[state.huidigeEtappeIndex];
-      UI.etappeTitel.textContent = state.huidigeEtappeIndex === 1 ? "Voorbereiding Voltooid!" : `Etappe ${state.huidigeEtappeIndex - 1} Voltooid!`;
+      
+      // MOTIVERENDE BOODSCHAPPEN PER MODULE
+      UI.etappeTitel.textContent = `Module ${state.huidigeEtappeIndex} Voltooid!`;
+      if(state.huidigeEtappeIndex === 1) {
+          UI.etappeBoodschap.textContent = "Klaar voor de start! Jullie fietsen zijn in topvorm.";
+          UI.etappeOndertitel.innerHTML = `Op naar de wegen in <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>!`;
+      } else if(state.huidigeEtappeIndex === 2) {
+          UI.etappeBoodschap.textContent = "Proficiat! De Belgische kasseien overleefd!";
+          UI.etappeOndertitel.innerHTML = `Tijd om de grens over te steken naar <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>. Allez, on y va!`;
+      } else if(state.huidigeEtappeIndex === 3) {
+          UI.etappeBoodschap.textContent = "Magnifique! De Franse heuvels zitten erop.";
+          UI.etappeOndertitel.innerHTML = `Tijd voor een welverdiende rust én pech-hulp in <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>!`;
+      } else if(state.huidigeEtappeIndex === 4) {
+          UI.etappeBoodschap.textContent = "Onderhoud geslaagd! Verbandjes gelegd!";
+          UI.etappeOndertitel.innerHTML = `Op naar de ferry richting de krijtrotsen van <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>!`;
+      }
+
       UI.volgendeLandNaam.textContent = volgendLand.naam;
-      UI.etappeOndertitel.innerHTML = state.huidigeEtappeIndex === 1 ? `Je fiets is klaar! We vertrekken in <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>...` : `We steken de grens over naar <strong>${volgendLand.naam} ${volgendLand.vlag}</strong>...`;
     }
 
     window.startVolgendeEtappe = function() {
@@ -356,15 +349,14 @@
     function startNieuweVraag() {
       if (etappesLijst[state.huidigeEtappeIndex].length === 0) {
         state.huidigeEtappeIndex++;
-        if (state.isRemedieringMode || state.huidigeEtappeIndex >= 4) return eindigSpel(); 
+        if (state.isRemedieringMode || state.huidigeEtappeIndex >= landenData.length) return eindigSpel(); 
         return toonTussenScherm(); 
       }
       
       let q = etappesLijst[state.huidigeEtappeIndex].pop(); 
       state.currentProblem = q; state.isAnswered = false; state.selectedAnswer = null; 
       
-      if (q.type !== 'info') state.algemeenVraagNummer++; 
-      updateVoortgang();
+      if (q.type !== 'info') state.algemeenVraagNummer++; updateVoortgang();
 
       UI.bodyBg.className = `flex justify-center items-center sm:p-4 bg-gradient-to-br from-slate-100 to-slate-200`;
       UI.gameHeader.className = `p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors ${q.land.header} text-white`;
@@ -373,8 +365,7 @@
       UI.scrollContainer.scrollTop = 0; 
       
       if (q.type === 'info') {
-         UI.verhaalTekst.innerHTML = `<h3 class="text-xl font-black text-emerald-600 mb-2">${q.thema}</h3>`;
-         renderInfo(q);
+         UI.verhaalTekst.innerHTML = `<h3 class="text-xl font-black text-emerald-600 mb-2">${q.thema}</h3>`; renderInfo(q);
       } else {
          UI.verhaalTekst.innerHTML = q.vraagTekst;
          UI.btnActie.disabled = true; UI.btnActie.className = 'flex-grow bg-slate-200 text-slate-400 font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base cursor-not-allowed'; UI.btnActie.textContent = 'Kies een antwoord...';
@@ -405,11 +396,10 @@
 
       UI.fbAntwoord.classList.remove('hidden', 'bg-green-100', 'border-green-500', 'text-green-900', 'bg-red-100', 'border-red-500', 'text-red-900', 'animate-shake');
       if (isCorrect) {
-        state.score++; UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900'); UI.fbAntwoord.innerHTML = `<strong>${getRandomItem(aanmoedigingen)}</strong> Helemaal juist!`;
+        state.score++; UI.fbAntwoord.classList.add('bg-green-100', 'border-green-500', 'text-green-900'); UI.fbAntwoord.innerHTML = `<strong>Top! 🚀</strong> Helemaal juist!`;
         if (typeof confetti === 'function') confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, zIndex: 100 });
       } else {
-        let img = q.correctOnderdeel ? q.correctOnderdeel.foto : '';
-        let naam = q.correctOnderdeel ? q.correctOnderdeel.nl : q.thema || 'Theorie';
+        let img = q.correctOnderdeel ? q.correctOnderdeel.foto : ''; let naam = q.correctOnderdeel ? q.correctOnderdeel.nl : q.thema || 'Theorie';
         state.fouteAntwoorden.push({ vraagObject: q, land: q.land.naam, vlag: q.land.vlag, foto: img, onderdeelNl: naam, jouwAntwoord: gekozen, juisteAntwoord: q.antwoord });
         UI.fbAntwoord.classList.add('bg-red-100', 'border-red-500', 'text-red-900'); UI.fbAntwoord.innerHTML = `🔧 <strong>Foutje!</strong> Het juiste antwoord is: <br><span class="text-lg font-black mt-1 inline-block">${q.antwoord}</span>`;
         void UI.fbAntwoord.offsetWidth; UI.fbAntwoord.classList.add('animate-shake');
@@ -429,20 +419,16 @@
 
     function renderPrepVraag(q) {
       let grid = document.createElement('div'); grid.className = "flex flex-col gap-2 w-full max-w-md mx-auto mt-2";
-      q.opties.forEach(opt => {
-        let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-3 sm:p-4 rounded-xl hover:bg-blue-50 text-sm sm:text-base shadow-sm transition-all text-left";
-        btn.textContent = opt; btn.onclick = function() { kiesAntwoord(opt, this); }; grid.appendChild(btn);
-      });
-      UI.antwoordContainer.appendChild(grid);
+      q.opties.forEach(opt => { let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-3 sm:p-4 rounded-xl hover:bg-blue-50 text-sm sm:text-base shadow-sm transition-all text-left"; btn.textContent = opt; btn.onclick = function() { kiesAntwoord(opt, this); }; grid.appendChild(btn); }); UI.antwoordContainer.appendChild(grid);
     }
 
     function renderBelgie(q) {
       if (q.type === 'mc-text') {
-        UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" class="h-28 sm:h-36 object-contain mx-auto rounded-xl shadow-sm border border-slate-200 bg-white p-2">`;
+        UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" alt="Afbeelding niet gevonden" class="h-28 sm:h-36 object-contain mx-auto rounded-xl shadow-sm border border-slate-200 bg-white p-2">`;
         let grid = document.createElement('div'); grid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2";
         q.opties.forEach(opt => { let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-2 sm:p-3 rounded-xl hover:bg-blue-50 text-sm shadow-sm transition-all"; btn.textContent = opt; btn.onclick = function() { kiesAntwoord(opt, this); }; grid.appendChild(btn); }); UI.antwoordContainer.appendChild(grid);
       } else if (q.type === 'tf') {
-        UI.vraagContainer.innerHTML = `<div class="bg-white p-3 rounded-xl shadow-sm border flex flex-col items-center"><img src="${q.correctOnderdeel.foto}" class="h-24 sm:h-28 object-contain mb-2"><div class="text-base sm:text-lg font-bold text-center">Is dit: <span class="text-blue-600">"${q.getoondeTerm}"</span>?</div></div>`;
+        UI.vraagContainer.innerHTML = `<div class="bg-white p-3 rounded-xl shadow-sm border flex flex-col items-center"><img src="${q.correctOnderdeel.foto}" alt="Afbeelding ontbreekt" class="h-24 sm:h-28 object-contain mb-2"><div class="text-base sm:text-lg font-bold text-center">Is dit: <span class="text-blue-600">"${q.getoondeTerm}"</span>?</div></div>`;
         let grid = document.createElement('div'); grid.className = "grid grid-cols-2 gap-2 mt-2";
         let btnWaar = document.createElement('button'); btnWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-green-200 text-green-600 font-black p-3 rounded-xl shadow-sm transition-all"; btnWaar.innerHTML = "✅ WAAR"; btnWaar.onclick = function() { kiesAntwoord('waar', this); };
         let btnNietWaar = document.createElement('button'); btnNietWaar.className = "answ-btn-hover antwoord-btn bg-white border-2 border-red-200 text-red-500 font-black p-3 rounded-xl shadow-sm transition-all"; btnNietWaar.innerHTML = "❌ NIET WAAR"; btnNietWaar.onclick = function() { kiesAntwoord('niet-waar', this); };
@@ -450,44 +436,41 @@
       } else if (q.type === 'mc-image') {
         UI.vraagContainer.innerHTML = `<div class="text-center bg-blue-50 border border-blue-200 text-blue-900 font-black text-lg p-3 rounded-xl shadow-inner mb-2">"${q.correctOnderdeel.nl}"</div>`;
         let grid = document.createElement('div'); grid.className = "grid grid-cols-3 gap-2";
-        q.opties.forEach(opt => { let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 p-2 rounded-xl h-24 flex items-center justify-center shadow-sm transition-all"; btn.innerHTML = `<img src="${opt.foto}" class="max-h-full max-w-full object-contain pointer-events-none">`; btn.onclick = function() { kiesAntwoord(opt.nl, this); }; grid.appendChild(btn); }); UI.antwoordContainer.appendChild(grid);
+        q.opties.forEach(opt => { let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 p-2 rounded-xl h-24 flex items-center justify-center shadow-sm transition-all"; btn.innerHTML = `<img src="${opt.foto}" alt="Geen img" class="max-h-full max-w-full object-contain pointer-events-none">`; btn.onclick = function() { kiesAntwoord(opt.nl, this); }; grid.appendChild(btn); }); UI.antwoordContainer.appendChild(grid);
       }
     }
 
     function renderFrankrijkDragDrop(q) {
-      UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-3"><div id="dropzone" class="w-full max-w-sm h-14 border-4 border-dashed border-blue-300 rounded-xl bg-blue-50 flex items-center justify-center text-blue-400 font-bold mb-4 shadow-inner transition-colors duration-300">Plaats woord hier</div>`;
+      UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" alt="Ontbreekt" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-3"><div id="dropzone" class="w-full max-w-sm h-14 border-4 border-dashed border-blue-300 rounded-xl bg-blue-50 flex items-center justify-center text-blue-400 font-bold mb-4 shadow-inner transition-colors duration-300">Plaats woord hier</div>`;
       let wordBank = document.createElement('div'); wordBank.className = "flex flex-wrap justify-center gap-2";
       q.opties.forEach(opt => { let span = document.createElement('div'); span.className = "cursor-pointer bg-white border-2 border-slate-300 text-slate-700 font-bold px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50 hover:scale-105 active:scale-95 transition-all text-sm"; span.textContent = opt; span.onclick = function() { kiesAntwoord(opt, this); }; wordBank.appendChild(span); }); UI.antwoordContainer.appendChild(wordBank);
     }
 
     function renderEngelandMakkelijk(q) {
-      UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-4">`;
+      UI.vraagContainer.innerHTML = `<img src="${q.correctOnderdeel.foto}" alt="Ontbreekt" class="h-28 sm:h-36 object-contain bg-white rounded-xl shadow-sm border border-slate-200 p-2 mb-4">`;
       let grid = document.createElement('div'); grid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md mx-auto";
       q.opties.forEach(opt => { let btn = document.createElement('button'); btn.className = "answ-btn-hover antwoord-btn bg-white border-2 border-slate-200 text-slate-700 font-bold p-3 sm:p-4 rounded-xl hover:bg-blue-50 text-base shadow-sm transition-all w-full text-center"; btn.textContent = opt; btn.onclick = function() { kiesAntwoord(opt, this); }; grid.appendChild(btn); }); UI.antwoordContainer.appendChild(grid);
     }
 
-    // ----- HELPERS -----
     function updateTijdUI() { let m = Math.floor(verstrekenTijd / 60); let s = verstrekenTijd % 60; UI.tijdWeergave.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`; }
-    
-    function updateVoortgang() {
-      UI.scoreWeergave.textContent = state.score; UI.voortgangWeergave.textContent = `${state.algemeenVraagNummer}/${state.totaalVragen}`;
-      let percentage = (state.algemeenVraagNummer / state.totaalVragen) * 100; if(percentage > 100) percentage = 100; UI.progressBar.style.width = `${percentage}%`;
-    }
+    function updateVoortgang() { UI.scoreWeergave.textContent = state.score; UI.voortgangWeergave.textContent = `${state.algemeenVraagNummer}/${state.totaalVragen}`; UI.progressBar.style.width = `${Math.min((state.algemeenVraagNummer / state.totaalVragen) * 100, 100)}%`; }
 
     window.eindigSpel = function(forceedStop = false) {
       clearInterval(timerInterval);
       UI.gameUI.classList.add('hidden'); UI.gameUI.classList.remove('flex'); UI.etappeScherm.classList.add('hidden'); UI.etappeScherm.classList.remove('flex');
       UI.schermBericht.classList.remove('hidden'); UI.schermBericht.classList.add('flex'); UI.bodyBg.className = "flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100";
-      UI.eindOndertitel.textContent = state.isRemedieringMode ? "Herstelronde voltooid!" : (forceedStop ? "Je hebt de tocht gestopt." : "Je bent veilig aangekomen!");
-      UI.eindScore.textContent = state.score; UI.eindTotaal.textContent = forceedStop ? state.algemeenVraagNummer : state.totaalVragen; 
-      let m = Math.floor(verstrekenTijd / 60); let s = verstrekenTijd % 60; UI.eindTijd.innerHTML = `⏱️ Fietstijd: ${m} min ${s} sec`;
       
-      if (state.isRemedieringMode) {
-          UI.classroomOpdracht.querySelector('h4').textContent = "Extra Bewijs"; UI.classroomOpdracht.querySelector('p').innerHTML = "Je mag ook van deze nieuwe, betere score een printscreen toevoegen als bewijs van je harde werk!";
-      } else {
-          UI.classroomOpdracht.querySelector('h4').textContent = "Verplichte Opdracht"; UI.classroomOpdracht.querySelector('p').innerHTML = "Neem nu een <strong>printscreen</strong> van dit scherm (met je score en fouten) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>. Doe dit <strong>voordat</strong> je op een knop klikt!";
-      }
+      let uTotaal = forceedStop ? state.algemeenVraagNummer : state.totaalVragen;
+      let percentage = uTotaal > 0 ? Math.round((state.score / uTotaal) * 100) : 0;
 
+      UI.eindOndertitel.textContent = state.isRemedieringMode ? "Herstelronde voltooid!" : (forceedStop ? "Je hebt de tocht gestopt." : "Jullie hebben de witte kliffen van Dover bereikt!");
+      UI.eindScore.textContent = state.score; UI.eindTotaal.textContent = uTotaal; 
+      UI.eindPercentage.textContent = percentage + "%";
+      UI.eindTijd.innerHTML = `⏱️ Fietstijd: ${Math.floor(verstrekenTijd / 60)} min ${verstrekenTijd % 60} sec`;
+      
+      // Verander kleur van percentage op basis van score
+      UI.eindPercentage.className = percentage >= 80 ? "text-green-500" : (percentage >= 50 ? "text-orange-500" : "text-red-500");
+      
       if (state.fouteAntwoorden.length > 0) {
         UI.remedieringContainer.classList.remove('hidden'); UI.btnOefenFouten.classList.remove('hidden'); 
         let html = `<div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col mb-4"><h3 class="text-xl font-bold mb-3 text-slate-800 border-b pb-2 shrink-0">Hier kan je nog uit leren:</h3><div class="space-y-3 pr-2 scroll-list">`;
