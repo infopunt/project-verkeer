@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dover 2026: De Ultieme Check</title>
+  <title>De Pech-Onderweg Tocht: Dover 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -13,6 +13,8 @@
     #scroll-container::-webkit-scrollbar { display: none; }
     .animate-ride-across { animation: rideAcross 5s linear forwards; }
     @keyframes rideAcross { 0% { transform: translateX(-100vw); } 100% { transform: translateX(100vw); } }
+    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="flex justify-center items-center bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100">
@@ -31,11 +33,29 @@
 
   <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-slate-50/95">
     
-    <div id="start-scherm" class="flex-grow flex flex-col h-full p-8 text-center items-center justify-center">
-        <div class="text-7xl mb-6">🚴‍♂️</div>
-        <h1 class="text-4xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text uppercase italic leading-none">Roadtrip Dover 2026</h1>
-        <p class="text-slate-500 mb-8 font-bold italic">Halen jullie de overkant zonder kleerscheuren?</p>
-        <button onclick="startSpel()" class="bg-indigo-600 text-white font-black py-4 px-12 rounded-full shadow-lg uppercase tracking-widest hover:scale-105 transition-transform text-xl">Start de Tocht!</button>
+    <div id="start-scherm" class="flex-grow flex flex-col h-full bg-slate-50/90 overflow-hidden relative">
+      <div class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative flex flex-col justify-center items-center">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-l-4 border-indigo-500 text-left w-full max-w-lg mb-6 text-slate-700 leading-relaxed animate-fade-in mt-8">
+            <div class="absolute -top-10 -left-6 text-6xl rotate-[-10deg]">🚴‍♂️</div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Roadtrip Alert! 🌍</h2>
+            <p class="mb-3 text-sm sm:text-base">Jij en je <strong>vrienden</strong> pakken de fiets voor een epische roadtrip! Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry pakken naar <strong>Engeland</strong>. 🚢💨</p>
+            <p class="mb-3 text-sm sm:text-base">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet 'Tour de France'-proof. Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
+            <p class="mb-5 text-sm sm:text-base">Weet je een onderdeel niet? Geen stress! Gebruik het <strong>Spiekbriefje 🚲</strong>.</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
+                <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs">De Route:</p>
+                <div class="space-y-2 text-sm text-slate-600 font-medium">
+                  <div class="flex items-center space-x-3"><span>🛠️</span> <span>Check-Up</span></div>
+                  <div class="flex items-center space-x-3"><span>🇧🇪</span> <span>Etappe 1: België</span></div>
+                  <div class="flex items-center space-x-3"><span>🇫🇷</span> <span>Etappe 2: Frankrijk</span></div>
+                  <div class="flex items-center space-x-3"><span>🇬🇧</span> <span>Etappe 3: Engeland</span></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 w-full p-4 bg-slate-50/90 border-t flex justify-center">
+        <button onclick="startSpel()" class="bg-indigo-600 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-widest w-full max-w-sm hover:scale-105 transition-transform text-lg">Start de Tocht!</button>
+      </div>
     </div>
 
     <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-slate-900/95 flex flex-col justify-center items-center text-center p-6">
@@ -50,7 +70,7 @@
         <div class="flex justify-between items-center px-1">
           <div class="flex items-center space-x-2"><span id="land-icoon" class="text-3xl">🛠️</span><span class="font-black text-sm uppercase" id="land-naam">Voorbereiding</span></div>
           <div class="flex items-center space-x-3">
-            <button onclick="toggleSpiekbriefje()" class="bg-yellow-400 text-slate-900 px-3 py-1 rounded-lg font-black text-xs border-2 border-slate-900">SPIEKBRIEFJE 🧐</button>
+            <button onclick="toggleSpiekbriefje()" class="bg-yellow-400 text-slate-900 px-3 py-1 rounded-lg font-black text-xs border-2 border-slate-900 shadow-sm">SPIEK 🧐</button>
             <div class="bg-black/20 px-3 py-1 rounded-lg font-black text-yellow-300" id="score-weergave">0</div>
           </div>
         </div>
@@ -58,43 +78,42 @@
       </div>
 
       <div id="scroll-container" class="flex-grow overflow-y-auto p-4 flex flex-col items-center">
-        <div id="verhaal-tekst" class="text-center text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest"></div>
+        <div id="verhaal-tekst" class="text-center text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest"></div>
         <div id="vraag-container" class="mb-4 w-full flex justify-center"></div>
         <div id="antwoord-container" class="w-full max-w-md grid gap-2"></div>
         <div id="feedback-antwoord" class="hidden w-full max-w-md p-4 rounded-xl text-center font-black text-sm mt-4 border-4"></div>
       </div>
 
       <div class="p-4 bg-white border-t flex justify-center shrink-0">
-        <button id="action-btn" onclick="volgendeActie()" class="w-full max-w-md bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm" disabled>Kies een antwoord...</button>
+        <button id="action-btn" onclick="volgendeActie()" class="w-full max-w-md bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm shadow-inner" disabled>Kies een antwoord...</button>
       </div>
     </div>
 
     <div id="bericht-scherm" class="hidden flex-grow flex-col h-full w-full items-center justify-center p-8 text-center overflow-y-auto">
         <div id="eind-emoji" class="text-7xl mb-4">🏆</div>
         <h2 id="eind-titel" class="text-4xl font-black text-slate-800 mb-2 italic uppercase">Aankomst Dover!</h2>
-        <div class="bg-slate-900 text-white p-8 rounded-[3rem] mb-6 border-8 border-indigo-500 w-full max-w-sm">
+        <div class="bg-slate-900 text-white p-8 rounded-[3rem] mb-6 border-8 border-indigo-500 w-full max-w-sm shadow-2xl">
             <div class="text-7xl font-black text-yellow-400 mb-2"><span id="eind-score-getal">0</span>%</div>
             <p id="eind-status" class="text-xs opacity-50 uppercase tracking-widest font-bold">Jouw Score</p>
         </div>
-        
         <div class="bg-yellow-50 border-l-8 border-yellow-400 p-4 text-left mb-6 max-w-sm rounded-r-xl">
             <p class="font-black text-yellow-800 uppercase text-xs mb-1">📸 Screenshot Verplicht</p>
-            <p class="text-xs text-yellow-900">Maak een screenshot van deze score voor Classroom.</p>
+            <p class="text-xs text-yellow-900 leading-tight">Maak een screenshot van deze score voor je opdracht in Classroom.</p>
         </div>
-
         <div class="flex flex-col gap-3 w-full max-w-sm">
             <button id="remedie-btn" onclick="startRemediering()" class="hidden bg-red-500 text-white font-black py-4 px-10 rounded-full uppercase tracking-widest shadow-lg animate-pulse">Start Remediëring ✍️</button>
-            <button onclick="window.location.reload()" class="bg-indigo-600 text-white font-black py-4 px-10 rounded-full uppercase tracking-widest">Opnieuw Starten</button>
+            <button onclick="window.location.reload()" class="bg-indigo-600 text-white font-black py-4 px-10 rounded-full uppercase tracking-widest">Nieuw Spel</button>
         </div>
     </div>
   </div>
 
   <script>
+    // --- VRAGEN DATA ---
     const theorieVragen = [
-      { type: 'info', thema: 'De M-Check 🛠️', inhoud: `Controleer je fiets in een <strong>M-vorm</strong>: 1. Voorwiel → 2. Stuur → 3. Ketting → 4. Zadel → 5. Achterwiel.` },
-      { type: 'quiz', q: "Waarmee begin je de M-check?", a: "Het voorwiel", opties: ["Het voorwiel", "Het zadel", "De ketting"], icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' },
-      { type: 'info', thema: 'Kledij & EHBO 🚑', inhoud: `Gebruik 3 lagen kledij. Bij een wonde: <strong>Eerst spoelen</strong> met water, dan ontsmetten.` },
-      { type: 'quiz', q: "Wat doe je als eerste bij een schaafwonde?", a: "Spoelen met water", opties: ["Meteen ontsmetten", "Spoelen met water", "Niets doen"], icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' }
+      { type: 'info', thema: 'De M-Check 🛠️', inhoud: `Controleer in een <strong>M-vorm</strong>: Voorwiel → Stuur → Ketting/Trappers → Zadel → Achterwiel.`, icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' },
+      { type: 'quiz', q: "Waar vind je de juiste bandenspanning?", a: "Op de zijkant van de buitenband", opties: ["Op het ventiel", "Op de zijkant van de buitenband", "Op de velg"], icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' },
+      { type: 'info', thema: 'Kledij & EHBO 🚑', inhoud: `Draag laagjes! Bij een schaafwonde: <strong>Eerst spoelen</strong> met zuiver water voor je ontsmet.`, icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' },
+      { type: 'quiz', q: "Welke letter volg je bij een fietscontrole?", a: "De letter M", opties: ["De letter Z", "De letter M", "De letter S"], icoon: '🛠️', bg: 'bg-teal-600', landNaam: 'Voorbereiding' }
     ];
 
     const onderdelen = [
@@ -106,6 +125,9 @@
       { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", img: "remgreep.png" },
       { nl: "het zadel", fr: "la selle", en: "the saddle", img: "zadel and zadelpen.png" },
       { nl: "de ketting", fr: "la chaîne", en: "the chain", img: "ketting.png" },
+      { nl: "de derailleur", fr: "le dérailleur", en: "the derailleur", img: "derailleur.png" },
+      { nl: "de spaken", fr: "les rayons", en: "the spokes", img: "spaken.png" },
+      { nl: "de naaf", fr: "le moyeu", en: "the hub", img: "naaf.png" },
       { nl: "het ventiel", fr: "la valve", en: "the valve", img: "ventiel.png" },
       { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", img: "pomp.png" }
     ];
@@ -149,22 +171,23 @@
       document.getElementById('feedback-antwoord').classList.add('hidden');
 
       if (v.type === 'info') {
-        cont.innerHTML = `<div class='bg-white p-6 rounded-2xl border-4 border-teal-500 w-full'><h3 class='font-black text-teal-600 mb-2'>${v.thema}</h3><p class='text-sm'>${v.inhoud}</p></div>`;
-        ansCont.innerHTML = `<button onclick="volgendeActie()" class="bg-teal-600 text-white py-4 rounded-xl font-black uppercase">Begrepen!</button>`;
+        cont.innerHTML = `<div class='bg-white p-6 rounded-2xl border-4 border-teal-500 w-full animate-fade-in'><h3 class='font-black text-teal-600 mb-2'>${v.thema}</h3><p class='text-sm'>${v.inhoud}</p></div>`;
+        ansCont.innerHTML = `<button onclick="volgendeActie()" class="bg-teal-600 text-white py-4 rounded-xl font-black uppercase shadow-lg">Ik ben klaar! 👉</button>`;
         document.getElementById('action-btn').classList.add('hidden');
       } else {
         document.getElementById('action-btn').classList.remove('hidden');
         document.getElementById('verhaal-tekst').innerText = v.q;
-        if(v.img) cont.innerHTML = `<img src="${v.img}" class="max-h-32 rounded-lg" onerror="this.outerHTML='<p class=text-xs>[Afbeelding ${v.img}]</p>'">`;
+        if(v.img) cont.innerHTML = `<img src="${v.img}" class="max-h-32 rounded-lg shadow-md border-2 border-white" onerror="this.outerHTML='<p class=text-xs>[Foto ${v.img}]</p>'">`;
         v.opties.forEach(o => {
           let b = document.createElement('button');
-          b.className = "bg-white p-4 rounded-xl font-bold border-2 border-slate-200 text-slate-700 text-left";
+          b.className = "bg-white p-4 rounded-xl font-bold border-2 border-slate-200 text-slate-700 text-left hover:border-indigo-400 transition-all";
           b.innerText = o;
           b.onclick = () => { if(!state.beantwoord) check(o, b, v); };
           ansCont.appendChild(b);
         });
         document.getElementById('action-btn').disabled = true;
         document.getElementById('action-btn').innerText = "Kies een antwoord...";
+        document.getElementById('action-btn').className = "w-full max-w-md bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm";
       }
     }
 
@@ -176,16 +199,17 @@
         state.score++;
         btn.className = "bg-green-100 p-4 rounded-xl font-bold border-4 border-green-500 text-green-700 text-left";
         fb.innerText = "Correct! ✅";
-        fb.className = "w-full max-w-md p-4 rounded-xl text-center font-black text-sm mt-4 border-4 bg-green-50 border-green-500 text-green-700";
+        fb.className = "w-full max-w-md p-4 rounded-xl text-center font-black text-sm mt-4 border-4 bg-green-50 border-green-500 text-green-700 animate-fade-in";
         confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
       } else {
         state.fouteVragen.push(v);
         btn.className = "bg-red-100 p-4 rounded-xl font-bold border-4 border-red-500 text-red-700 text-left";
         fb.innerText = `Fout! Het was: ${v.a}`;
-        fb.className = "w-full max-w-md p-4 rounded-xl text-center font-black text-sm mt-4 border-4 bg-red-50 border-red-500 text-red-700";
+        fb.className = "w-full max-w-md p-4 rounded-xl text-center font-black text-sm mt-4 border-4 bg-red-50 border-red-500 text-red-700 animate-shake";
       }
       document.getElementById('action-btn').disabled = false;
       document.getElementById('action-btn').innerText = "Volgende Km 👉";
+      document.getElementById('action-btn').className = "w-full max-w-md bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-sm shadow-xl";
     }
 
     function startVolgendeEtappe() {
@@ -208,7 +232,7 @@
       if (perc >= 90) {
           document.getElementById('eind-titel').innerText = "🥇 Fietsexpert!";
           document.getElementById('eind-emoji').innerText = "🌟";
-          document.getElementById('eind-status').innerText = "Geweldige prestatie!";
+          document.getElementById('eind-status').innerText = "Schitterend resultaat!";
           confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
       }
 
