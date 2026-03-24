@@ -3,112 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Grote Vriendenrit naar Engeland 🚲</title>
+  <title>De Grote Vriendenrit: De Ultieme Etappe 🚲</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f8fafc; font-family: 'Segoe UI', sans-serif; }
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f1f5f9; font-family: 'Segoe UI', sans-serif; }
     .answ-btn { transition: all 0.2s; border: 2px solid #e2e8f0; }
-    .answ-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: #6366f1; background: #f8faff; }
-    .img-container img { max-height: 120px; width: auto; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    .animate-float { animation: float 3s infinite ease-in-out; }
+    .answ-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: #6366f1; background: #ffffff; }
+    .img-box img { max-height: 110px; width: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+    @keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    .wave-anim { animation: wave 4s infinite ease-in-out; }
   </style>
 </head>
 <body class="flex justify-center items-center">
 
-  <div id="spiek-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-sm flex justify-center items-center p-4">
+  <div id="spiek-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/90 flex justify-center items-center p-4">
     <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border-4 border-indigo-500">
        <div class="p-3 bg-indigo-600 text-white flex justify-between items-center">
-          <span class="font-black italic tracking-widest text-sm">🚲 TECHNISCHE HULP</span>
-          <button onclick="toggleSpiek()" class="bg-white text-indigo-600 px-4 py-1 rounded-full font-bold text-xs uppercase shadow-md">Sluiten</button>
+          <span class="font-black text-xs uppercase tracking-tighter">🚲 Technisch Dossier</span>
+          <button onclick="toggleSpiek()" class="bg-white text-indigo-600 px-4 py-1 rounded-full font-bold text-xs">SLUITEN</button>
        </div>
-       <div class="overflow-auto p-4 bg-slate-50 flex justify-center">
-          <img src="de-onderdelen-van-de-fiets-afbeelding-21.png" class="max-w-full h-auto rounded-xl shadow-lg border-4 border-white">
+       <div class="overflow-auto p-4 flex justify-center bg-slate-50">
+          <img src="de-onderdelen-van-de-fiets-afbeelding-21.png" class="max-w-full h-auto rounded-xl shadow-lg border-2 border-white">
        </div>
     </div>
   </div>
 
-  <div class="w-full max-w-xl h-full sm:h-[95vh] bg-white shadow-2xl flex flex-col overflow-hidden sm:rounded-[2.5rem] relative border-4 border-white">
+  <div class="w-full max-w-xl h-full sm:h-[96vh] bg-white shadow-2xl flex flex-col overflow-hidden sm:rounded-[2.5rem] border-4 border-white relative">
     
     <div id="game-header" class="hidden p-3 text-white flex justify-between items-center bg-slate-900 shrink-0">
       <div class="flex items-center space-x-3">
-          <span id="land-icoon" class="text-2xl animate-float">🌍</span>
+          <span id="land-icoon" class="text-2xl wave-anim">🌍</span>
           <div>
-              <div id="land-naam" class="text-[9px] font-black uppercase tracking-widest text-indigo-400 leading-none mb-1">VOORBEREIDING</div>
-              <div class="text-[11px] font-bold opacity-80">KM <span id="vraag-nr">1</span> / 100</div>
+              <div id="land-naam" class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1">STAGE</div>
+              <div class="text-[10px] font-bold opacity-70">VRAAG <span id="vraag-nr">1</span> / <span id="totaal-nr">100</span></div>
           </div>
       </div>
-      <div class="flex items-center space-x-4">
-          <button onclick="toggleSpiek()" class="bg-yellow-400 text-slate-900 px-3 py-1.5 rounded-full font-black text-[10px] shadow-md active:translate-y-0.5 transition-all">SPIEKBRIEFJE</button>
-          <div class="text-center bg-slate-800 px-3 py-1 rounded-xl border border-white/10 min-w-[50px]">
-              <div class="text-[8px] opacity-60 font-black leading-none">SCORE</div>
+      <div class="flex items-center space-x-3">
+          <button onclick="toggleSpiek()" class="bg-yellow-400 text-slate-900 px-3 py-1 rounded-full font-black text-[10px] shadow-sm">HULPLIJN</button>
+          <div class="text-center bg-slate-800 px-3 py-1 rounded-xl border border-white/10 min-w-[55px]">
+              <div class="text-[8px] opacity-50 font-black leading-none">SCORE</div>
               <div id="score-weergave" class="font-black text-yellow-400 text-base leading-none">0</div>
           </div>
       </div>
     </div>
 
     <div id="progress-container" class="hidden w-full bg-slate-100 h-1.5 shrink-0">
-        <div id="progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 0%"></div>
+        <div id="progress-bar" class="bg-indigo-500 h-full transition-all duration-500" style="width: 0%"></div>
     </div>
 
     <div id="main-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center overflow-y-auto">
       
       <div id="start-scherm" class="w-full max-w-sm">
-        <div class="text-7xl mb-6 animate-float">🚲✨⛺</div>
-        <h1 class="text-4xl font-black text-slate-900 mb-4 italic tracking-tighter">DE VRIENDENRIT!</h1>
+        <div class="text-7xl mb-6 wave-anim">🚲🎒🚢</div>
+        <h1 class="text-3xl font-black text-slate-900 mb-4 italic tracking-tighter uppercase leading-none">De Grote Vriendenrit!</h1>
         <p class="text-slate-600 mb-8 text-sm leading-relaxed">
-            Gooi die fietstassen maar achterop! Jij en je vrienden vertrekken op <b>grote fietsvakantie</b>. 🌍<br><br>
-            Vanuit België trappen we door Frankrijk naar de kust, om daar de ferry 🚢 over de golven 🌊 naar de witte krijtrotsen 🏔️ van <b>Dover</b> te nemen.<br><br>
-            Zorg dat je alle onderdelen in 3 talen kent om de finish te halen!
+            De fietstassen zijn gepakt! 🌍<br><br>
+            Vanuit België rijden we naar Frankrijk om de ferry 🚢 naar de witte krijtrotsen 🏔️ van <b>Dover</b> te halen.<br><br>
+            Eerst checken we de theorie, daarna testen we jullie talenkennis van alle fietsonderdelen. Ben je klaar voor de 40-minuten challenge?
         </p>
-        <button onclick="startSpel()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-3xl text-xl shadow-[0_6px_0_0_#4338ca] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all uppercase">Vertrek! 🏁</button>
+        <button onclick="startSpel()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-3xl text-xl shadow-[0_6px_0_0_#4338ca] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest">Start de Tocht! 🏁</button>
       </div>
 
       <div id="vraag-scherm" class="hidden w-full h-full flex flex-col justify-between">
         <div class="flex-grow flex flex-col justify-center items-center">
             <div id="verhaal-tekst" class="text-[10px] font-black text-indigo-400 mb-2 uppercase tracking-widest italic"></div>
-            <div id="vraag-visual" class="img-container mb-4"></div>
-            <h2 id="vraag-titel" class="text-lg font-extrabold text-slate-800 mb-6 leading-tight"></h2>
+            <div id="vraag-visual" class="img-box mb-4"></div>
+            <h2 id="vraag-titel" class="text-lg font-extrabold text-slate-800 mb-5 leading-tight"></h2>
             <div id="antwoord-container" class="grid gap-2.5 w-full max-w-sm"></div>
-            <div id="feedback-box" class="mt-5 p-4 rounded-2xl font-black hidden text-sm border-4 w-full max-w-sm"></div>
+            <div id="feedback-box" class="mt-4 p-4 rounded-2xl font-black hidden text-sm border-4 w-full max-w-sm"></div>
         </div>
       </div>
 
       <div id="ferry-scherm" class="hidden w-full">
-        <div class="text-8xl mb-6 animate-float">🚢🌊🏔️</div>
-        <h2 class="text-3xl font-black text-indigo-900 mb-4 italic">BIJNA IN DOVER!</h2>
-        <p class="text-slate-600 mb-10 text-sm">
-            De ferry 🚢 snijdt prachtig door de golven 🌊. In de verte zien jullie de witte krijtrotsen 🏔️ van Engeland schitteren! Jullie hebben de 100 vragen overleefd.<br><br>
-            Hoe vieren jullie dit succes aan dek?
-        </p>
-        <div class="grid gap-4 max-w-xs mx-auto">
-            <button onclick="toonEinde('tiktok')" class="bg-white border-4 border-indigo-100 p-5 rounded-3xl font-black text-indigo-700 hover:border-indigo-500 transition-all text-lg shadow-sm">🕺 TikTok op het dek</button>
-            <button onclick="toonEinde('chips')" class="bg-white border-4 border-indigo-100 p-5 rounded-3xl font-black text-indigo-700 hover:border-indigo-500 transition-all text-lg shadow-sm">🍟 Fish & Chips eten</button>
+        <div class="text-8xl mb-6 wave-anim">🚢🌊🏔️</div>
+        <h2 class="text-3xl font-black text-indigo-900 mb-4 italic leading-none">LAND IN ZICHT!</h2>
+        <p class="text-slate-600 mb-10 text-sm">De ferry 🚢 snijdt door de golven 🌊. Jullie zien de krijtrotsen 🏔️! De grote test zit erop. Hoe voel je je?</p>
+        <div class="grid gap-3 max-w-xs mx-auto">
+            <button onclick="berekenPercentage()" class="bg-indigo-600 text-white p-5 rounded-3xl font-black text-lg shadow-lg">BEKIJK MIJN RESULTAAT 📊</button>
         </div>
       </div>
 
       <div id="eind-scherm" class="hidden w-full">
-        <h2 class="text-4xl font-black mb-6 italic text-slate-900 uppercase">WELL DONE! 🇬🇧</h2>
-        <div class="bg-slate-900 text-white p-10 rounded-[3rem] mb-8 shadow-2xl border-8 border-indigo-500">
-            <p class="text-[10px] opacity-40 font-black mb-2 uppercase tracking-widest">Team Resultaat</p>
-            <div class="text-7xl font-black text-yellow-400"><span id="final-score">0</span><span class="text-2xl text-white/20">/</span>100</div>
+        <h2 class="text-4xl font-black mb-4 italic text-slate-900 uppercase">EINDRESULTAAT! 🇬🇧</h2>
+        <div class="bg-slate-900 text-white p-10 rounded-[3rem] mb-6 shadow-2xl border-8 border-indigo-500">
+            <div class="text-8xl font-black text-yellow-400 leading-none mb-2"><span id="final-percent">0</span>%</div>
+            <p class="text-[10px] opacity-40 font-black uppercase tracking-[0.3em]"><span id="final-score">0</span> van de <span id="final-total">0</span> vragen juist</p>
         </div>
-        <div class="bg-yellow-400 p-5 rounded-2xl shadow-lg border-4 border-white transform -rotate-1">
-          <p class="text-slate-900 font-black text-sm uppercase italic">📸 Screenshot tijd!</p>
+        <div class="bg-indigo-50 p-6 rounded-2xl border-2 border-indigo-100 mb-6">
+            <p class="text-indigo-900 font-bold text-sm">Goed gedaan! Maak een screenshot en klik hieronder om met de remediëring te beginnen.</p>
         </div>
+        <button onclick="window.location.reload()" class="w-full bg-yellow-400 text-slate-900 font-black py-4 rounded-2xl text-md uppercase shadow-md">Start Remediëring ✍️</button>
       </div>
-
     </div>
 
     <div id="game-footer" class="hidden p-4 border-t bg-slate-50 shrink-0">
-        <button id="next-btn" onclick="volgendeVraag()" class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm tracking-widest transition-all" disabled>KIES EEN ANTWOORD</button>
+        <button id="next-btn" onclick="volgendeVraag()" class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm" disabled>KIES EEN ANTWOORD</button>
     </div>
-
   </div>
 
   <script>
+    const theorie = [
+        {q: "Wat check je met de M-check?", a: "De veiligheid", opt: ["De snelheid", "De veiligheid", "De bandenspanning"], land: "🛠️", txt: "M-CHECK", img: ""},
+        {q: "Welke voeding is het best tijdens de rit?", a: "Koolhydraten", opt: ["Eiwitten", "Koolhydraten", "Vetten"], land: "🛠️", txt: "VOEDING", img: ""},
+        {q: "Waarom fietstassen onderaan?", a: "Voor stabiliteit", opt: ["Voor stabiliteit", "Ziet er beter uit", "Minder windvanger"], land: "🛠️", txt: "ERGONOMIE", img: ""},
+        {q: "Hoe ontsmet je een schaafwonde?", a: "Water/ontsmettingsmiddel", opt: ["Alleen wrijven", "Water/ontsmettingsmiddel", "Niet aanraken"], land: "🛠️", txt: "EHBO", img: ""},
+        {q: "Ideale zadelhoogte?", a: "Lichte buiging knie", opt: ["Gestrekte knie", "Lichte buiging knie", "Voeten plat op grond"], land: "🛠️", txt: "ERGONOMIE", img: ""},
+        {q: "Beste drank tijdens hitte?", a: "Water/isotoon", opt: ["Energy drink", "Cola", "Water/isotoon"], land: "🛠️", txt: "VOEDING", img: ""},
+        {q: "Wat controleer je aan de banden?", a: "Spanning en slijtage", opt: ["Alleen de kleur", "Spanning en slijtage", "De merknaam"], land: "🛠️", txt: "VEILIGHEID", img: ""}
+    ];
+
     const onderdelen = [
+        { nl: "de voordrager", fr: "le porte-bagages avant", en: "the front rack", foto: "voordrager.png" },
+        { nl: "de achterdrager", fr: "le porte-bagages arrière", en: "the rear rack", foto: "achterdrager.png" },
         { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
         { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
         { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "fietsbel.png" },
@@ -120,7 +127,6 @@
         { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
         { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
         { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" },
-        { nl: "de bagagedrager", fr: "le porte-bagages", en: "the luggage carrier", foto: "bagagedrager.png" },
         { nl: "de binnenband", fr: "la chambre à air", en: "the inner tube", foto: "binnenband.png" },
         { nl: "de buitenband", fr: "le pneu", en: "the tyre", foto: "buitenband.png" },
         { nl: "het stuur", fr: "le guidon", en: "the handlebars", foto: "stuur.png" },
@@ -140,16 +146,18 @@
     function toggleSpiek() { document.getElementById('spiek-modal').classList.toggle('hidden'); }
 
     function startSpel() {
-        // BELGIË (NL)
-        onderdelen.forEach(o => { vrs.push({q: 'Hoe noemen we dit?', a: o.nl, opt: shuffle([o.nl, "de trapas", "de rem", "de bel"]), img: o.foto, land: '🇧🇪', txt: 'België: Start van de reis!'}) });
-        // FRANKRIJK (FR)
-        onderdelen.forEach(o => { vrs.push({q: 'Nommez cette partie:', a: o.fr, opt: shuffle([o.fr, "le cadre", "la selle", "le pneu"]), img: o.foto, land: '🇫🇷', txt: 'Frankrijk: Onderweg in de zon!'}) });
-        // ENGELAND (EN)
-        onderdelen.forEach(o => { vrs.push({q: 'Name this part:', a: o.en, opt: shuffle([o.en, "the wheel", "the chain", "the gear"]), img: o.foto, land: '🇬🇧', txt: 'Engeland: Bijna bij de rotsen!'}) });
+        // Opbouw: Theorie (7) + NL (25) + FR (25) + EN (25) + Extra Mix (28) = 110 vragen
+        theorie.forEach(t => vrs.push(t));
+        onderdelen.forEach(o => vrs.push({q: 'NL: Wat is dit?', a: o.nl, opt: shuffle([o.nl, "het stuur", "de rem", "de bel"]), img: o.foto, land: '🇧🇪', txt: 'BELGIË'}));
+        onderdelen.forEach(o => vrs.push({q: 'FR: Nommez la partie:', a: o.fr, opt: shuffle([o.fr, "le pneu", "le cadre", "la selle"]), img: o.foto, land: '🇫🇷', txt: 'FRANKRIJK'}));
+        onderdelen.forEach(o => vrs.push({q: 'EN: Name the part:', a: o.en, opt: shuffle([o.en, "the wheel", "the chain", "the light"]), img: o.foto, land: '🇬🇧', txt: 'ENGELAND'}));
         
-        // Theorie toevoegen tot 100
-        while(vrs.length < 100) { vrs.push({q: 'Hoe check je de fiets veiligheid?', a: 'De M-check', opt: ['De S-check', 'De M-check', 'De Z-check'], img: '', land: '🛠️', txt: 'TECHNISCHE CHECK'}); }
+        while(vrs.length < 110) { 
+            let randomT = theorie[Math.floor(Math.random()*theorie.length)];
+            vrs.push(randomT);
+        }
 
+        document.getElementById('totaal-nr').innerText = vrs.length;
         document.getElementById('start-scherm').classList.add('hidden');
         document.getElementById('game-header').classList.remove('hidden');
         document.getElementById('progress-container').classList.remove('hidden');
@@ -163,52 +171,44 @@
     function toonVraag() {
         beantwoord = false;
         let curr = vrs[idx];
-        
         document.getElementById('land-icoon').innerText = curr.land;
         document.getElementById('land-naam').innerText = curr.txt;
         document.getElementById('vraag-nr').innerText = idx + 1;
         document.getElementById('score-weergave').innerText = score;
         document.getElementById('progress-bar').style.width = `${(idx/vrs.length)*100}%`;
-        
         document.getElementById('verhaal-tekst').innerText = curr.txt;
         document.getElementById('vraag-titel').innerText = curr.q;
         
-        // FOTO LADEN - ALTIJD OPNIEUW
         const visual = document.getElementById('vraag-visual');
-        visual.innerHTML = curr.img ? `<img src="${curr.img}" class="animate-float">` : '';
+        visual.innerHTML = curr.img ? `<img src="${curr.img}" class="wave-anim">` : `<div class="p-6 bg-indigo-50 rounded-full text-4xl">💡</div>`;
 
         document.getElementById('antwoord-container').innerHTML = '';
         curr.opt.forEach(o => {
             let b = document.createElement('button');
-            b.className = "answ-btn bg-white p-3.5 rounded-2xl font-black text-slate-700 text-sm text-left shadow-sm";
+            b.className = "answ-btn bg-white p-3 rounded-2xl font-black text-slate-700 text-sm shadow-sm";
             b.innerText = o;
-            b.onclick = () => checkAntwoord(o, b, curr);
+            b.onclick = () => check(o, b, curr);
             document.getElementById('antwoord-container').appendChild(b);
         });
 
         document.getElementById('feedback-box').classList.add('hidden');
         document.getElementById('next-btn').disabled = true;
-        document.getElementById('next-btn').innerText = "KIES EEN ANTWOORD";
         document.getElementById('next-btn').className = "w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm";
     }
 
-    function checkAntwoord(gekozen, b, curr) {
+    function check(gekozen, b, curr) {
         if(beantwoord) return;
         beantwoord = true;
-        const correct = gekozen === curr.a;
-        
-        if(correct) {
+        if(gekozen === curr.a) {
             score++;
-            b.className = "answ-btn bg-green-50 border-green-500 p-3.5 rounded-2xl font-black text-green-700 text-sm text-left shadow-md scale-[1.02]";
-            confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 }, colors: ['#22c55e', '#ffffff'] });
+            b.className = "answ-btn bg-green-50 border-green-500 p-3 rounded-2xl font-black text-green-700 text-sm shadow-md scale-[1.02]";
+            confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
         } else {
-            b.className = "answ-btn bg-red-50 border-red-500 p-3.5 rounded-2xl font-black text-red-700 text-sm text-left";
-            document.getElementById('feedback-box').innerHTML = `FOUT! HET IS: <span class="uppercase">${curr.a}</span>`;
-            document.getElementById('feedback-box').className = "mt-5 p-4 rounded-2xl font-black text-sm border-4 bg-red-50 border-red-200 text-red-600 block shadow-lg";
+            b.className = "answ-btn bg-red-50 border-red-500 p-3 rounded-2xl font-black text-red-700 text-sm";
+            document.getElementById('feedback-box').innerHTML = `FOUT! HET IS: ${curr.a}`;
+            document.getElementById('feedback-box').className = "mt-4 p-4 rounded-2xl font-black text-sm border-4 bg-red-50 border-red-200 text-red-600 block shadow-lg";
         }
-        
         document.getElementById('next-btn').disabled = false;
-        document.getElementById('next-btn').innerText = "VOLGENDE 👉";
         document.getElementById('next-btn').className = "w-full bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-sm shadow-xl";
     }
 
@@ -219,16 +219,17 @@
             document.getElementById('game-header').classList.add('hidden');
             document.getElementById('game-footer').classList.add('hidden');
             document.getElementById('ferry-scherm').classList.remove('hidden');
-        } else {
-            toonVraag();
-        }
+        } else { toonVraag(); }
     }
 
-    function toonEinde(keuze) {
+    function berekenPercentage() {
+        let pct = Math.round((score / vrs.length) * 100);
         document.getElementById('ferry-scherm').classList.add('hidden');
         document.getElementById('eind-scherm').classList.remove('hidden');
+        document.getElementById('final-percent').innerText = pct;
         document.getElementById('final-score').innerText = score;
-        confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+        document.getElementById('final-total').innerText = vrs.length;
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
     }
   </script>
 </body>
