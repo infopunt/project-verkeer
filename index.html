@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>De Grote Vriendenrit: Dover 2026 🚲</title>
+  <title>De Grote Vriendenrit: De Volledige Voorbereiding 🚲</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f1f5f9; font-family: 'Segoe UI', sans-serif; }
-    .answ-btn { transition: all 0.2s; border: 2px solid #e2e8f0; text-align: left; }
-    .answ-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: #6366f1; background: #ffffff; }
-    .img-box img { max-height: 110px; width: auto; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
-    @keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    .wave-anim { animation: wave 4s infinite ease-in-out; }
-    .scroll-hide::-webkit-scrollbar { display: none; }
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f1f5f9; font-family: sans-serif; }
+    .answ-btn { transition: all 0.2s; border: 2px solid #e2e8f0; text-align: left; width: 100%; }
+    .answ-btn:hover:not(:disabled) { border-color: #6366f1; background: #f8fafc; transform: translateY(-1px); }
+    .img-box { min-height: 120px; display: flex; align-items: center; justify-content: center; }
+    .img-box img { max-height: 110px; width: auto; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+    .scroll-area { max-height: 60vh; overflow-y: auto; padding-right: 10px; }
+    .scroll-area::-webkit-scrollbar { width: 6px; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
   </style>
 </head>
 <body class="flex justify-center items-center">
@@ -22,113 +23,111 @@
     
     <div id="game-header" class="hidden p-3 text-white flex justify-between items-center bg-slate-900 shrink-0">
       <div class="flex items-center space-x-3">
-          <span id="land-icoon" class="text-2xl wave-anim">🌍</span>
+          <span id="land-icoon" class="text-2xl">🌍</span>
           <div>
-              <div id="land-naam" class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1">BRIEFING</div>
-              <div class="text-[10px] font-bold opacity-70">KM <span id="vraag-nr">1</span> / <span id="totaal-nr">...</span></div>
+              <div id="land-naam" class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-1">VOORBEREIDING</div>
+              <div class="text-[10px] font-bold opacity-70">KM <span id="vraag-nr">1</span> / <span id="totaal-nr">110</span></div>
           </div>
       </div>
-      <div id="score-box" class="text-center bg-slate-800 px-3 py-1 rounded-xl border border-white/10 min-w-[55px]">
-          <div class="text-[8px] opacity-50 font-black leading-none">SCORE</div>
+      <div class="text-center bg-slate-800 px-3 py-1 rounded-xl border border-white/10 min-w-[55px]">
           <div id="score-weergave" class="font-black text-yellow-400 text-base leading-none">0</div>
       </div>
     </div>
 
-    <div id="main-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center overflow-y-auto scroll-hide">
+    <div id="main-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center">
       
       <div id="start-scherm" class="w-full max-w-sm">
-        <div class="text-7xl mb-6 wave-anim">🚲🎒🚢</div>
-        <h1 class="text-3xl font-black text-slate-900 mb-4 italic tracking-tighter uppercase leading-none">De Grote Vriendenrit!</h1>
-        <p class="text-slate-600 mb-8 text-sm">Bereid je voor op de ultieme tocht naar Dover. We beginnen met de belangrijke briefing over veiligheid en gezondheid!</p>
-        <button onclick="toonBriefing()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-3xl text-xl shadow-[0_6px_0_0_#4338ca] active:translate-y-1 active:shadow-none transition-all uppercase">Naar de Briefing 📝</button>
+        <div class="text-7xl mb-6">🚲🎒🚢</div>
+        <h1 class="text-3xl font-black text-slate-900 mb-4 uppercase italic">Dover 2026</h1>
+        <p class="text-slate-500 mb-8 text-sm">Klaar voor 40 minuten actie? We beginnen met de essentiële briefing.</p>
+        <button onclick="toonBriefing()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-3xl text-xl shadow-[0_6px_0_0_#4338ca] uppercase">Open de Briefing 📋</button>
       </div>
 
       <div id="briefing-scherm" class="hidden w-full text-left">
-        <h2 class="text-2xl font-black text-indigo-600 mb-4 italic uppercase">📋 Briefing voor vertrek</h2>
-        <div class="space-y-4 text-sm text-slate-700">
-            <div class="bg-indigo-50 p-4 rounded-2xl border-l-4 border-indigo-500">
-                <p class="font-bold text-indigo-900 mb-1">🔧 De M-Check</p>
-                <p>Controleer je fiets in een 'M'-vorm: start bij het <b>voorwiel</b>, ga omhoog naar het <b>stuur</b>, omlaag naar de <b>pedalen/ketting</b>, omhoog naar het <b>zadel</b> en eindig bij het <b>achterwiel</b>.</p>
+        <h2 class="text-2xl font-black text-indigo-600 mb-4 italic uppercase text-center">📋 Dossier Voorbereiding</h2>
+        <div class="scroll-area space-y-3">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                <p class="font-black text-indigo-600 mb-1 uppercase">🔧 Techniek (M-Check)</p>
+                <p>Volg de letter M: 1. Voorwiel (band/rem) → 2. Stuur (balhoofd) → 3. Trappers (ketting) → 4. Zadel (hoogte) → 5. Achterwiel.</p>
             </div>
-            <div class="bg-green-50 p-4 rounded-2xl border-l-4 border-green-500">
-                <p class="font-bold text-green-900 mb-1">🍌 Voeding & Drinken</p>
-                <p>Eet <b>koolhydraten</b> (banaan, pasta) voor energie. Drink <b>water of isotoon</b>; vermijd cola of energy drinks tijdens het fietsen.</p>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                <p class="font-black text-green-600 mb-1 uppercase">👕 Kledij</p>
+                <p>Draag het <b>drielaagensysteem</b>: een basislaag (zweet afvoeren), een isolerende laag en een wind/regenjas. Een fietsbroek met zeem voorkomt zadelpijn!</p>
             </div>
-            <div class="bg-yellow-50 p-4 rounded-2xl border-l-4 border-yellow-500">
-                <p class="font-bold text-yellow-900 mb-1">📐 Ergonomie</p>
-                <p>Zet je zadel zo dat je knie <b>licht gebogen</b> is bij de laagste pedaalstand. Plaats fietstassen <b>onderaan</b> voor een laag zwaartepunt (stabiliteit).</p>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                <p class="font-black text-red-600 mb-1 uppercase">🚑 EHBO</p>
+                <p>Bij een val: spoel schaafwonden met <b>zuiver water</b>. Ontsmet daarna. Zorg dat je altijd zonnecrème en een tekentang bij hebt!</p>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                <p class="font-black text-yellow-600 mb-1 uppercase">📐 Ergonomie & Voeding</p>
+                <p>Hang zware tassen <b>laag</b>. Eet <b>koolhydraten</b> (bananen, pasta) en drink elke 15 min een paar slokken water.</p>
             </div>
         </div>
-        <button onclick="startSpel()" class="w-full mt-6 bg-slate-900 text-white font-black py-4 rounded-2xl uppercase tracking-widest shadow-lg">Ik ben klaar! 🏁</button>
+        <button onclick="startSpel()" class="w-full mt-6 bg-slate-900 text-white font-black py-4 rounded-2xl uppercase tracking-widest">Start de Tocht! 🏁</button>
       </div>
 
       <div id="vraag-scherm" class="hidden w-full h-full flex flex-col justify-between">
         <div class="flex-grow flex flex-col justify-center items-center">
-            <div id="verhaal-tekst" class="text-[10px] font-black text-indigo-400 mb-2 uppercase tracking-widest italic"></div>
-            <div id="vraag-visual" class="img-box mb-4"></div>
+            <div id="vraag-visual" class="img-box mb-4 w-full"></div>
             <h2 id="vraag-titel" class="text-lg font-extrabold text-slate-800 mb-5 leading-tight"></h2>
             <div id="antwoord-container" class="grid gap-2.5 w-full max-w-sm"></div>
-            <div id="feedback-box" class="mt-4 p-4 rounded-2xl font-black hidden text-sm border-4 w-full max-w-sm"></div>
+            <div id="feedback-box" class="mt-4 p-4 rounded-2xl font-black hidden text-sm border-4 w-full"></div>
         </div>
-      </div>
-
-      <div id="ferry-scherm" class="hidden w-full">
-        <div class="text-8xl mb-6 wave-anim">🚢🌊🏔️</div>
-        <h2 class="text-3xl font-black text-indigo-900 mb-4 italic">BIJNA IN DOVER!</h2>
-        <button onclick="berekenPercentage()" class="bg-indigo-600 text-white p-5 rounded-3xl font-black text-lg shadow-lg w-full max-w-xs uppercase">Bekijk Resultaat 📊</button>
       </div>
 
       <div id="eind-scherm" class="hidden w-full">
-        <h2 class="text-4xl font-black mb-4 italic text-slate-900 uppercase">RESULTAAT 🇬🇧</h2>
-        <div class="bg-slate-900 text-white p-10 rounded-[3rem] mb-6 shadow-2xl border-8 border-indigo-500">
-            <div class="text-8xl font-black text-yellow-400 leading-none mb-2"><span id="final-percent">0</span>%</div>
-            <p class="text-[10px] opacity-40 font-black uppercase tracking-[0.3em]"><span id="final-score">0</span> / <span id="final-total">0</span> JUIST</p>
+        <h2 class="text-4xl font-black mb-4 italic text-slate-900 uppercase">AANKOMST! 🇬🇧</h2>
+        <div class="bg-slate-900 text-white p-10 rounded-[3rem] mb-6 border-8 border-indigo-500">
+            <div class="text-8xl font-black text-yellow-400 mb-2"><span id="final-percent">0</span>%</div>
+            <p class="text-xs opacity-50 uppercase tracking-widest">Score: <span id="final-score">0</span> / <span id="final-total">0</span></p>
         </div>
-        <button onclick="window.location.reload()" class="w-full bg-yellow-400 text-slate-900 font-black py-4 rounded-2xl text-md uppercase">Start Remediëring ✍️</button>
+        <button onclick="window.location.reload()" class="w-full bg-yellow-400 text-slate-900 font-black py-4 rounded-2xl uppercase">Start de Remediëring ✍️</button>
       </div>
+
     </div>
 
     <div id="game-footer" class="hidden p-4 border-t bg-slate-50 shrink-0">
         <button id="next-btn" onclick="volgendeVraag()" class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm" disabled>KIES EEN ANTWOORD</button>
     </div>
+
   </div>
 
   <script>
-    // Data (Theorie + Onderdelen)
-    const theorie = [
-        {q: "Waar begin je de M-check?", a: "Voorwiel", opt: ["Stuur", "Voorwiel", "Ketting"], land: "🛠️", txt: "M-CHECK", img: ""},
-        {q: "Welke voeding geeft langdurige energie?", a: "Koolhydraten", opt: ["Suiker", "Koolhydraten", "Vetten"], land: "🛠️", txt: "VOEDING", img: ""},
-        {q: "Waarom fietstassen onderaan hangen?", a: "Voor stabiliteit", opt: ["Voor stabiliteit", "Voor snelheid", "Ziet er beter uit"], land: "🛠️", txt: "ERGONOMIE", img: ""},
-        {q: "Wat is het eindpunt van de M-check?", a: "Achterwiel", opt: ["Zadel", "Ketting", "Achterwiel"], land: "🛠️", txt: "M-CHECK", img: ""},
-        {q: "Hoe moet de knie staan bij het trappen?", a: "Licht gebogen", opt: ["Helemaal recht", "Licht gebogen", "Sterk gebogen"], land: "🛠️", txt: "ERGONOMIE", img: ""}
+    const theorieVragen = [
+        {q: "Welk systeem is ideaal voor fietskledij?", a: "Drielaagensysteem", opt: ["Drielaagensysteem", "Eén dikke trui", "Alleen een regenjas"], txt: "KLEDIJ"},
+        {q: "Wat doe je als eerste bij een schaafwonde?", a: "Spoelen met zuiver water", opt: ["Meteen ontsmetten", "Spoelen met zuiver water", "Een pleister plakken"], txt: "EHBO"},
+        {q: "Waarom draag je een fietsbroek met zeem?", a: "Tegen zadelpijn", opt: ["Om sneller te fietsen", "Tegen zadelpijn", "Tegen de koude"], txt: "KLEDIJ"},
+        {q: "Wat is punt 4 in de M-check?", a: "Het zadel", opt: ["Het stuur", "Het zadel", "De ketting"], txt: "M-CHECK"},
+        {q: "Welke voeding geeft 'trage' energie voor de hele dag?", a: "Pasta en brood", opt: ["Suikerwafels", "Pasta en brood", "Energy drink"], txt: "VOEDING"},
+        {q: "Wat controleer je bij het balhoofd (stuur)?", a: "Speling en soepelheid", opt: ["De kleur van het lint", "Speling en soepelheid", "De hoogte van de bel"], txt: "M-CHECK"}
     ];
 
     const onderdelen = [
-        { nl: "de voordrager", fr: "le porte-bagages avant", en: "the front rack", foto: "voordrager.png" },
-        { nl: "de achterdrager", fr: "le porte-bagages arrière", en: "the rear rack", foto: "achterdrager.png" },
-        { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", foto: "spatbord.png" },
-        { nl: "de ketting", fr: "la chaîne", en: "the chain", foto: "ketting.png" },
-        { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", foto: "fietsbel.png" },
-        { nl: "het ventiel", fr: "la valve", en: "the valve", foto: "ventiel.png" },
-        { nl: "de trapas", fr: "le boîtier de pédalier", en: "the bottom bracket", foto: "trapas.png" },
-        { nl: "de crank", fr: "la manivelle", en: "the crank arm", foto: "cranck met pedaal.png" },
-        { nl: "de standaard", fr: "la béquille", en: "the kickstand", foto: "standaard.png" },
-        { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", foto: "remgreep.png" },
-        { nl: "de spaken", fr: "les rayons", en: "the spokes", foto: "spaken.png" },
-        { nl: "de naaf", fr: "le moyeu", en: "the hub", foto: "naaf.png" },
-        { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", foto: "pomp.png" },
-        { nl: "de binnenband", fr: "la chambre à air", en: "the inner tube", foto: "binnenband.png" },
-        { nl: "de buitenband", fr: "le pneu", en: "the tyre", foto: "buitenband.png" },
-        { nl: "het stuur", fr: "le guidon", en: "the handlebars", foto: "stuur.png" },
-        { nl: "het zadel", fr: "la selle", en: "the saddle", foto: "zadel.png" },
-        { nl: "de pedalen", fr: "les pédales", en: "the pedals", foto: "pedalen.png" },
-        { nl: "de koplamp", fr: "le phare", en: "the headlight", foto: "koplamp.png" },
-        { nl: "het achterlicht", fr: "le feu arrière", en: "the tail light", foto: "achterlicht.png" },
-        { nl: "de versnelling", fr: "le dérailleur", en: "the gears", foto: "versnellingen.png" },
-        { nl: "de remmen", fr: "les freins", en: "the brakes", foto: "remmen.png" },
-        { nl: "de velg", fr: "la jante", en: "the rim", foto: "velg.png" },
-        { nl: "de snelspanner", fr: "le blocage rapide", en: "the quick release", foto: "snelspanner.png" },
-        { nl: "het frame", fr: "le cadre", en: "the frame", foto: "frame.png" }
+        { nl: "de voordrager", fr: "le porte-bagages avant", en: "the front rack", img: "voordrager.png" },
+        { nl: "de achterdrager", fr: "le porte-bagages arrière", en: "the rear rack", img: "achterdrager.png" },
+        { nl: "het spatbord", fr: "le garde-boue", en: "the mudguard", img: "spatbord.png" },
+        { nl: "de ketting", fr: "la chaîne", en: "the chain", img: "ketting.png" },
+        { nl: "de fietsbel", fr: "la sonnette", en: "the bicycle bell", img: "fietsbel.png" },
+        { nl: "het ventiel", fr: "la valve", en: "the valve", img: "ventiel.png" },
+        { nl: "de trapas", fr: "le boîtier de pédariler", en: "the bottom bracket", img: "trapas.png" },
+        { nl: "de crank", fr: "la manivelle", en: "the crank arm", img: "cranck met pedaal.png" },
+        { nl: "de standaard", fr: "la béquille", en: "the kickstand", img: "standaard.png" },
+        { nl: "de remgreep", fr: "le levier de frein", en: "the brake lever", img: "remgreep.png" },
+        { nl: "de spaken", fr: "les rayons", en: "the spokes", img: "spaken.png" },
+        { nl: "de naaf", fr: "le moyeu", en: "the hub", img: "naaf.png" },
+        { nl: "de fietspomp", fr: "la pompe à vélo", en: "the bicycle pump", img: "pomp.png" },
+        { nl: "de binnenband", fr: "la chambre à air", en: "the inner tube", img: "binnenband.png" },
+        { nl: "de buitenband", fr: "le pneu", en: "the tyre", img: "buitenband.png" },
+        { nl: "het stuur", fr: "le guidon", en: "the handlebars", img: "stuur.png" },
+        { nl: "het zadel", fr: "la selle", en: "the saddle", img: "zadel.png" },
+        { nl: "de pedalen", fr: "les pédales", en: "the pedals", img: "pedalen.png" },
+        { nl: "de koplamp", fr: "le phare", en: "the headlight", img: "koplamp.png" },
+        { nl: "het achterlicht", fr: "le feu arrière", en: "the tail light", img: "achterlicht.png" },
+        { nl: "de versnelling", fr: "le dérailleur", en: "the gears", img: "versnellingen.png" },
+        { nl: "de remmen", fr: "les freins", en: "the brakes", img: "remmen.png" },
+        { nl: "de velg", fr: "la jante", en: "the rim", img: "velg.png" },
+        { nl: "de snelspanner", fr: "le blocage rapide", en: "the quick release", img: "snelspanner.png" },
+        { nl: "het frame", fr: "le cadre", en: "the frame", img: "frame.png" }
     ];
 
     let vrs = [], idx = 0, score = 0, beantwoord = false;
@@ -139,12 +138,13 @@
     }
 
     function startSpel() {
-        // Opbouw: Theorie + NL + FR + EN + Mix = 110
-        theorie.forEach(t => vrs.push(t));
-        onderdelen.forEach(o => vrs.push({q: 'NL: Wat is dit?', a: o.nl, opt: shuffle([o.nl, "het stuur", "de rem", "de bel"]), img: o.foto, land: '🇧🇪', txt: 'BELGIË'}));
-        onderdelen.forEach(o => vrs.push({q: 'FR: Nommez la partie:', a: o.fr, opt: shuffle([o.fr, "le pneu", "le cadre", "la selle"]), img: o.foto, land: '🇫🇷', txt: 'FRANKRIJK'}));
-        onderdelen.forEach(o => vrs.push({q: 'EN: Name the part:', a: o.en, opt: shuffle([o.en, "the wheel", "the chain", "the gear"]), img: o.foto, land: '🇬🇧', txt: 'ENGELAND'}));
-        while(vrs.length < 110) { vrs.push(theorie[Math.floor(Math.random()*theorie.length)]); }
+        // Opbouw: 6 Theorie + 25 NL + 25 FR + 25 EN + 29 Mix = 110
+        theorieVragen.forEach(t => vrs.push({...t, land: '🛠️'}));
+        onderdelen.forEach(o => vrs.push({q: `NL: Wat is dit?`, a: o.nl, opt: shuffle([o.nl, "de bel", "het stuur", "de rem"]), img: o.img, land: '🇧🇪', txt: 'BELGIË'}));
+        onderdelen.forEach(o => vrs.push({q: `FR: Nommez la partie:`, a: o.fr, opt: shuffle([o.fr, "le pneu", "le cadre", "la selle"]), img: o.img, land: '🇫🇷', txt: 'FRANKRIJK'}));
+        onderdelen.forEach(o => vrs.push({q: `EN: Name the part:`, a: o.en, opt: shuffle([o.en, "the wheel", "the chain", "the gear"]), img: o.img, land: '🇬🇧', txt: 'ENGELAND'}));
+        
+        while(vrs.length < 110) { vrs.push({...theorieVragen[Math.floor(Math.random()*theorieVragen.length)], land: '🛠️'}); }
 
         document.getElementById('briefing-scherm').classList.add('hidden');
         document.getElementById('game-header').classList.remove('hidden');
@@ -158,23 +158,26 @@
 
     function toonVraag() {
         beantwoord = false;
-        let curr = vrs[idx];
-        document.getElementById('land-icoon').innerText = curr.land;
-        document.getElementById('land-naam').innerText = curr.txt;
+        let c = vrs[idx];
+        document.getElementById('land-icoon').innerText = c.land;
+        document.getElementById('land-naam').innerText = c.txt;
         document.getElementById('vraag-nr').innerText = idx + 1;
         document.getElementById('score-weergave').innerText = score;
-        document.getElementById('verhaal-tekst').innerText = curr.txt;
-        document.getElementById('vraag-titel').innerText = curr.q;
+        document.getElementById('vraag-titel').innerText = c.q;
         
         const visual = document.getElementById('vraag-visual');
-        visual.innerHTML = curr.img ? `<img src="${curr.img}" class="wave-anim">` : `<div class="p-6 bg-indigo-100 rounded-full text-4xl">💡</div>`;
+        if(!c.img || c.img === "") {
+            visual.innerHTML = `<div class="p-6 bg-indigo-100 rounded-full text-4xl">💡</div>`;
+        } else {
+            visual.innerHTML = `<img src="${c.img}" onerror="this.outerHTML='<div class=text-xs text-red-500>Foto niet gevonden: ${c.img}</div>'">`;
+        }
 
         document.getElementById('antwoord-container').innerHTML = '';
-        curr.opt.forEach(o => {
+        c.opt.forEach(o => {
             let b = document.createElement('button');
-            b.className = "answ-btn bg-white p-4 rounded-2xl font-black text-slate-700 text-sm shadow-sm";
+            b.className = "answ-btn bg-white p-4 rounded-2xl font-bold text-slate-700 text-sm shadow-sm";
             b.innerText = o;
-            b.onclick = () => { if(!beantwoord) check(o, b, curr); };
+            b.onclick = () => { if(!beantwoord) check(o, b, c); };
             document.getElementById('antwoord-container').appendChild(b);
         });
 
@@ -183,16 +186,16 @@
         document.getElementById('next-btn').className = "w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-black uppercase text-sm";
     }
 
-    function check(gekozen, b, curr) {
+    function check(g, b, c) {
         beantwoord = true;
-        if(gekozen === curr.a) {
+        if(g === c.a) {
             score++;
-            b.className = "answ-btn bg-green-50 border-green-500 p-4 rounded-2xl font-black text-green-700 text-sm shadow-md";
+            b.className = "answ-btn bg-green-50 border-green-500 p-4 rounded-2xl font-bold text-green-700 shadow-md";
             confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
         } else {
-            b.className = "answ-btn bg-red-50 border-red-500 p-4 rounded-2xl font-black text-red-700 text-sm";
-            document.getElementById('feedback-box').innerHTML = `FOUT! HET IS: ${curr.a}`;
-            document.getElementById('feedback-box').className = "mt-4 p-4 rounded-2xl font-black text-sm border-4 bg-red-50 border-red-200 text-red-600 block shadow-lg";
+            b.className = "answ-btn bg-red-50 border-red-500 p-4 rounded-2xl font-bold text-red-700";
+            document.getElementById('feedback-box').innerHTML = `FOUT! HET IS: ${c.a}`;
+            document.getElementById('feedback-box').className = "mt-4 p-4 rounded-2xl font-black text-sm border-4 bg-red-50 border-red-200 text-red-600 block";
         }
         document.getElementById('next-btn').disabled = false;
         document.getElementById('next-btn').className = "w-full bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-sm shadow-xl";
@@ -204,18 +207,11 @@
             document.getElementById('vraag-scherm').classList.add('hidden');
             document.getElementById('game-header').classList.add('hidden');
             document.getElementById('game-footer').classList.add('hidden');
-            document.getElementById('ferry-scherm').classList.remove('hidden');
+            document.getElementById('eind-scherm').classList.remove('hidden');
+            document.getElementById('final-percent').innerText = Math.round((score/vrs.length)*100);
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('final-total').innerText = vrs.length;
         } else { toonVraag(); }
-    }
-
-    function berekenPercentage() {
-        let pct = Math.round((score / vrs.length) * 100);
-        document.getElementById('ferry-scherm').classList.add('hidden');
-        document.getElementById('eind-scherm').classList.remove('hidden');
-        document.getElementById('final-percent').innerText = pct;
-        document.getElementById('final-score').innerText = score;
-        document.getElementById('final-total').innerText = vrs.length;
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
     }
   </script>
 </body>
