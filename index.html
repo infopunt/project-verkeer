@@ -80,9 +80,16 @@
       </div>
     </div>
 
-    <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-white/95 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000">
+    <div id="etappe-scherm" class="hidden absolute inset-0 z-50 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000">
       <h2 class="text-4xl font-black text-slate-800 mb-2" id="etappe-titel">Fase Voltooid!</h2>
-      <p class="text-xl text-slate-500 mb-4" id="etappe-ondertitel">Goed bezig!</p>
+      <p class="text-xl text-slate-500 mb-6" id="etappe-ondertitel">Goed bezig!</p>
+
+      <div id="etappe-tussenstand" class="hidden bg-white p-5 rounded-2xl shadow-xl border-2 border-pink-200 mb-6 w-full max-w-xs relative transform hover:scale-105 transition-transform">
+        <div class="absolute -top-4 -right-4 text-3xl">🎯</div>
+        <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Tussenstand</p>
+        <p class="text-5xl font-black text-slate-800"><span id="tussenstand-score" class="text-pink-600">0</span><span class="text-3xl text-pink-400">%</span></p>
+      </div>
+
       <div id="etappe-perfect-bericht" class="hidden bg-yellow-300 text-yellow-900 font-bold px-4 py-2 rounded-lg mb-4 shadow-md border-2 border-yellow-400">
         🌟 Foutloze Etappe! Klasse! 🌟
       </div>
@@ -99,7 +106,7 @@
           <div class="flex items-center space-x-3 sm:space-x-4">
             <button onclick="toggleSpiekbriefje()" class="bg-white/80 hover:bg-white text-slate-800 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-black text-xs sm:text-sm transition-colors shadow-sm animate-pulse border border-slate-200">Spiekbriefje 🧐</button>
             <div class="text-center hidden sm:block"><div class="text-[10px] text-slate-600 uppercase font-bold">Tijd over</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-slate-800 leading-none">30:00</div></div>
-            <div class="text-center"><div class="text-[10px] text-slate-600 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-black text-pink-600 leading-none">0</div></div>
+            <div class="text-center"><div class="text-[10px] text-slate-600 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-black text-pink-600 leading-none">0%</div></div>
           </div>
           <button onclick="vroegtijdigStoppen()" class="bg-white/40 hover:bg-red-400 hover:text-white text-slate-700 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors">Stoppen</button>
         </div>
@@ -131,17 +138,18 @@
         <h2 class="text-3xl font-extrabold text-slate-800 mb-2 shrink-0">Einde van de tocht!</h2>
         <p class="text-slate-600 text-sm sm:text-base mb-4 shrink-0" id="eind-ondertitel">Je bent veilig aangekomen!</p>
         
-        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 w-full max-w-md mb-4 shadow-xl relative overflow-hidden shrink-0">
+        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 w-full max-w-md mb-4 shadow-xl relative overflow-hidden shrink-0 transform hover:scale-105 transition-transform duration-300">
           <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-400 to-cyan-400"></div>
-          <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score</p>
-          <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-pink-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">0</span></p>
+          <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Eindscore</p>
+          <p class="text-6xl font-black text-slate-800 mb-1"><span id="eind-score" class="text-pink-600">0</span><span class="text-4xl text-pink-400">%</span></p>
+          <p class="text-sm font-bold text-slate-400" id="eind-totaal-vragen">(0/0 goed)</p>
         </div>
 
         <div id="classroom-opdracht" class="w-full max-w-md mb-6 bg-pink-50 border-l-4 border-pink-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0 relative z-0">
           <div class="text-3xl animate-bounce">📸</div>
           <div>
             <h4 class="font-black text-pink-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
-            <p class="text-xs sm:text-sm text-pink-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je score) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>.</p>
+            <p class="text-xs sm:text-sm text-pink-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je percentage) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>.</p>
           </div>
         </div>
       </div>
@@ -221,7 +229,6 @@
       en: ["Kies de juiste <strong>Engelse</strong> term.", "Weet jij de <strong>Engelse</strong> naam?", "Selecteer de juiste vertaling."]
     };
 
-    // Vrolijke, lichte achtergronden voor de header
     const landenData = [
       { code: 'prep', vlag: '🛠️', naam: 'Voorbereiding', header: 'bg-gradient-to-r from-teal-200 to-emerald-300' },
       { code: 'nl', vlag: '🇧🇪', naam: 'België', header: 'bg-gradient-to-r from-yellow-200 to-orange-300' },
@@ -277,7 +284,6 @@
       document.getElementById('start-scherm').classList.add('hidden');
       bouwEtappes();
       
-      // Bereken totaal aantal echte vragen (geen info slides)
       state.totaalVragen = 0;
       state.questionsLijst.forEach(lijst => {
           state.totaalVragen += lijst.filter(v => v.type !== 'info').length;
@@ -312,14 +318,12 @@
         }
     }
 
-    // AANGEPASTE GENERATOR: Voegt nu OOK Waar/Niet-waar vragen toe voor volop variatie!
     function genereerOnderdelenVragen(taalCode) {
         let vragen = [];
         let taalNaam = taalCode === 'nl' ? 'Nederlands' : (taalCode === 'fr' ? 'Frans' : 'Engels');
         let shuffledOnderdelen = shuffle([...fietsOnderdelen]);
 
         shuffledOnderdelen.forEach((item, index) => {
-            // 1. Standaard Meerkeuzevraag (4 opties met foto)
             let andereOnderdelen = fietsOnderdelen.filter(o => o[taalCode] !== item[taalCode]);
             let fouteOpties = shuffle(andereOnderdelen).slice(0, 3).map(o => o[taalCode]);
             let alleOpties = shuffle([item[taalCode], ...fouteOpties]);
@@ -332,9 +336,8 @@
                 opties: alleOpties 
             });
 
-            // 2. Waar/Niet-waar vraag toevoegen (We doen dit voor ongeveer de helft van de onderdelen voor perfecte variatie)
             if (index % 2 === 0) {
-                let isWaar = Math.random() > 0.5; // 50% kans op een ware of onware stelling
+                let isWaar = Math.random() > 0.5;
                 let beweringNaam = isWaar ? item[taalCode] : shuffle(andereOnderdelen)[0][taalCode];
                 let correctAntwoord = isWaar ? "Waar" : "Niet waar";
                 
@@ -349,18 +352,21 @@
             }
         });
         
-        // Hussel de Waar/Niet-waar en Meerkeuze vragen willekeurig door elkaar heen!
         return shuffle(vragen);
+    }
+
+    function getPercentage() {
+        if (state.totaalVragen === 0) return 0;
+        return Math.round((state.score / state.totaalVragen) * 100);
     }
 
     function startEtappeFlow() {
         if (state.etappeIndex >= landenData.length) { 
-            // CHECK VOOR REMEDIËRING
             if (state.fouteVragen.length > 0 && !state.isRemediering) {
                 state.isRemediering = true;
                 landenData.push({ code: 'rem', vlag: '🚑', naam: 'Remediëringsronde', header: 'bg-gradient-to-r from-orange-200 to-rose-300' });
                 state.questionsLijst.push([...state.fouteVragen]);
-                state.totaalVragen += state.fouteVragen.length; // Progressbar updaten
+                state.totaalVragen += state.fouteVragen.length; 
             } else {
                 eindigSpel(); 
                 return; 
@@ -370,17 +376,27 @@
         let land = landenData[state.etappeIndex];
         let eScherm = document.getElementById('etappe-scherm');
         let msgBox = document.getElementById('etappe-perfect-bericht');
+        let tussenstandDiv = document.getElementById('etappe-tussenstand');
         
         eScherm.className = "hidden absolute inset-0 z-50 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000";
         msgBox.classList.add('hidden');
+        tussenstandDiv.classList.add('hidden');
         
+        // Etappes na voorbereiding (index > 0): toon tussenstand en confetti!
         if (state.etappeIndex > 0) {
+            tussenstandDiv.classList.remove('hidden');
+            document.getElementById('tussenstand-score').innerText = getPercentage();
+
             if (state.moduleFouten === 0 && !state.isRemediering) {
                 eScherm.classList.add('bg-yellow-100/95');
                 msgBox.classList.remove('hidden');
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                // Een GIGANTISCHE lading confetti voor een perfecte score
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 1000 });
+                setTimeout(() => confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 }, zIndex: 1000 }), 500);
             } else {
                 eScherm.classList.add('bg-white/95');
+                // Normale lading confetti tussen etappes
+                confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, zIndex: 1000 });
             }
         } else {
             eScherm.classList.add('bg-white/95');
@@ -400,9 +416,10 @@
         if (state.isRemediering && state.etappeIndex === landenData.length - 1) {
             document.getElementById('etappe-titel').innerText = "Tijd voor de Reparaties!";
             document.getElementById('etappe-ondertitel').innerText = "We kijken de foutjes nog even samen na.";
+            tussenstandDiv.classList.add('hidden'); // Geen tussenstand in de laatste break
         } else {
             document.getElementById('etappe-titel').innerText = state.etappeIndex === 0 ? "Klaar voor de start?" : "Fase Voltooid!";
-            document.getElementById('etappe-ondertitel').innerText = "Goed bezig!";
+            document.getElementById('etappe-ondertitel').innerText = state.etappeIndex === 0 ? "Hier gaat de reis beginnen!" : "Ga zo door!";
         }
         
         document.getElementById('volgende-land-naam').innerText = land.naam;
@@ -437,161 +454,178 @@
         let btn = document.getElementById('action-btn');
         let fb = document.getElementById('feedback-antwoord');
         
+        vCont.innerHTML = '';
         aCont.innerHTML = '';
         fb.classList.add('hidden');
         fb.innerText = '';
         
         if (vraag.type === 'info') {
-            txtCont.innerHTML = `<span class="text-lg font-black text-pink-600">${vraag.thema}</span>`;
-            vCont.innerHTML = `<div class="bg-pink-50 w-full p-4 rounded-xl border border-pink-200 text-left text-sm text-slate-700">${vraag.inhoud}</div>`;
-            btn.textContent = "Ik snap het, start vragen ➔";
-            btn.className = "flex-grow bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
+            txtCont.innerHTML = `<span class="text-2xl block mb-2">${vraag.thema}</span>${vraag.inhoud}`;
+            btn.innerText = "Begrepen, verder! 🚀";
+            btn.className = "flex-grow bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md transform hover:scale-[1.02] active:scale-[0.98]";
             btn.disabled = false;
-            return;
-        }
-
-        // Weergeven afhankelijk van Vraag Type
-        if (vraag.type === 'mc-prep') {
-            txtCont.innerHTML = "<strong>Theorie Check-Up!</strong>";
-            vCont.innerHTML = `<h3 class="font-bold text-base sm:text-lg text-slate-800 text-center">${vraag.vraagTekst}</h3>`;
-        } else if (vraag.type === 'part-tf') {
-            txtCont.innerHTML = "<strong>Waar of Niet waar?</strong> 🧐";
-            vCont.innerHTML = `
-                <img src="${vraag.foto}" class="h-32 sm:h-40 object-contain rounded-lg border border-slate-200 p-2 bg-white shadow-sm mb-3" onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Foto+Ontbreekt';">
-                <h3 class="font-bold text-base sm:text-lg text-slate-800 text-center">${vraag.vraagTekst}</h3>
-            `;
         } else {
-            // Standaard part-mc (4 opties)
-            let rndVerhaal = verhalen[vraag.taal][Math.floor(Math.random() * verhalen[vraag.taal].length)];
-            txtCont.innerHTML = rndVerhaal;
-            vCont.innerHTML = `<img src="${vraag.foto}" class="h-32 sm:h-40 object-contain rounded-lg border border-slate-200 p-2 bg-white shadow-sm" onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Foto+Ontbreekt';">`;
+            let verhaaltjes = verhalen[vraag.taal || 'nl'] || verhalen['nl'];
+            let introTekst = verhaaltjes[Math.floor(Math.random() * verhaaltjes.length)];
+            
+            if(vraag.type === 'mc-prep') {
+                txtCont.innerHTML = `<strong>Vraag:</strong> ${vraag.vraagTekst}`;
+            } else if (vraag.type === 'part-mc' || vraag.type === 'part-tf') {
+                txtCont.innerHTML = `${introTekst}<br>${vraag.vraagTekst ? vraag.vraagTekst : ''}`;
+                vCont.innerHTML = `<img src="${vraag.foto}" alt="Fietsonderdeel" class="max-w-[200px] max-h-[150px] object-contain rounded-xl shadow-sm border border-slate-200 bg-white mb-2" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x150?text=Foto';">`;
+            }
+
+            vraag.opties.forEach(optie => {
+                let btnOptie = document.createElement('button');
+                btnOptie.className = "bg-white border-2 border-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm sm:text-base answ-btn-hover transition-all w-full text-left flex items-center justify-between";
+                btnOptie.innerHTML = `<span>${optie}</span> <span class="text-xl hidden icon-feedback"></span>`;
+                btnOptie.onclick = function() { controleerAntwoord(optie === (vraag.correct || vraag.antwoord), this, (vraag.correct || vraag.antwoord), vraag); };
+                aCont.appendChild(btnOptie);
+            });
+            
+            btn.innerText = "Kies een antwoord...";
+            btn.className = "flex-grow bg-slate-100 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all";
+            btn.disabled = true;
         }
-
-        let opties = (vraag.type === 'mc-prep' || vraag.type === 'part-mc') ? shuffle([...vraag.opties]) : vraag.opties;
-        let correctAntwoord = vraag.type === 'mc-prep' ? vraag.antwoord : vraag.correct;
-
-        opties.forEach(opt => {
-            let btnOptie = document.createElement('button');
-            btnOptie.className = "answ-btn-hover bg-slate-50 border-2 border-slate-200 text-slate-700 font-bold p-3 rounded-xl text-left transition-all w-full shadow-sm text-sm flex justify-between items-center";
-            btnOptie.innerHTML = `<span>${opt}</span><span class="icon-slot"></span>`;
-            btnOptie.onclick = () => kiesAntwoord(btnOptie, opt === correctAntwoord, correctAntwoord, vraag);
-            aCont.appendChild(btnOptie);
-        });
-
-        btn.textContent = "Kies een antwoord...";
-        btn.className = "flex-grow bg-slate-100 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all";
-        btn.disabled = true;
-
-        updateProgress();
+        
+        let huidigeVraagNummer = 0;
+        let totaalTotNu = 0;
+        for(let i=0; i<=state.etappeIndex; i++) {
+           let lijst = state.questionsLijst[i].filter(v => v.type !== 'info');
+           if (i === state.etappeIndex) {
+               let subset = state.questionsLijst[i].slice(0, state.vraagIndex+1).filter(v => v.type !== 'info');
+               huidigeVraagNummer = totaalTotNu + subset.length;
+           }
+           totaalTotNu += lijst.length;
+        }
+        document.getElementById('voortgang-weergave').innerText = state.totaalVragen > 0 ? `${Math.min(huidigeVraagNummer, state.totaalVragen)}/${state.totaalVragen}` : '';
     }
 
-    function kiesAntwoord(btnClick, isCorrect, correctAntwoord, vraagData) {
+    function controleerAntwoord(isCorrect, element, correcteTekst, vraag) {
         if (state.antwoordGekozen) return;
         state.antwoordGekozen = true;
-
+        
         let aCont = document.getElementById('antwoord-container');
-        let actBtn = document.getElementById('action-btn');
-        let fb = document.getElementById('feedback-antwoord');
-
-        Array.from(aCont.children).forEach(b => {
-            b.disabled = true;
-            let iconSlot = b.querySelector('.icon-slot');
-            let textSpan = b.querySelector('span:first-child');
-            
-            if (textSpan.innerText === correctAntwoord) {
-                b.classList.remove('border-slate-200', 'bg-slate-50', 'text-slate-700');
-                b.classList.add('bg-green-50', 'border-green-400', 'text-green-800');
-                iconSlot.innerText = '✅';
-            } else if (b === btnClick && !isCorrect) {
-                b.classList.remove('border-slate-200', 'bg-slate-50', 'text-slate-700');
-                b.classList.add('bg-red-50', 'border-red-400', 'text-red-800');
-                iconSlot.innerText = '❌';
-            } else {
-                b.classList.add('opacity-50');
+        let buttons = aCont.querySelectorAll('button');
+        
+        buttons.forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('answ-btn-hover');
+            if (btn.innerText.trim().startsWith(correcteTekst.substring(0, 10))) { 
+                btn.classList.replace('border-slate-200', 'border-green-400');
+                btn.classList.add('bg-green-50');
+                btn.querySelector('.icon-feedback').innerText = '✅';
+                btn.querySelector('.icon-feedback').classList.remove('hidden');
+            } else if (btn === element && !isCorrect) {
+                btn.classList.replace('border-slate-200', 'border-red-400');
+                btn.classList.add('bg-red-50');
+                btn.querySelector('.icon-feedback').innerText = '❌';
+                btn.querySelector('.icon-feedback').classList.remove('hidden');
             }
         });
-
+        
+        let fb = document.getElementById('feedback-antwoord');
         fb.classList.remove('hidden');
+        
         if (isCorrect) {
             state.score++;
             state.streak++;
-            document.getElementById('score-weergave').innerText = state.score;
+            fb.innerHTML = "✅ Super! Helemaal juist!";
+            fb.className = "w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base mt-2 transition-all relative z-10 bg-green-100 text-green-800 border border-green-300 animate-fade-in-up";
             
-            fb.classList.add('text-green-700', 'bg-green-50');
-            fb.classList.remove('text-red-700', 'bg-red-50');
-            fb.innerText = "Helemaal juist!";
+            // Score animatie en update naar procenten
+            document.getElementById('score-weergave').innerText = getPercentage() + "%";
+            document.getElementById('score-weergave').classList.add('animate-bounce');
+            setTimeout(() => document.getElementById('score-weergave').classList.remove('animate-bounce'), 500);
             
-            checkStreak();
+            // Een klein beetje confetti bij een goed antwoord tussendoor!
+            confetti({ particleCount: 25, spread: 40, origin: { y: 0.8 }, zIndex: 100 });
 
-            actBtn.textContent = "Automatisch verder...";
-            actBtn.className = "flex-grow bg-slate-100 text-slate-400 font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all cursor-wait";
-            
-            autoAdvanceTimeout = setTimeout(() => { volgendeActie(); }, 1500);
+            if (state.streak === 5) toonStreak("5 op een rij!");
+            else if (state.streak === 10) toonStreak("10 op een rij! Onstuitbaar!");
+            else if (state.streak === 15) toonStreak("15 op een rij! Mastermind!");
 
+            autoAdvanceTimeout = setTimeout(volgendeActie, 1500);
         } else {
             state.moduleFouten++;
             state.streak = 0;
+            if(!state.isRemediering) state.fouteVragen.push(vraag);
             
-            if (!state.isRemediering) {
-                state.fouteVragen.push(vraagData);
-            } else {
-                state.questionsLijst[state.etappeIndex].push(vraagData);
-                state.totaalVragen++; 
-            }
-            
-            fb.classList.add('text-red-700', 'bg-red-50');
-            fb.classList.remove('text-green-700', 'bg-green-50');
-            fb.innerText = `Helaas! Het juiste antwoord was: ${correctAntwoord}`;
-
-            actBtn.textContent = "Volgende ➔";
-            actBtn.className = "flex-grow bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
-            actBtn.disabled = false;
+            fb.innerHTML = `❌ Oeps! Het juiste antwoord was: <strong>${correcteTekst}</strong>`;
+            fb.className = "w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base mt-2 transition-all relative z-10 bg-red-100 text-red-800 border border-red-300 animate-fade-in-up";
         }
-    }
-
-    function checkStreak() {
-        if (state.streak > 0 && state.streak % 5 === 0) {
-            let banner = document.getElementById('streak-banner');
-            banner.classList.add('show');
-            setTimeout(() => { banner.classList.remove('show'); }, 2500);
-        }
+        
+        updateProgressBar();
+        
+        let btn = document.getElementById('action-btn');
+        btn.innerText = "Volgende ➡️";
+        btn.className = "flex-grow bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md transform hover:scale-[1.02] active:scale-[0.98]";
+        btn.disabled = false;
     }
 
     window.volgendeActie = function() {
         state.vraagIndex++;
-        document.getElementById('scroll-container').scrollTop = 0;
         toonVraag();
     };
 
-    function updateProgress() {
-        let totalGedaan = 0;
-        for(let i=0; i < state.etappeIndex; i++) { totalGedaan += state.questionsLijst[i].filter(v=>v.type !== 'info').length; }
+    function updateProgressBar() {
+        let totaalGedaan = 0;
+        for(let i=0; i<=state.etappeIndex; i++) {
+           let lijst = state.questionsLijst[i].filter(v => v.type !== 'info');
+           if (i === state.etappeIndex) {
+               let subset = state.questionsLijst[i].slice(0, state.vraagIndex+1).filter(v => v.type !== 'info');
+               totaalGedaan += subset.length;
+           } else {
+               totaalGedaan += lijst.length;
+           }
+        }
         
-        let subIndex = state.questionsLijst[state.etappeIndex].slice(0, state.vraagIndex).filter(v=>v.type !== 'info').length;
-        let huidigeTotaal = totalGedaan + subIndex;
-        
-        document.getElementById('voortgang-weergave').innerText = `${huidigeTotaal}/${state.totaalVragen}`;
-        document.getElementById('progress-bar').style.width = ((huidigeTotaal / state.totaalVragen) * 100) + '%';
+        let pct = state.totaalVragen > 0 ? (totaalGedaan / state.totaalVragen) * 100 : 0;
+        document.getElementById('progress-bar').style.width = `${Math.min(pct, 100)}%`;
     }
 
-    window.eindigSpel = function() {
-        clearInterval(timerInterval);
-        document.getElementById('game-ui').classList.remove('flex');
-        document.getElementById('game-ui').classList.add('hidden');
-        document.getElementById('bericht-scherm').classList.remove('hidden');
-        document.getElementById('bericht-scherm').classList.add('flex');
+    function toonStreak(tekst) {
+        let banner = document.getElementById('streak-banner');
+        document.getElementById('streak-tekst').innerText = tekst;
+        banner.classList.add('show');
         
-        document.getElementById('eind-score').innerText = state.score;
-        document.getElementById('eind-totaal').innerText = state.totaalVragen;
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 }, zIndex: 1000 });
+        
+        setTimeout(() => {
+            banner.classList.remove('show');
+        }, 2000);
+    }
 
-        let duration = 3000;
+    function eindigSpel() {
+        clearInterval(timerInterval);
+        document.getElementById('game-ui').classList.add('hidden');
+        document.getElementById('etappe-scherm').classList.add('hidden');
+        
+        let bScherm = document.getElementById('bericht-scherm');
+        bScherm.classList.remove('hidden');
+        bScherm.classList.add('flex');
+        
+        // Eindscore in procenten + absoluut aantal ernaast
+        document.getElementById('eind-score').innerText = getPercentage();
+        document.getElementById('eind-totaal-vragen').innerText = `(${state.score} van de ${state.totaalVragen} goed)`;
+        
+        // FESTIVAL AAN CONFETTI!
+        let duration = 4 * 1000;
         let end = Date.now() + duration;
+
         (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ec4899', '#a855f7', '#06b6d4'] });
-            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ec4899', '#a855f7', '#06b6d4'] });
-            if (Date.now() < end) requestAnimationFrame(frame);
+            confetti({
+                particleCount: 8, angle: 60, spread: 60, origin: { x: 0 }, zIndex: 1000, colors: ['#ff0000', '#00ff00', '#0000ff', '#ff00ff']
+            });
+            confetti({
+                particleCount: 8, angle: 120, spread: 60, origin: { x: 1 }, zIndex: 1000, colors: ['#ff0000', '#00ff00', '#0000ff', '#ff00ff']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
         }());
-    };
+    }
   </script>
 </body>
 </html>
