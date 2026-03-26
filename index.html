@@ -178,7 +178,7 @@
       { type: 'mc-prep', vraagTekst: "Wat is wettelijk verplicht als je in het donker fietst?", antwoord: "Voorlicht, achterlicht en reflectoren", opties: ["Enkel fluohesje", "Voorlicht, achterlicht en reflectoren", "Zaklamp", "Enkel rood licht"] },
       { type: 'mc-prep', vraagTekst: "Welke kledij is het meest veilig in het pikdonker?", antwoord: "Kledij met reflecterende strips", opties: ["Volledig witte kledij", "Zwarte jas", "Kledij met reflecterende strips", "Felle kleuren (zonder reflectie)"] },
 
-      { type: 'info', thema: 'Route & Navigatie 🗺️', inhoud: `<strong>Verdwaal niet in Europa:</strong><br>🚴‍♀️ BE: <strong>fietsknooppunten</strong> (groen-witte bordjes).<br>🌍 Grensoverschrijdend: <strong>EuroVelo routes</strong>.<br>🏞️ <strong>Jaagpaden</strong> (naast rivieren) zijn ideaal!` },
+      { type: 'info', thema: 'Route & Navigatie 🗺️', inhoud: `<strong>Verdwaal niet in Europa:</strong><br>🚴‍♀️ BE/NL: <strong>fietsknooppunten</strong> (groen-witte bordjes).<br>🌍 Grensoverschrijdend: <strong>EuroVelo routes</strong>.<br>🏞️ <strong>Jaagpaden</strong> (naast rivieren) zijn ideaal!` },
       { type: 'mc-prep', vraagTekst: "Wat is een EuroVelo route?", antwoord: "Een lange afstandsfietsroute door Europa", opties: ["Racecircuit", "Een lange afstandsfietsroute door Europa", "Snelheids-app", "Elektrische fiets route"] },
       { type: 'mc-prep', vraagTekst: "Waarom fiets je beter langs jaagpaden dan langs de autoweg?", antwoord: "Het is veiliger, platter en je hebt geen last van auto's", opties: ["Het is veiliger, platter en je hebt geen last van auto's", "Je mag sneller", "Er zijn supermarkten", "Wettelijk verplicht"] },
       { type: 'mc-prep', vraagTekst: "Hoe herken je de fietsknooppunten in België meestal?", antwoord: "Aan de groen-witte of blauw-witte bordjes met nummers", opties: ["Gele driehoeken", "Aan de groen-witte of blauw-witte bordjes met nummers", "Rode lijnen op straat", "Knipperlichten"] },
@@ -216,8 +216,8 @@
     ];
 
     const verhalen = {
-      nl: ["Wat is dit in het <strong>Nederlands</strong>?", "Hoe heet dit?", "Wat is de naam van dit onderdeel?"],
-      fr: ["Klik op het juiste <strong>Franse</strong> woord.", "Wat hoort er in het vak?", "Match het onderdeel."],
+      nl: ["Wat is dit in het <strong>Nederlands</strong>?", "Hoe heet dit onderdeel?", "Wat is de naam van dit fietsonderdeel?"],
+      fr: ["Klik op het juiste <strong>Franse</strong> woord.", "Welk Frans woord hoort hierbij?", "Match het onderdeel met de taal."],
       en: ["Kies de juiste <strong>Engelse</strong> term.", "Weet jij de <strong>Engelse</strong> naam?", "Selecteer de juiste vertaling."]
     };
 
@@ -275,8 +275,14 @@
 
     window.startSpel = function() {
       document.getElementById('start-scherm').classList.add('hidden');
-      state.totaalVragen = theorieData.filter(v => v.type !== 'info').length + (fietsOnderdelen.length * 3);
       bouwEtappes();
+      
+      // Bereken totaal aantal echte vragen (geen info slides)
+      state.totaalVragen = 0;
+      state.questionsLijst.forEach(lijst => {
+          state.totaalVragen += lijst.filter(v => v.type !== 'info').length;
+      });
+
       tekenVoortgangMarkers();
       startTimer();
       startEtappeFlow();
@@ -306,17 +312,45 @@
         }
     }
 
+    // AANGEPASTE GENERATOR: Voegt nu OOK Waar/Niet-waar vragen toe voor volop variatie!
     function genereerOnderdelenVragen(taalCode) {
         let vragen = [];
+        let taalNaam = taalCode === 'nl' ? 'Nederlands' : (taalCode === 'fr' ? 'Frans' : 'Engels');
         let shuffledOnderdelen = shuffle([...fietsOnderdelen]);
-        shuffledOnderdelen.forEach(item => {
+
+        shuffledOnderdelen.forEach((item, index) => {
+            // 1. Standaard Meerkeuzevraag (4 opties met foto)
             let andereOnderdelen = fietsOnderdelen.filter(o => o[taalCode] !== item[taalCode]);
             let fouteOpties = shuffle(andereOnderdelen).slice(0, 3).map(o => o[taalCode]);
             let alleOpties = shuffle([item[taalCode], ...fouteOpties]);
             
-            vragen.push({ type: 'part', taal: taalCode, foto: item.foto, correct: item[taalCode], opties: alleOpties });
+            vragen.push({ 
+                type: 'part-mc', 
+                taal: taalCode, 
+                foto: item.foto, 
+                correct: item[taalCode], 
+                opties: alleOpties 
+            });
+
+            // 2. Waar/Niet-waar vraag toevoegen (We doen dit voor ongeveer de helft van de onderdelen voor perfecte variatie)
+            if (index % 2 === 0) {
+                let isWaar = Math.random() > 0.5; // 50% kans op een ware of onware stelling
+                let beweringNaam = isWaar ? item[taalCode] : shuffle(andereOnderdelen)[0][taalCode];
+                let correctAntwoord = isWaar ? "Waar" : "Niet waar";
+                
+                vragen.push({
+                    type: 'part-tf', 
+                    taal: taalCode, 
+                    foto: item.foto, 
+                    vraagTekst: `Heet dit onderdeel "<strong>${beweringNaam}</strong>" in het ${taalNaam}?`, 
+                    correct: correctAntwoord, 
+                    opties: ["Waar", "Niet waar"]
+                });
+            }
         });
-        return vragen;
+        
+        // Hussel de Waar/Niet-waar en Meerkeuze vragen willekeurig door elkaar heen!
+        return shuffle(vragen);
     }
 
     function startEtappeFlow() {
@@ -324,10 +358,9 @@
             // CHECK VOOR REMEDIËRING
             if (state.fouteVragen.length > 0 && !state.isRemediering) {
                 state.isRemediering = true;
-                // Voeg een 'land' toe voor de remediëring
                 landenData.push({ code: 'rem', vlag: '🚑', naam: 'Remediëringsronde', header: 'bg-gradient-to-r from-orange-200 to-rose-300' });
                 state.questionsLijst.push([...state.fouteVragen]);
-                state.totaalVragen += state.fouteVragen.length; // Voeg deze toe aan het totaal voor de progressbar
+                state.totaalVragen += state.fouteVragen.length; // Progressbar updaten
             } else {
                 eindigSpel(); 
                 return; 
@@ -341,7 +374,6 @@
         eScherm.className = "hidden absolute inset-0 z-50 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000";
         msgBox.classList.add('hidden');
         
-        // Vrolijke tussenschermen
         if (state.etappeIndex > 0) {
             if (state.moduleFouten === 0 && !state.isRemediering) {
                 eScherm.classList.add('bg-yellow-100/95');
@@ -356,7 +388,6 @@
         
         state.moduleFouten = 0; 
 
-        // Header lichte kleuren
         document.getElementById('game-header').className = `text-slate-800 p-2 sm:p-3 shadow-sm border-b border-white/50 shrink-0 z-10 transition-colors duration-500 ${land.header}`;
         document.getElementById('land-icoon').innerText = land.vlag;
         document.getElementById('land-naam').innerText = land.naam;
@@ -419,16 +450,24 @@
             return;
         }
 
+        // Weergeven afhankelijk van Vraag Type
         if (vraag.type === 'mc-prep') {
             txtCont.innerHTML = "<strong>Theorie Check-Up!</strong>";
             vCont.innerHTML = `<h3 class="font-bold text-base sm:text-lg text-slate-800 text-center">${vraag.vraagTekst}</h3>`;
+        } else if (vraag.type === 'part-tf') {
+            txtCont.innerHTML = "<strong>Waar of Niet waar?</strong> 🧐";
+            vCont.innerHTML = `
+                <img src="${vraag.foto}" class="h-32 sm:h-40 object-contain rounded-lg border border-slate-200 p-2 bg-white shadow-sm mb-3" onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Foto+Ontbreekt';">
+                <h3 class="font-bold text-base sm:text-lg text-slate-800 text-center">${vraag.vraagTekst}</h3>
+            `;
         } else {
+            // Standaard part-mc (4 opties)
             let rndVerhaal = verhalen[vraag.taal][Math.floor(Math.random() * verhalen[vraag.taal].length)];
             txtCont.innerHTML = rndVerhaal;
             vCont.innerHTML = `<img src="${vraag.foto}" class="h-32 sm:h-40 object-contain rounded-lg border border-slate-200 p-2 bg-white shadow-sm" onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Foto+Ontbreekt';">`;
         }
 
-        let opties = vraag.type === 'mc-prep' ? shuffle([...vraag.opties]) : vraag.opties;
+        let opties = (vraag.type === 'mc-prep' || vraag.type === 'part-mc') ? shuffle([...vraag.opties]) : vraag.opties;
         let correctAntwoord = vraag.type === 'mc-prep' ? vraag.antwoord : vraag.correct;
 
         opties.forEach(opt => {
@@ -493,15 +532,11 @@
             state.moduleFouten++;
             state.streak = 0;
             
-            // REMEDIËRING LOGICA OPHALEN
             if (!state.isRemediering) {
-                // Sla de vraag op voor de remediëringsronde later
                 state.fouteVragen.push(vraagData);
             } else {
-                // Als we al in de remediëringsronde zitten en ze hebben hem weer fout,
-                // plakken we hem achteraan de lijst zodat ze hem straks nog eens krijgen!
                 state.questionsLijst[state.etappeIndex].push(vraagData);
-                state.totaalVragen++; // Zorg dat de voortgangsbalk zich aanpast
+                state.totaalVragen++; 
             }
             
             fb.classList.add('text-red-700', 'bg-red-50');
@@ -518,7 +553,6 @@
         if (state.streak > 0 && state.streak % 5 === 0) {
             let banner = document.getElementById('streak-banner');
             banner.classList.add('show');
-            // Verberg na 2.5 seconden
             setTimeout(() => { banner.classList.remove('show'); }, 2500);
         }
     }
