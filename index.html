@@ -15,49 +15,58 @@
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-ride-across { animation: rideAcross 6s linear forwards; }
     @keyframes rideAcross { 0% { transform: translateX(-100vw); } 100% { transform: translateX(100vw); } }
-    .marker-line { position: absolute; top: 0; bottom: 0; width: 2px; background-color: rgba(0,0,0,0.5); z-index: 10; }
+    .marker-line { position: absolute; top: 0; bottom: 0; width: 2px; background-color: rgba(255,255,255,0.6); z-index: 10; }
     
-    /* Streak Banner Animatie */
-    #streak-banner { transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(-100%); opacity: 0; }
-    #streak-banner.show { transform: translateY(0); opacity: 1; }
+    /* Streak Banner Animatie in het midden */
+    #streak-banner { 
+      position: fixed; top: 50%; left: 50%; 
+      transform: translate(-50%, -50%) scale(0.5); 
+      opacity: 0; pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      z-index: 999;
+    }
+    #streak-banner.show { 
+      transform: translate(-50%, -50%) scale(1); 
+      opacity: 1; 
+    }
   </style>
 </head>
-<body id="body-bg" class="flex justify-center items-center sm:p-4 bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100 relative">
+<body id="body-bg" class="flex justify-center items-center sm:p-4 bg-gradient-to-br from-yellow-100 via-pink-100 to-cyan-100 relative">
 
-  <div id="streak-banner" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[200] bg-yellow-400 text-yellow-900 px-6 py-3 rounded-full font-black shadow-xl flex items-center space-x-2 border-2 border-yellow-500">
-    <span class="text-2xl">🔥</span>
-    <span id="streak-tekst">5 op een rij! Geweldig bezig!</span>
-    <span class="text-2xl">🔥</span>
+  <div id="streak-banner" class="bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-8 py-6 rounded-3xl font-black shadow-2xl flex flex-col items-center justify-center border-4 border-white text-center">
+    <span class="text-6xl mb-2">🎉</span>
+    <span id="streak-tekst" class="text-3xl drop-shadow-md">5 op een rij!</span>
+    <span class="text-xl mt-1 opacity-90 font-bold">Geweldig bezig!</span>
   </div>
 
-  <div id="spiek-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-sm flex justify-center items-center p-2 sm:p-6 transition-opacity">
-    <div class="bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col overflow-hidden relative shadow-2xl border-4 border-indigo-500">
-       <div class="p-3 sm:p-4 bg-slate-800 text-white flex justify-between items-center shrink-0">
-          <h3 class="font-black text-lg sm:text-xl text-yellow-400">🚲 Spiekbriefje: Fietsonderdelen</h3>
-          <button onclick="toggleSpiekbriefje()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-md">Sluiten ❌</button>
+  <div id="spiek-modal" class="hidden fixed inset-0 z-[100] bg-sky-100/90 backdrop-blur-sm flex justify-center items-center p-2 sm:p-6 transition-opacity">
+    <div class="bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col overflow-hidden relative shadow-2xl border-4 border-sky-300">
+       <div class="p-3 sm:p-4 bg-gradient-to-r from-sky-400 to-blue-500 text-white flex justify-between items-center shrink-0">
+          <h3 class="font-black text-lg sm:text-xl">🚲 Spiekbriefje: Fietsonderdelen</h3>
+          <button onclick="toggleSpiekbriefje()" class="bg-white/20 hover:bg-white/40 text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-md">Sluiten ❌</button>
        </div>
-       <div class="overflow-auto p-2 bg-slate-100 flex-grow flex justify-center items-start">
-          <img src="de-onderdelen-van-de-fiets-afbeelding-21.png" alt="Onderdelen van de fiets" class="max-w-full h-auto object-contain rounded-xl shadow-sm border border-slate-300 bg-white" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600?text=Foto+Onderdelen';">
+       <div class="overflow-auto p-2 bg-slate-50 flex-grow flex justify-center items-start">
+          <img src="de-onderdelen-van-de-fiets-afbeelding-21.png" alt="Onderdelen van de fiets" class="max-w-full h-auto object-contain rounded-xl shadow-sm border border-slate-200 bg-white" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600?text=Foto+Onderdelen';">
        </div>
     </div>
   </div>
 
-  <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 relative bg-slate-50/95 backdrop-blur-md">
+  <div class="w-full max-w-3xl h-full sm:h-[95vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/50 relative bg-white/95 backdrop-blur-md">
     
-    <div id="start-scherm" class="flex-grow flex flex-col h-full bg-slate-50/90 overflow-hidden relative">
+    <div id="start-scherm" class="flex-grow flex flex-col h-full bg-white/90 overflow-hidden relative">
       <div id="start-story-content" class="flex-grow overflow-y-auto p-4 sm:p-8 text-center pb-24 relative flex flex-col justify-center items-center">
-        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-l-4 border-indigo-500 text-left w-full max-w-lg mb-6 text-slate-700 leading-relaxed text-sm sm:text-base relative animate-fade-in-up mt-8">
+        <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl shadow-lg border-l-4 border-pink-400 text-left w-full max-w-lg mb-6 text-slate-700 leading-relaxed text-sm sm:text-base relative animate-fade-in-up mt-8">
             <div class="absolute -top-10 -left-6 text-6xl rotate-[-10deg] drop-shadow-md">🚴‍♂️</div>
             <div class="absolute -bottom-6 -right-4 text-5xl rotate-[15deg] drop-shadow-md">🔧</div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mt-2">Roadtrip Alert! 🌍</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-4 bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text mt-2">Roadtrip Alert! 🌍</h2>
             
             <p class="mb-3">Jij en je <strong>vrienden</strong> nemen de fiets voor een epische roadtrip! Het masterplan? Vertrekken in <strong>België</strong>, knallen richting <strong>Frankrijk</strong>, en in Calais de ferry op om er na te fietsen naar de krijtrotsen in <strong>Engeland</strong>. Klinkt als de ultieme vrijheid, toch? 🚢💨</p>
             
             <p class="mb-3">Maar er is één <em>massive</em> probleem... jullie fietsen zijn niet bepaald 'Tour de France'-proof. Onderweg vliegen de kettingen eraf, rammelen de spatborden en sta je wekelijks met een lekke band. 🤦‍♂️ Om de boel te fixen bij lokale fietsenmakers, móét je je fietsonderdelen kennen... in drie talen!</p>
             
-            <p class="mb-5">Weet je een onderdeel niet? Geen stress! Je kan tijdens de tocht altijd op het <strong>Spiekbriefje 🚲</strong> klikken om het op te zoeken. Voor we aan dit avontuur beginnen, doen we eerst een grondige <strong>Check-Up</strong>! Je hebt in totaal <strong>30 minuten</strong> de tijd voor de hele tocht.</p>
+            <p class="mb-5">Weet je een onderdeel niet? Geen stress! Je kan tijdens de tocht altijd op het <strong>Spiekbriefje 🚲</strong> klikken om het op te zoeken. Je hebt <strong>30 minuten</strong> de tijd voor de hele tocht.</p>
             
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner">
+            <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
                 <p class="font-bold text-slate-800 mb-3 uppercase tracking-wider text-xs sm:text-sm">De Route:</p>
                 <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🛠️</span> <span><strong>Voorbereiding:</strong> De Check-Up</span></div>
                 <div class="flex items-center space-x-3 mb-2 text-slate-600 font-medium"><span class="text-xl">🇧🇪</span> <span><strong>Etappe 1:</strong> België</span></div>
@@ -66,52 +75,52 @@
             </div>
         </div>
       </div>
-      <div class="absolute bottom-0 left-0 w-full p-4 sm:p-6 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 z-10 flex justify-center">
-        <button onclick="startSpel()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">Start de Tocht!</button>
+      <div class="absolute bottom-0 left-0 w-full p-4 sm:p-6 bg-white/90 backdrop-blur-sm border-t border-slate-100 z-10 flex justify-center">
+        <button onclick="startSpel()" class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">Start de Tocht!</button>
       </div>
     </div>
 
-    <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-slate-900/95 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000">
-      <h2 class="text-4xl font-black text-white mb-2" id="etappe-titel">Fase Voltooid!</h2>
-      <p class="text-xl text-blue-200 mb-4" id="etappe-ondertitel">Goed bezig!</p>
-      <div id="etappe-perfect-bericht" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-lg mb-4 shadow-lg border-2 border-yellow-200">
+    <div id="etappe-scherm" class="hidden absolute inset-0 z-50 bg-white/95 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000">
+      <h2 class="text-4xl font-black text-slate-800 mb-2" id="etappe-titel">Fase Voltooid!</h2>
+      <p class="text-xl text-slate-500 mb-4" id="etappe-ondertitel">Goed bezig!</p>
+      <div id="etappe-perfect-bericht" class="hidden bg-yellow-300 text-yellow-900 font-bold px-4 py-2 rounded-lg mb-4 shadow-md border-2 border-yellow-400">
         🌟 Foutloze Etappe! Klasse! 🌟
       </div>
       <div class="w-full overflow-hidden relative h-20 mb-8"><div class="text-6xl absolute bottom-0 left-0 animate-ride-across"><span style="display:inline-block; transform: scaleX(-1);">🚴‍♂️</span>💨</div></div>
-      <button onclick="startVolgendeEtappe()" class="bg-white text-slate-900 hover:bg-slate-200 font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg border-2 border-transparent">
+      <button onclick="startVolgendeEtappe()" class="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-black py-4 px-10 rounded-full shadow-lg uppercase tracking-wider w-full max-w-sm transition-transform hover:scale-105 active:scale-95 text-lg">
         Start <span id="volgende-land-naam">Volgende</span>!
       </button>
     </div>
 
     <div id="game-ui" class="hidden flex-col h-full w-full bg-transparent">
-      <div id="game-header" class="bg-slate-800 text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors duration-500">
+      <div id="game-header" class="text-slate-800 p-2 sm:p-3 shadow-sm border-b border-white/50 shrink-0 z-10 transition-colors duration-500">
         <div class="flex justify-between items-center mb-1 px-1">
           <div class="flex items-center space-x-2"><span id="land-icoon" class="text-3xl animate-pulse">🛠️</span><span class="font-bold text-sm hidden sm:block" id="land-naam">Voorbereiding</span></div>
           <div class="flex items-center space-x-3 sm:space-x-4">
-            <button onclick="toggleSpiekbriefje()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-black text-xs sm:text-sm transition-colors shadow-sm animate-pulse border border-yellow-600">Spiekbriefje 🧐</button>
-            <div class="text-center hidden sm:block"><div class="text-[10px] text-slate-200 uppercase font-bold">Tijd over</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-white leading-none">30:00</div></div>
-            <div class="text-center"><div class="text-[10px] text-slate-200 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-bold text-yellow-300 leading-none">0</div></div>
+            <button onclick="toggleSpiekbriefje()" class="bg-white/80 hover:bg-white text-slate-800 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-black text-xs sm:text-sm transition-colors shadow-sm animate-pulse border border-slate-200">Spiekbriefje 🧐</button>
+            <div class="text-center hidden sm:block"><div class="text-[10px] text-slate-600 uppercase font-bold">Tijd over</div><div id="tijd-weergave" class="text-base sm:text-lg font-mono font-bold text-slate-800 leading-none">30:00</div></div>
+            <div class="text-center"><div class="text-[10px] text-slate-600 uppercase font-bold leading-none">Score⭐</div><div id="score-weergave" class="text-base sm:text-lg font-black text-pink-600 leading-none">0</div></div>
           </div>
-          <button onclick="vroegtijdigStoppen()" class="bg-slate-700/50 hover:bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors border border-white/20">Stoppen</button>
+          <button onclick="vroegtijdigStoppen()" class="bg-white/40 hover:bg-red-400 hover:text-white text-slate-700 px-2 py-1 sm:px-3 sm:py-2 rounded-lg font-bold text-xs sm:text-sm transition-colors">Stoppen</button>
         </div>
-        <div class="w-full bg-slate-400 rounded-full h-2 mt-1 relative overflow-hidden" id="progress-container">
-            <div id="progress-bar" class="bg-white h-full progress-bar-fill relative z-0" style="width: 0%"></div>
+        <div class="w-full bg-black/10 rounded-full h-2 mt-1 relative overflow-hidden" id="progress-container">
+            <div id="progress-bar" class="bg-gradient-to-r from-pink-400 to-purple-500 h-full progress-bar-fill relative z-0" style="width: 0%"></div>
             </div>
       </div>
 
       <div id="scroll-container" class="flex-grow overflow-y-auto p-3 sm:p-4 flex flex-col justify-center items-center pb-4 relative">
         <div id="animatie-wrapper" class="w-full flex flex-col items-center relative z-0">
-          <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white/90 p-3 rounded-xl shadow-sm border border-slate-200 w-full max-w-2xl relative"></div>
+          <div id="verhaal-tekst" class="text-center text-sm sm:text-base font-medium text-slate-700 mb-3 bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-sm border border-slate-100 w-full max-w-2xl relative"></div>
           <div id="vraag-container" class="mb-3 w-full max-w-2xl relative flex flex-col items-center"></div>
           <div id="antwoord-container" class="w-full max-w-2xl mb-2 relative grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
         </div>
         <div id="feedback-antwoord" class="hidden w-full max-w-2xl p-3 rounded-xl text-center font-bold text-sm sm:text-base border border-transparent mt-2 transition-all relative z-10"></div>
       </div>
 
-      <div class="shrink-0 p-3 sm:p-4 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20">
+      <div class="shrink-0 p-3 sm:p-4 bg-white/90 backdrop-blur-sm border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20">
         <div class="max-w-2xl mx-auto flex justify-between items-center space-x-4">
            <div class="text-xs text-slate-400 font-mono font-bold hidden sm:block tracking-widest" id="voortgang-weergave">0/0</div>
-           <button id="action-btn" onclick="volgendeActie()" class="flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>Kies een antwoord...</button>
+           <button id="action-btn" onclick="volgendeActie()" class="flex-grow bg-slate-100 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all" disabled>Kies een antwoord...</button>
         </div>
       </div>
     </div>
@@ -122,24 +131,24 @@
         <h2 class="text-3xl font-extrabold text-slate-800 mb-2 shrink-0">Einde van de tocht!</h2>
         <p class="text-slate-600 text-sm sm:text-base mb-4 shrink-0" id="eind-ondertitel">Je bent veilig aangekomen!</p>
         
-        <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 w-full max-w-md mb-4 shadow-xl relative overflow-hidden shrink-0">
-          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-green-500"></div>
+        <div class="bg-white p-5 rounded-2xl border-2 border-slate-100 w-full max-w-md mb-4 shadow-xl relative overflow-hidden shrink-0">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-400 to-cyan-400"></div>
           <p class="text-slate-500 font-bold uppercase tracking-wider mb-1 text-xs">Score</p>
-          <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-blue-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">0</span></p>
+          <p class="text-5xl font-black text-slate-800 mb-2"><span id="eind-score" class="text-pink-600">0</span><span class="text-3xl text-slate-300">/</span><span id="eind-totaal" class="text-3xl text-slate-400">0</span></p>
         </div>
 
-        <div id="classroom-opdracht" class="w-full max-w-md mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0 relative z-0">
+        <div id="classroom-opdracht" class="w-full max-w-md mb-6 bg-pink-50 border-l-4 border-pink-400 rounded-r-xl p-4 shadow-sm text-left flex items-start space-x-3 shrink-0 relative z-0">
           <div class="text-3xl animate-bounce">📸</div>
           <div>
-            <h4 class="font-black text-yellow-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
-            <p class="text-xs sm:text-sm text-yellow-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je score) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>.</p>
+            <h4 class="font-black text-pink-800 text-sm sm:text-base mb-1 uppercase tracking-wide">Verplichte Opdracht</h4>
+            <p class="text-xs sm:text-sm text-pink-900 leading-relaxed">Neem nu een <strong>printscreen</strong> van dit scherm (met je score) en voeg dit toe aan je bestand in <strong>Google Classroom</strong>.</p>
           </div>
         </div>
       </div>
 
-      <div class="absolute bottom-0 left-0 w-full p-3 sm:p-4 bg-slate-50/90 backdrop-blur-sm border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20 flex justify-center">
+      <div class="absolute bottom-0 left-0 w-full p-3 sm:p-4 bg-white/90 backdrop-blur-sm border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] w-full sm:rounded-b-2xl z-20 flex justify-center">
         <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto justify-center">
-          <button id="btn-herstart" onclick="location.reload()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105">Nieuw Spel</button>
+          <button id="btn-herstart" onclick="location.reload()" class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-black py-3 px-6 rounded-full shadow-lg uppercase tracking-wider text-sm w-full transition-transform hover:scale-105">Nieuw Spel</button>
         </div>
       </div>
     </div>
@@ -212,14 +221,20 @@
       en: ["Kies de juiste <strong>Engelse</strong> term.", "Weet jij de <strong>Engelse</strong> naam?", "Selecteer de juiste vertaling."]
     };
 
+    // Vrolijke, lichte achtergronden voor de header
     const landenData = [
-      { code: 'prep', vlag: '🛠️', naam: 'Voorbereiding', header: 'bg-gradient-to-r from-teal-600 to-emerald-700' },
-      { code: 'nl', vlag: '🇧🇪', naam: 'België', header: 'bg-gradient-to-r from-slate-900 via-yellow-500 to-red-600' },
-      { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', header: 'bg-gradient-to-r from-blue-700 to-red-600' },
-      { code: 'en', vlag: '🇬🇧', naam: 'Engeland', header: 'bg-gradient-to-r from-red-600 to-blue-800' }
+      { code: 'prep', vlag: '🛠️', naam: 'Voorbereiding', header: 'bg-gradient-to-r from-teal-200 to-emerald-300' },
+      { code: 'nl', vlag: '🇧🇪', naam: 'België', header: 'bg-gradient-to-r from-yellow-200 to-orange-300' },
+      { code: 'fr', vlag: '🇫🇷', naam: 'Frankrijk', header: 'bg-gradient-to-r from-blue-200 to-red-200' },
+      { code: 'en', vlag: '🇬🇧', naam: 'Engeland', header: 'bg-gradient-to-r from-red-200 to-blue-300' }
     ];
 
-    let state = { score: 0, vraagIndex: 0, etappeIndex: 0, questionsLijst: [], antwoordGekozen: false, totaalVragen: 0, moduleFouten: 0, streak: 0 };
+    let state = { 
+      score: 0, vraagIndex: 0, etappeIndex: 0, questionsLijst: [], 
+      antwoordGekozen: false, totaalVragen: 0, moduleFouten: 0, streak: 0,
+      fouteVragen: [], isRemediering: false 
+    };
+    
     let timerInterval, resterendeTijd = START_TIJD_SECONDEN;
     let autoAdvanceTimeout;
 
@@ -247,10 +262,9 @@
             let tijdWeergave = document.getElementById('tijd-weergave');
             tijdWeergave.innerText = `${m}:${s}`;
             
-            // Maak rood als er minder dan 2 minuten over zijn
             if (resterendeTijd < 120) {
-                tijdWeergave.classList.remove('text-white');
-                tijdWeergave.classList.add('text-red-400', 'animate-pulse');
+                tijdWeergave.classList.remove('text-slate-800');
+                tijdWeergave.classList.add('text-red-500', 'animate-pulse');
             }
         }, 1000);
     }
@@ -281,7 +295,6 @@
         const container = document.getElementById('progress-container');
         let totaalGedaan = 0;
         
-        // Voeg voor elke etappe (behalve de eerste) een lijntje toe
         for(let i = 0; i < state.questionsLijst.length - 1; i++) {
             totaalGedaan += state.questionsLijst[i].filter(v => v.type !== 'info').length;
             let percentage = (totaalGedaan / state.totaalVragen) * 100;
@@ -307,33 +320,44 @@
     }
 
     function startEtappeFlow() {
-        if (state.etappeIndex >= landenData.length) { eindigSpel(); return; }
+        if (state.etappeIndex >= landenData.length) { 
+            // CHECK VOOR REMEDIËRING
+            if (state.fouteVragen.length > 0 && !state.isRemediering) {
+                state.isRemediering = true;
+                // Voeg een 'land' toe voor de remediëring
+                landenData.push({ code: 'rem', vlag: '🚑', naam: 'Remediëringsronde', header: 'bg-gradient-to-r from-orange-200 to-rose-300' });
+                state.questionsLijst.push([...state.fouteVragen]);
+                state.totaalVragen += state.fouteVragen.length; // Voeg deze toe aan het totaal voor de progressbar
+            } else {
+                eindigSpel(); 
+                return; 
+            }
+        }
 
         let land = landenData[state.etappeIndex];
         let eScherm = document.getElementById('etappe-scherm');
         let msgBox = document.getElementById('etappe-perfect-bericht');
         
-        // Reset/Check Module Fouten voor beloning
         eScherm.className = "hidden absolute inset-0 z-50 flex-col justify-center items-center text-center p-6 backdrop-blur-md overflow-y-auto transition-colors duration-1000";
         msgBox.classList.add('hidden');
         
+        // Vrolijke tussenschermen
         if (state.etappeIndex > 0) {
-            if (state.moduleFouten === 0) {
-                // Foutloze module beloning (Goud)
-                eScherm.classList.add('bg-yellow-500/95');
+            if (state.moduleFouten === 0 && !state.isRemediering) {
+                eScherm.classList.add('bg-yellow-100/95');
                 msgBox.classList.remove('hidden');
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             } else {
-                eScherm.classList.add('bg-slate-900/95');
+                eScherm.classList.add('bg-white/95');
             }
         } else {
-            eScherm.classList.add('bg-slate-900/95');
+            eScherm.classList.add('bg-white/95');
         }
         
-        // Bereid volgende etappe voor
         state.moduleFouten = 0; 
 
-        document.getElementById('game-header').className = `text-white p-2 sm:p-3 shadow-md shrink-0 z-10 transition-colors duration-500 ${land.header}`;
+        // Header lichte kleuren
+        document.getElementById('game-header').className = `text-slate-800 p-2 sm:p-3 shadow-sm border-b border-white/50 shrink-0 z-10 transition-colors duration-500 ${land.header}`;
         document.getElementById('land-icoon').innerText = land.vlag;
         document.getElementById('land-naam').innerText = land.naam;
 
@@ -342,7 +366,14 @@
         eScherm.classList.remove('hidden');
         eScherm.classList.add('flex');
         
-        document.getElementById('etappe-titel').innerText = state.etappeIndex === 0 ? "Klaar voor de start?" : "Fase Voltooid!";
+        if (state.isRemediering && state.etappeIndex === landenData.length - 1) {
+            document.getElementById('etappe-titel').innerText = "Tijd voor de Reparaties!";
+            document.getElementById('etappe-ondertitel').innerText = "We kijken de foutjes nog even samen na.";
+        } else {
+            document.getElementById('etappe-titel').innerText = state.etappeIndex === 0 ? "Klaar voor de start?" : "Fase Voltooid!";
+            document.getElementById('etappe-ondertitel').innerText = "Goed bezig!";
+        }
+        
         document.getElementById('volgende-land-naam').innerText = land.naam;
     }
 
@@ -380,10 +411,10 @@
         fb.innerText = '';
         
         if (vraag.type === 'info') {
-            txtCont.innerHTML = `<span class="text-lg font-black text-indigo-700">${vraag.thema}</span>`;
-            vCont.innerHTML = `<div class="bg-indigo-50 w-full p-4 rounded-xl border border-indigo-200 text-left text-sm">${vraag.inhoud}</div>`;
+            txtCont.innerHTML = `<span class="text-lg font-black text-pink-600">${vraag.thema}</span>`;
+            vCont.innerHTML = `<div class="bg-pink-50 w-full p-4 rounded-xl border border-pink-200 text-left text-sm text-slate-700">${vraag.inhoud}</div>`;
             btn.textContent = "Ik snap het, start vragen ➔";
-            btn.className = "flex-grow bg-indigo-500 hover:bg-indigo-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
+            btn.className = "flex-grow bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
             btn.disabled = false;
             return;
         }
@@ -404,18 +435,18 @@
             let btnOptie = document.createElement('button');
             btnOptie.className = "answ-btn-hover bg-slate-50 border-2 border-slate-200 text-slate-700 font-bold p-3 rounded-xl text-left transition-all w-full shadow-sm text-sm flex justify-between items-center";
             btnOptie.innerHTML = `<span>${opt}</span><span class="icon-slot"></span>`;
-            btnOptie.onclick = () => kiesAntwoord(btnOptie, opt === correctAntwoord, correctAntwoord);
+            btnOptie.onclick = () => kiesAntwoord(btnOptie, opt === correctAntwoord, correctAntwoord, vraag);
             aCont.appendChild(btnOptie);
         });
 
         btn.textContent = "Kies een antwoord...";
-        btn.className = "flex-grow bg-slate-200 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all";
+        btn.className = "flex-grow bg-slate-100 text-slate-400 cursor-not-allowed font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all";
         btn.disabled = true;
 
         updateProgress();
     }
 
-    function kiesAntwoord(btnClick, isCorrect, correctAntwoord) {
+    function kiesAntwoord(btnClick, isCorrect, correctAntwoord, vraagData) {
         if (state.antwoordGekozen) return;
         state.antwoordGekozen = true;
 
@@ -447,28 +478,38 @@
             state.streak++;
             document.getElementById('score-weergave').innerText = state.score;
             
-            fb.classList.add('text-green-700');
-            fb.classList.remove('text-red-700');
+            fb.classList.add('text-green-700', 'bg-green-50');
+            fb.classList.remove('text-red-700', 'bg-red-50');
             fb.innerText = "Helemaal juist!";
             
             checkStreak();
 
             actBtn.textContent = "Automatisch verder...";
-            actBtn.className = "flex-grow bg-slate-200 text-slate-500 font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all cursor-wait";
+            actBtn.className = "flex-grow bg-slate-100 text-slate-400 font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all cursor-wait";
             
-            // Automatisch doorgaan na 1.5s
             autoAdvanceTimeout = setTimeout(() => { volgendeActie(); }, 1500);
 
         } else {
             state.moduleFouten++;
             state.streak = 0;
             
-            fb.classList.add('text-red-700');
-            fb.classList.remove('text-green-700');
-            fb.innerText = `Helaas! Het was: ${correctAntwoord}`;
+            // REMEDIËRING LOGICA OPHALEN
+            if (!state.isRemediering) {
+                // Sla de vraag op voor de remediëringsronde later
+                state.fouteVragen.push(vraagData);
+            } else {
+                // Als we al in de remediëringsronde zitten en ze hebben hem weer fout,
+                // plakken we hem achteraan de lijst zodat ze hem straks nog eens krijgen!
+                state.questionsLijst[state.etappeIndex].push(vraagData);
+                state.totaalVragen++; // Zorg dat de voortgangsbalk zich aanpast
+            }
+            
+            fb.classList.add('text-red-700', 'bg-red-50');
+            fb.classList.remove('text-green-700', 'bg-green-50');
+            fb.innerText = `Helaas! Het juiste antwoord was: ${correctAntwoord}`;
 
             actBtn.textContent = "Volgende ➔";
-            actBtn.className = "flex-grow bg-indigo-500 hover:bg-indigo-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
+            actBtn.className = "flex-grow bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white font-black py-3 px-6 rounded-xl uppercase tracking-wider text-sm sm:text-base transition-all shadow-md";
             actBtn.disabled = false;
         }
     }
@@ -476,8 +517,8 @@
     function checkStreak() {
         if (state.streak > 0 && state.streak % 5 === 0) {
             let banner = document.getElementById('streak-banner');
-            document.getElementById('streak-tekst').innerText = `${state.streak} op een rij! Geweldig bezig!`;
             banner.classList.add('show');
+            // Verberg na 2.5 seconden
             setTimeout(() => { banner.classList.remove('show'); }, 2500);
         }
     }
@@ -512,8 +553,8 @@
         let duration = 3000;
         let end = Date.now() + duration;
         (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#facc15', '#4f46e5', '#3b82f6'] });
-            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#facc15', '#4f46e5', '#3b82f6'] });
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ec4899', '#a855f7', '#06b6d4'] });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ec4899', '#a855f7', '#06b6d4'] });
             if (Date.now() < end) requestAnimationFrame(frame);
         }());
     };
